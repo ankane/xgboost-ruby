@@ -18,7 +18,7 @@ module Xgb
       check_result FFI.XGBoosterUpdateOneIter(handle_pointer, iteration, dtrain.handle_pointer)
     end
 
-    def eval(evals, iteration)
+    def eval_set(evals, iteration)
       dmats = ::FFI::MemoryPointer.new(:pointer, evals.size)
       dmats.write_array_of_pointer(evals.map { |v| v[0].handle_pointer })
 

@@ -15,12 +15,13 @@ module Xgb
     def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true)
       booster = Booster.new(params: params)
       booster.set_param("num_feature", dtrain.num_col)
+      evals ||= []
 
       num_boost_round.times do |iteration|
         booster.update(dtrain, iteration)
 
         if evals.any?
-          puts booster.eval(evals, iteration) if verbose_eval
+          puts booster.eval_set(evals, iteration) if verbose_eval
         end
       end
 
