@@ -16,6 +16,7 @@ module Xgb
       end
 
       set_float_info("label", label) if label
+      set_float_info("weight", weight) if weight
     end
 
     def num_row
