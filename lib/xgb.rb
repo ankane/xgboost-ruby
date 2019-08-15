@@ -58,7 +58,7 @@ module Xgb
       rand_idx = (0...dtrain.num_row).to_a
       rand_idx.shuffle!(random: Random.new(seed)) if shuffle
 
-      kstep = rand_idx.size / nfold
+      kstep = (rand_idx.size / nfold.to_f).ceil
       test_id = rand_idx.each_slice(kstep).to_a[0...nfold]
       train_id = []
       nfold.times do |i|
