@@ -26,5 +26,5 @@ param = {}
 # print(bst.best_iteration)
 # print(bst.predict(X_test)[:1])
 
-eval_dict = xgb.cv(param, data, shuffle=False, num_boost_round=100, verbose_eval=True, early_stopping_rounds=5)
+eval_dict = xgb.cv(param, data, shuffle=False, num_boost_round=100, verbose_eval=True, early_stopping_rounds=5, as_pandas=False)
 print(eval_dict)
