@@ -56,7 +56,7 @@ booster.score
 Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_stopping_rounds: 5)
 ```
 
-## CV [coming soon]
+## CV [master]
 
 ```ruby
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)

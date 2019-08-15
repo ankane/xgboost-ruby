@@ -99,8 +99,8 @@ module Xgb
           mean = mean(vals)
           stdev = stdev(vals)
 
-          # (eval_hist[eval_name] ||= []) << mean
-          # (eval_hist[eval_name] ||= []) << stdev
+          (eval_hist["#{eval_name}-mean"] ||= []) << mean
+          (eval_hist["#{eval_name}-std"] ||= []) << stdev
 
           means[eval_name] = mean
 
