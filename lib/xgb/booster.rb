@@ -56,18 +56,48 @@ module Xgb
       check_result FFI.XGBoosterSaveModel(handle_pointer, fname)
     end
 
+    # returns an array of strings
     def dump(fmap: "", with_stats: false, dump_format: "text")
       out_len = ::FFI::MemoryPointer.new(:ulong)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterDumpModelEx(handle_pointer, fmap, with_stats ? 1 : 0, dump_format, out_len, out_result)
-      out_result.read_pointer.get_array_of_string(0, out_len.read_ulong).first
+      out_result.read_pointer.get_array_of_string(0, out_len.read_ulong)
     end
 
     def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
-      File.write(fout, dump(fmap: fmap, with_stats: with_stats, dump_format: dump_format))
+      ret = dump(fmap: fmap, with_stats: with_stats, dump_format: dump_format)
+      File.open(fout, "wb") do |f|
+        if dump_format == "json"
+          f.print("[\n")
+          ret.each_with_index do |r, i|
+            f.print(r)
+            f.print(",\n") if i < ret.size - 1
+          end
+          f.print("\n]")
+        else
+          ret.each_with_index do |r, i|
+            f.print("booster[#{i}]:\n")
+            f.print(r)
+          end
+        end
+      end
     end
 
-    def score
+    # TODO # importance_type: "weight"
+    def score(fmap: "")
+      trees = dump(fmap: fmap, with_stats: false)
+      fmap = {}
+      trees.each do |tree|
+        tree.split("\n").each do |line|
+          arr = line.split("[")
+          next if arr.size == 1
+
+          fid = arr[1].split("]")[0].split("<")[0]
+          fmap[fid] ||= 0
+          fmap[fid] += 1
+        end
+      end
+      fmap
     end
 
     private

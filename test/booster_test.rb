@@ -6,7 +6,7 @@ class BoosterTest < Minitest::Test
   end
 
   def test_dump_json
-    assert JSON.parse(booster.dump(dump_format: "json"))
+    assert JSON.parse(booster.dump(dump_format: "json").first)
   end
 
   def test_dump_model_text
