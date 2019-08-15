@@ -36,4 +36,9 @@ class CvTest < Minitest::Test
     assert_in_delta 0.043205, eval_hist["test-merror-std"].first
     assert_in_delta 0.043205, eval_hist["test-merror-std"].last
   end
+
+  def test_early_stopping_early
+    eval_hist = Xgb.cv(regression_params, boston, shuffle: false, num_boost_round: 100, early_stopping_rounds: 5)
+    assert_equal 25, eval_hist["train-rmse-mean"].size
+  end
 end

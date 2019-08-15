@@ -43,7 +43,7 @@ module Xgb
             best_score = score
             best_iter = iteration
             best_message = message
-          else
+          elsif iteration - best_iter >= early_stopping_rounds
             booster.best_iteration = best_iter
             puts "Stopping. Best iteration:\n#{best_message}" if verbose_eval
             break
@@ -54,7 +54,7 @@ module Xgb
       booster
     end
 
-    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true)
+    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true, early_stopping_rounds: nil)
       rand_idx = (0...dtrain.num_row).to_a
       rand_idx.shuffle!(random: Random.new(seed)) if shuffle
 
@@ -79,6 +79,11 @@ module Xgb
 
       eval_hist = {}
 
+      if early_stopping_rounds
+        best_score = nil
+        best_iter = nil
+      end
+
       num_boost_round.times do |iteration|
         scores = {}
 
@@ -94,6 +99,7 @@ module Xgb
 
         message_parts = ["[#{iteration}]"]
 
+        last_mean = nil
         means = {}
         scores.each do |eval_name, vals|
           mean = mean(vals)
@@ -103,6 +109,7 @@ module Xgb
           (eval_hist["#{eval_name}-std"] ||= []) << stdev
 
           means[eval_name] = mean
+          last_mean = mean
 
           if show_stdv
             message_parts << "%s:%g+%g" % [eval_name, mean, stdev]
@@ -111,6 +118,21 @@ module Xgb
           end
         end
 
+        if early_stopping_rounds
+          score = last_mean
+          # TODO handle larger better
+          if best_score.nil? || score < best_score
+            best_score = score
+            best_iter = iteration
+          elsif iteration - best_iter >= early_stopping_rounds
+            eval_hist.each_key do |k|
+              eval_hist[k] = eval_hist[k][0..best_iter]
+            end
+            break
+          end
+        end
+
+        # put at end to keep output consistent with Python
         puts message_parts.join("\t") if verbose_eval
       end
 

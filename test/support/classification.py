@@ -27,6 +27,6 @@ param = {'objective': 'binary:logistic'}
 # bst = xgb.Booster(model_file='/tmp/model.txt')
 # print(bst.predict(dtest).shape)
 
-eval_dict = xgb.cv(param, data, shuffle=False, stratified=False, verbose_eval=True)
+eval_dict = xgb.cv(param, data, shuffle=False, verbose_eval=True)
 print(eval_dict)
 
