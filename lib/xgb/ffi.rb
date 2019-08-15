@@ -17,6 +17,7 @@ module Xgb
     # booster
     attach_function :XGBoosterCreate, %i[pointer int pointer], :int
     attach_function :XGBoosterUpdateOneIter, %i[pointer int pointer], :int
+    attach_function :XGBoosterEvalOneIter, %i[pointer int pointer pointer long pointer], :int
     attach_function :XGBoosterSetParam, %i[pointer string string], :int
     attach_function :XGBoosterPredict, %i[pointer pointer int int pointer pointer], :int
     attach_function :XGBoosterLoadModel, %i[pointer string], :int

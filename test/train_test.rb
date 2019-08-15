@@ -51,6 +51,11 @@ class TrainTest < Minitest::Test
     # assert_equal y_pred, y_pred2
   end
 
+  def test_early_stopping_early
+    model = Xgb.train(regression_params, boston_train, num_boost_round: 100, evals: [[boston_train, 'train'], [boston_test, 'eval']], early_stopping_rounds: 5)
+    assert_equal 8, model.best_iteration
+  end
+
   private
 
   def regression_params
