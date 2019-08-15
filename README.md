@@ -1,0 +1,74 @@
+# Xgb
+
+[XGBoost](https://github.com/dmlc/xgboost) - the high performance machine learning library - for Ruby
+
+:fire: Uses the C API for blazing performance
+
+## Installation
+
+First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). On Mac, copy `lib/libxgboost.dylib` to `/usr/local/lib`.
+
+Add this line to your application’s Gemfile:
+
+```ruby
+gem 'xgb'
+```
+
+## Getting Started
+
+Train a model
+
+```ruby
+params = {objective: "reg:squarederror"}
+train_set = Xgb::DMatrix.new(x_train, label: y_train)
+booster = Xgb.train(params, train_set)
+```
+
+Predict
+
+```ruby
+booster.predict(x_test)
+```
+
+Save the model to a file
+
+```ruby
+booster.save_model("model.txt")
+```
+
+Load the model from a file
+
+```ruby
+booster = Xgb::Booster.new(model_file: "model.txt")
+```
+
+## Reference
+
+This library follows the [Core Data Structure and Learning APIs](https://xgboost.readthedocs.io/en/latest/python/python_api.html) for the Python library. Some methods and options are missing at the moment. PRs welcome!
+
+## Helpful Resources
+
+- [Parameters](https://xgboost.readthedocs.io/en/latest/parameter.html)
+- [Parameter Tuning](https://xgboost.readthedocs.io/en/latest/tutorials/param_tuning.html)
+
+## Related Projects
+
+- [LightGBM](https://github.com/ankane/lightgbm) - LightGBM for Ruby
+- [Eps](https://github.com/ankane/eps) - Machine Learning for Ruby
+
+## Credits
+
+Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for serving as an initial reference, and Selva Prabhakaran for the [test datasets](https://github.com/selva86/datasets).
+
+## History
+
+View the [changelog](https://github.com/ankane/xgb/blob/master/CHANGELOG.md)
+
+## Contributing
+
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
+
+- [Report bugs](https://github.com/ankane/xgb/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/xgb/pulls)
+- Write, clarify, or fix documentation
+- Suggest or add new features
