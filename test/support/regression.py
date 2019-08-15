@@ -19,12 +19,12 @@ param = {}
 # param['verbosity'] = -1
 # param['metric'] = ['l1', 'l2', 'rmse']
 
-bst = xgb.train(param, dtrain, num_boost_round=10) #, evals=[(dtrain, 'train'), (dtest, 'eval')], early_stopping_rounds=5)
+# bst = xgb.train(param, dtrain, num_boost_round=10) #, evals=[(dtrain, 'train'), (dtest, 'eval')], early_stopping_rounds=5)
 # print(bst.get_dump())
 # print(bst.get_score())
-bst.save_model("test/support/boston.model")
+# bst.save_model("test/support/boston.model")
 # print(bst.best_iteration)
 # print(bst.predict(X_test)[:1])
 
-# eval_dict = xgb.cv(param, data, shuffle=False, stratified=False, verbose_eval=True) #, early_stopping_rounds=5)
+eval_dict = xgb.cv(param, data, shuffle=False, stratified=False, verbose_eval=True, early_stopping_rounds=5)
 # print(eval_dict)

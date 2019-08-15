@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 class TrainTest < Minitest::Test
-  def test_train_regression
+  def test_regression
     y_test = boston_test.label
 
     model = Xgb.train(regression_params, boston_train) #, valid_sets: [boston_train, boston_test], verbose_eval: false)
@@ -14,13 +14,9 @@ class TrainTest < Minitest::Test
     assert_operator rsme(y_test, y_pred), :<=, 7
   end
 
-  def test_train_binary
-    # map to binary
-    iris_train = Xgb::DMatrix.new(iris_train().data, label: iris_train().label.map { |v| v > 1 ? 1.0 : v })
-    iris_test = Xgb::DMatrix.new(iris_test().data, label: iris_test().label.map { |v| v > 1 ? 1.0 : v })
-
-    model = Xgb.train(binary_params, iris_train) #, valid_sets: [iris_train, iris_test], verbose_eval: false)
-    y_pred = model.predict(iris_test)
+  def test_binary
+    model = Xgb.train(binary_params, iris_train_binary) #, valid_sets: [iris_train, iris_test], verbose_eval: false)
+    y_pred = model.predict(iris_test_binary)
     assert_in_delta 0.96484315, y_pred[0]
 
     y_pred = model.predict(iris_test)
@@ -32,7 +28,7 @@ class TrainTest < Minitest::Test
     assert_equal y_pred, y_pred2
   end
 
-  def test_train_multiclass
+  def test_multiclass
     model = Xgb.train(multiclass_params, iris_train) #, valid_sets: [iris_train, iris_test], verbose_eval: false)
     y_pred = model.predict(iris_test)[0]
     assert_in_delta 0.02350763, y_pred[0]
@@ -56,23 +52,7 @@ class TrainTest < Minitest::Test
     assert_equal 8, model.best_iteration
   end
 
-  def test_cv_regression
-    eval_hist = Xgb.cv(regression_params, boston, shuffle: false, verbose_eval: true)
-  end
-
   private
-
-  def regression_params
-    {objective: "reg:squarederror"}
-  end
-
-  def binary_params
-    {objective: "binary:logistic"}
-  end
-
-  def multiclass_params
-    {objective: "multi:softprob", num_class: 3}
-  end
 
   def rsme(y_true, y_pred)
     Math.sqrt(y_true.zip(y_pred).map { |a, b| (a - b)**2 }.sum / y_true.size.to_f)

@@ -32,6 +32,14 @@ class Minitest::Test
     @iris_test ||= Xgb::DMatrix.new(iris.data[100..-1], label: iris.label[100..-1])
   end
 
+  def iris_train_binary
+    @iris_train_binary ||= Xgb::DMatrix.new(iris.data[0...100], label: iris.label[0...100].map { |v| v > 1 ? 1 : v })
+  end
+
+  def iris_test_binary
+    @iris_test_binary ||= Xgb::DMatrix.new(iris.data[100..-1], label: iris.label[100..-1].map { |v| v > 1 ? 1 : v })
+  end
+
   def load_csv(filename)
     x = []
     y = []
@@ -41,5 +49,17 @@ class Minitest::Test
       y << row[-1]
     end
     Xgb::DMatrix.new(x, label: y)
+  end
+
+  def regression_params
+    {objective: "reg:squarederror"}
+  end
+
+  def binary_params
+    {objective: "binary:logistic"}
+  end
+
+  def multiclass_params
+    {objective: "multi:softprob", num_class: 3}
   end
 end
