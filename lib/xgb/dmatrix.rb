@@ -4,8 +4,6 @@ module Xgb
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
       @data = data
-      @label = label
-      @weight = weight
 
       @handle = ::FFI::MemoryPointer.new(:pointer)
 
@@ -17,6 +15,14 @@ module Xgb
 
       set_float_info("label", label) if label
       set_float_info("weight", weight) if weight
+    end
+
+    def label
+      float_info("label")
+    end
+
+    def weight
+      float_info("weight")
     end
 
     def num_row
@@ -57,6 +63,14 @@ module Xgb
       c_data = ::FFI::MemoryPointer.new(:float, data.count)
       c_data.put_array_of_float(0, data)
       check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
+    end
+
+    def float_info(field)
+      num_row ||= num_row()
+      out_len = ::FFI::MemoryPointer.new(:int)
+      out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
+      check_result FFI.XGDMatrixGetFloatInfo(handle_pointer, field, out_len, out_dptr)
+      out_dptr.read_pointer.read_array_of_float(num_row)
     end
 
     include Utils

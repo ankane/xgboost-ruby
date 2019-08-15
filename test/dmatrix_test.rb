@@ -1,6 +1,20 @@
 require_relative "test_helper"
 
 class DMatrixTest < Minitest::Test
+  def test_label
+    data = [[1, 2], [3, 4]]
+    label = [1, 2]
+    dataset = Xgb::DMatrix.new(data, label: label)
+    assert label, dataset.label
+  end
+
+  def test_weight
+    data = [[1, 2], [3, 4]]
+    weight = [1, 2]
+    dataset = Xgb::DMatrix.new(data, weight: weight)
+    assert weight, dataset.weight
+  end
+
   def test_num_row
     assert_equal 506, boston.num_row
   end
