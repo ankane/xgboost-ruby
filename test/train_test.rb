@@ -4,7 +4,7 @@ class TrainTest < Minitest::Test
   def test_regression
     y_test = boston_test.label
 
-    model = Xgb.train(regression_params, boston_train) #, valid_sets: [boston_train, boston_test], verbose_eval: false)
+    model = Xgb.train(regression_params, boston_train)
     y_pred = model.predict(boston_test)
     assert_operator rsme(y_test, y_pred), :<=, 7
 
@@ -15,7 +15,7 @@ class TrainTest < Minitest::Test
   end
 
   def test_binary
-    model = Xgb.train(binary_params, iris_train_binary) #, valid_sets: [iris_train, iris_test], verbose_eval: false)
+    model = Xgb.train(binary_params, iris_train_binary)
     y_pred = model.predict(iris_test_binary)
     assert_in_delta 0.96484315, y_pred[0]
 
@@ -29,7 +29,7 @@ class TrainTest < Minitest::Test
   end
 
   def test_multiclass
-    model = Xgb.train(multiclass_params, iris_train) #, valid_sets: [iris_train, iris_test], verbose_eval: false)
+    model = Xgb.train(multiclass_params, iris_train)
     y_pred = model.predict(iris_test)[0]
     assert_in_delta 0.02350763, y_pred[0]
     assert_in_delta 0.04084724, y_pred[1]

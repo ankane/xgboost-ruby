@@ -12,4 +12,28 @@ class CvTest < Minitest::Test
     assert_in_delta 3.611514, eval_hist["test-rmse-std"].first
     assert_in_delta 1.652534, eval_hist["test-rmse-std"].last
   end
+
+  def test_binary
+    eval_hist = Xgb.cv(binary_params, iris_binary, shuffle: false)
+    assert_in_delta 0, eval_hist["train-error-mean"].first
+    assert_in_delta 0, eval_hist["train-error-mean"].last
+    assert_in_delta 0, eval_hist["train-error-std"].first
+    assert_in_delta 0, eval_hist["train-error-std"].last
+    assert_in_delta 0, eval_hist["test-error-mean"].first
+    assert_in_delta 0, eval_hist["test-error-mean"].last
+    assert_in_delta 0, eval_hist["test-error-std"].first
+    assert_in_delta 0, eval_hist["test-error-std"].last
+  end
+
+  def test_multiclass
+    eval_hist = Xgb.cv(multiclass_params, iris, shuffle: false)
+    assert_in_delta 0.013333, eval_hist["train-merror-mean"].first
+    assert_in_delta 0.010000, eval_hist["train-merror-mean"].last
+    assert_in_delta 0.009428, eval_hist["train-merror-std"].first
+    assert_in_delta 0.008165, eval_hist["train-merror-std"].last
+    assert_in_delta 0.06, eval_hist["test-merror-mean"].first
+    assert_in_delta 0.06, eval_hist["test-merror-mean"].last
+    assert_in_delta 0.043205, eval_hist["test-merror-std"].first
+    assert_in_delta 0.043205, eval_hist["test-merror-std"].last
+  end
 end

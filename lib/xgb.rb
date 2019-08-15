@@ -72,7 +72,7 @@ module Xgb
       folds.each do |(train_idx, test_idx)|
         fold_dtrain = dtrain.slice(train_idx)
         fold_dvalid = dtrain.slice(test_idx)
-        booster = Booster.new
+        booster = Booster.new(params: params)
         booster.set_param("num_feature", dtrain.num_col)
         cvfolds << [booster, fold_dtrain, fold_dvalid]
       end

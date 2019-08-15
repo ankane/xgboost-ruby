@@ -3,7 +3,11 @@ module Xgb
     private
 
     def check_result(err)
-      raise Xgb::Error, FFI.XGBGetLastError if err != 0
+      if err != 0
+        # make friendly
+        message = FFI.XGBGetLastError.split("\n").first.split(/:\d+: /, 2).last
+        raise Xgb::Error, message
+      end
     end
   end
 end
