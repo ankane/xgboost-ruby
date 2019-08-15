@@ -83,7 +83,7 @@ module Xgb
         cvfolds.each do |(booster, fold_dtrain, fold_dvalid)|
           booster.update(fold_dtrain, iteration)
           message = booster.eval_set([[fold_dtrain, "train"], [fold_dvalid, "test"]], iteration)
-          p message
+          # p message
         end
       end
 

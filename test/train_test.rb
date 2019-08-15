@@ -58,7 +58,6 @@ class TrainTest < Minitest::Test
 
   def test_cv_regression
     eval_hist = Xgb.cv(regression_params, boston, shuffle: false, verbose_eval: true)
-    p eval_hist
   end
 
   private
