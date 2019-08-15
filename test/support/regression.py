@@ -19,9 +19,9 @@ param = {}
 # param['verbosity'] = -1
 # param['metric'] = ['l1', 'l2', 'rmse']
 
-bst = xgb.train(param, dtrain, num_boost_round=100, evals=[(dtrain, 'train'), (dtest, 'eval')], early_stopping_rounds=5)
-print(bst.best_iteration)
+# bst = xgb.train(param, dtrain, num_boost_round=100, evals=[(dtrain, 'train'), (dtest, 'eval')], early_stopping_rounds=5)
+# print(bst.best_iteration)
 # print(bst.predict(X_test)[:1])
 
-# eval_dict = lgb.cv(param, dataset, shuffle=False, stratified=False, verbose_eval=True, early_stopping_rounds=5)
-# print(eval_dict)
+eval_dict = xgb.cv(param, data, shuffle=False, stratified=False, verbose_eval=True) #, early_stopping_rounds=5)
+print(eval_dict)

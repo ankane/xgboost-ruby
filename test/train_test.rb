@@ -56,6 +56,11 @@ class TrainTest < Minitest::Test
     assert_equal 8, model.best_iteration
   end
 
+  def test_cv_regression
+    eval_hist = Xgb.cv(regression_params, boston, shuffle: false, verbose_eval: true)
+    p eval_hist
+  end
+
   private
 
   def regression_params

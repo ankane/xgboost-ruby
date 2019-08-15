@@ -50,6 +50,12 @@ booster = Xgb::Booster.new(model_file: "model.txt")
 Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_stopping_rounds: 5)
 ```
 
+## CV [coming soon]
+
+```ruby
+Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
+```
+
 ## Reference
 
 This library follows the [Core Data Structure and Learning APIs](https://xgboost.readthedocs.io/en/latest/python/python_api.html) for the Python library. Some methods and options are missing at the moment. PRs welcome!

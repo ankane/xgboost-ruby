@@ -53,5 +53,41 @@ module Xgb
 
       booster
     end
+
+    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil)
+      rand_idx = (0...dtrain.num_row).to_a
+      rand_idx.shuffle!(random: Random.new(seed)) if shuffle
+
+      kstep = rand_idx.size / nfold
+      test_id = rand_idx.each_slice(kstep).to_a[0...nfold]
+      train_id = []
+      nfold.times do |i|
+        idx = test_id.dup
+        idx.delete_at(i)
+        train_id << idx.flatten
+      end
+
+      folds = train_id.zip(test_id)
+      cvfolds = []
+      folds.each do |(train_idx, test_idx)|
+        fold_dtrain = dtrain.slice(train_idx)
+        fold_dvalid = dtrain.slice(test_idx)
+        booster = Booster.new
+        booster.set_param("num_feature", dtrain.num_col)
+        cvfolds << [booster, fold_dtrain, fold_dvalid]
+      end
+
+      eval_hist = {}
+
+      num_boost_round.times do |iteration|
+        cvfolds.each do |(booster, fold_dtrain, fold_dvalid)|
+          booster.update(fold_dtrain, iteration)
+          message = booster.eval_set([[fold_dtrain, "train"], [fold_dvalid, "test"]], iteration)
+          p message
+        end
+      end
+
+      eval_hist
+    end
   end
 end
