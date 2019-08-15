@@ -22,8 +22,8 @@ Train a model
 
 ```ruby
 params = {objective: "reg:squarederror"}
-train_set = Xgb::DMatrix.new(x_train, label: y_train)
-booster = Xgb.train(params, train_set)
+dtrain = Xgb::DMatrix.new(x_train, label: y_train)
+booster = Xgb.train(params, dtrain)
 ```
 
 Predict
@@ -42,6 +42,12 @@ Load the model from a file
 
 ```ruby
 booster = Xgb::Booster.new(model_file: "model.txt")
+```
+
+## Early Stopping [master]
+
+```ruby
+Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_stopping_rounds: 5)
 ```
 
 ## Reference
