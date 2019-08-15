@@ -11,7 +11,6 @@ module Xgb
 
       self.best_iteration = 0
       set_param(params)
-      @num_class = (params && params[:num_class]) || 1
     end
 
     def update(dtrain, iteration)
@@ -48,7 +47,8 @@ module Xgb
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, out_len, out_result)
       out = out_result.read_pointer.read_array_of_float(out_len.read_ulong)
-      out = out.each_slice(@num_class).to_a if @num_class > 1
+      num_class = out.size / data.num_row
+      out = out.each_slice(num_class).to_a if num_class > 1
       out
     end
 

@@ -42,9 +42,8 @@ class TrainTest < Minitest::Test
 
     model.save_model("/tmp/model.txt")
     model = Xgb::Booster.new(model_file: "/tmp/model.txt")
-    # TODO fix shape
-    # y_pred2 = model.predict(iris_test)
-    # assert_equal y_pred, y_pred2
+    y_pred2 = model.predict(iris_test)
+    assert_equal y_pred, y_pred2
   end
 
   def test_early_stopping_early
