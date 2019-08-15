@@ -1,6 +1,6 @@
 module Xgb
   class DMatrix
-    attr_reader :data, :label, :weight
+    attr_reader :data
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
       @data = data

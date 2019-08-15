@@ -56,6 +56,20 @@ module Xgb
       check_result FFI.XGBoosterSaveModel(handle_pointer, fname)
     end
 
+    def dump(fmap: "", with_stats: false, dump_format: "text")
+      out_len = ::FFI::MemoryPointer.new(:ulong)
+      out_result = ::FFI::MemoryPointer.new(:pointer)
+      check_result FFI.XGBoosterDumpModelEx(handle_pointer, fmap, with_stats ? 1 : 0, dump_format, out_len, out_result)
+      out_result.read_pointer.get_array_of_string(0, out_len.read_ulong).first
+    end
+
+    def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
+      File.write(fout, dump(fmap: fmap, with_stats: with_stats, dump_format: dump_format))
+    end
+
+    def score
+    end
+
     private
 
     def handle_pointer
