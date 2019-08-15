@@ -4,6 +4,8 @@
 
 :fire: Uses the C API for blazing performance
 
+[![Build Status](https://travis-ci.org/ankane/xgb.svg?branch=master)](https://travis-ci.org/ankane/xgb)
+
 ## Installation
 
 First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). On Mac, copy `lib/libxgboost.dylib` to `/usr/local/lib`.
