@@ -3,7 +3,7 @@
 - Added early stopping
 - Added `cv` method
 - Added many other methods
-- Fixed shape of multiclass predictions
+- Fixed shape of multiclass predictions when loaded from file
 
 ## 0.1.0
 
