@@ -13,8 +13,9 @@ module Xgb
     attach_function :XGDMatrixCreateFromMat, %i[pointer ulong ulong float pointer], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
     attach_function :XGDMatrixNumCol, %i[pointer pointer], :int
-    attach_function :XGDMatrixSetFloatInfo, %i[pointer string pointer ulong], :int
     attach_function :XGDMatrixSliceDMatrix, %i[pointer pointer ulong pointer], :int
+    attach_function :XGDMatrixSaveBinary, %i[pointer string int], :int
+    attach_function :XGDMatrixSetFloatInfo, %i[pointer string pointer ulong], :int
 
     # booster
     attach_function :XGBoosterCreate, %i[pointer int pointer], :int

@@ -38,6 +38,10 @@ module Xgb
       res
     end
 
+    def save_binary(fname, silent: true)
+      check_result FFI.XGDMatrixSaveBinary(handle_pointer, fname, silent ? 1 : 0)
+    end
+
     def handle
       @handle
     end
