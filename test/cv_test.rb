@@ -2,7 +2,7 @@ require_relative "test_helper"
 
 class CvTest < Minitest::Test
   def test_regression
-    eval_hist = Xgb.cv(regression_params, boston, shuffle: false, verbose_eval: true)
+    eval_hist = Xgb.cv(regression_params, boston, shuffle: false)
     assert_in_delta 17.023441, eval_hist["train-rmse-mean"].first
     assert_in_delta 1.518630, eval_hist["train-rmse-mean"].last
     assert_in_delta 1.578547, eval_hist["train-rmse-std"].first
