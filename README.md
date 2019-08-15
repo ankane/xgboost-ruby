@@ -44,7 +44,7 @@ Load the model from a file
 booster = Xgb::Booster.new(model_file: "model.txt")
 ```
 
-Get feature importance [coming soon]
+Get feature importance [master]
 
 ```ruby
 booster.score
