@@ -44,10 +44,10 @@ module Xgb
 
     def predict(data, ntree_limit: nil)
       ntree_limit ||= 0
-      out_len = ::FFI::MemoryPointer.new(:long)
+      out_len = ::FFI::MemoryPointer.new(:ulong)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, out_len, out_result)
-      out = out_result.read_pointer.read_array_of_float(out_len.read_long)
+      out = out_result.read_pointer.read_array_of_float(out_len.read_ulong)
       out = out.each_slice(@num_class).to_a if @num_class > 1
       out
     end
