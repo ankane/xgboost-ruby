@@ -83,6 +83,11 @@ module Xgb
       end
     end
 
+    def fscore(fmap: "")
+      # always weight
+      score(fmap: fmap) # importance_type: "weight"
+    end
+
     # TODO # importance_type: "weight"
     def score(fmap: "")
       trees = dump(fmap: fmap, with_stats: false)

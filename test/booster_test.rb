@@ -25,6 +25,10 @@ class BoosterTest < Minitest::Test
     assert_equal expected.values.sort, booster.score.values.sort
   end
 
+  def test_fscore
+    assert_equal booster.score, booster.fscore
+  end
+
   private
 
   def booster
