@@ -20,10 +20,10 @@ class BoosterTest < Minitest::Test
     assert JSON.parse(File.read("/tmp/boston.json"))
   end
 
-  # def test_score
-  #   expected = {"rm" => 42, "lstat" => 30, "crim" => 30, "dis" => 19, "ptratio" => 16, "age" => 21, "indus" => 7, "tax" => 13, "b" => 16, "rad" => 4, "nox" => 6, "zn" => 2, "chas" => 1}
-  #   assert_equal expected, booster.score
-  # end
+  def test_score
+    expected = {"rm" => 42, "lstat" => 30, "crim" => 30, "dis" => 19, "ptratio" => 16, "age" => 21, "indus" => 7, "tax" => 13, "b" => 16, "rad" => 4, "nox" => 6, "zn" => 2, "chas" => 1}
+    assert_equal expected.values.sort, booster.score.values.sort
+  end
 
   private
 
