@@ -54,7 +54,7 @@ module Xgb
       booster
     end
 
-    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil)
+    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true)
       rand_idx = (0...dtrain.num_row).to_a
       rand_idx.shuffle!(random: Random.new(seed)) if shuffle
 
@@ -80,14 +80,57 @@ module Xgb
       eval_hist = {}
 
       num_boost_round.times do |iteration|
+        scores = {}
+
         cvfolds.each do |(booster, fold_dtrain, fold_dvalid)|
           booster.update(fold_dtrain, iteration)
           message = booster.eval_set([[fold_dtrain, "train"], [fold_dvalid, "test"]], iteration)
-          # p message
+
+          res = message.split.map { |x| x.split(":") }[1..-1].map { |k, v| [k, v.to_f] }
+          res.each do |k, v|
+            (scores[k] ||= []) << v
+          end
         end
+
+        message_parts = ["[#{iteration}]"]
+
+        means = {}
+        scores.each do |eval_name, vals|
+          mean = mean(vals)
+          stdev = stdev(vals)
+
+          # (eval_hist[eval_name] ||= []) << mean
+          # (eval_hist[eval_name] ||= []) << stdev
+
+          means[eval_name] = mean
+
+          if show_stdv
+            message_parts << "%s:%g+%g" % [eval_name, mean, stdev]
+          else
+            message_parts << "%s:%g" % [eval_name, mean]
+          end
+        end
+
+        puts message_parts.join("\t") if verbose_eval
       end
 
       eval_hist
+    end
+
+    private
+
+    def mean(arr)
+      arr.sum / arr.size.to_f
+    end
+
+    # don't subtract one from arr.size
+    def stdev(arr)
+      m = mean(arr)
+      sum = 0
+      arr.each do |v|
+        sum += (v - m) ** 2
+      end
+      Math.sqrt(sum / arr.size)
     end
   end
 end
