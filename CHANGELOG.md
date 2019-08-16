@@ -3,6 +3,7 @@
 - Added Scikit-Learn API
 - Added early stopping
 - Added `cv` method
+- Added support for Daru and Numo::NArray
 - Added many other methods
 - Fixed shape of multiclass predictions when loaded from file
 

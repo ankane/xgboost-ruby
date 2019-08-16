@@ -5,6 +5,8 @@ require "minitest/pride"
 require "csv"
 require "json"
 require "matrix"
+require "daru"
+require "numo/narray"
 
 class Minitest::Test
   private

@@ -12,6 +12,12 @@ module Xgb
           nrow = data.row_count
           ncol = data.column_count
           flat_data = data.to_a.flatten
+        elsif daru?(data)
+          nrow, ncol = data.shape
+          flat_data = data.each_vector.map(&:to_a).flatten
+        elsif narray?(data)
+          nrow, ncol = data.shape
+          flat_data = data.flatten.to_a
         else
           nrow = data.count
           ncol = data.first.count
@@ -70,8 +76,16 @@ module Xgb
     private
 
     def set_float_info(field, data)
-      data = matrix?(data) ? data.to_a[0] : data
-      c_data = ::FFI::MemoryPointer.new(:float, data.count)
+      data =
+        if matrix?(data)
+          data.to_a[0]
+        elsif daru_vector?(data) || narray?(data)
+          data.to_a
+        else
+          data
+        end
+
+      c_data = ::FFI::MemoryPointer.new(:float, data.size)
       c_data.put_array_of_float(0, data)
       check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
     end
@@ -86,6 +100,18 @@ module Xgb
 
     def matrix?(data)
       defined?(Matrix) && data.is_a?(Matrix)
+    end
+
+    def daru?(data)
+      defined?(Daru::DataFrame) && data.is_a?(Daru::DataFrame)
+    end
+
+    def daru_vector?(data)
+      defined?(Daru::Vector) && data.is_a?(Daru::Vector)
+    end
+
+    def narray?(data)
+      defined?(Numo::NArray) && data.is_a?(Numo::NArray)
     end
 
     include Utils

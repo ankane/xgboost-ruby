@@ -106,6 +106,26 @@ Get the importance of features
 model.feature_importances
 ```
 
+## Data [master]
+
+Data can be an array of arrays
+
+```ruby
+[[1, 2, 3], [4, 5, 6]]
+```
+
+Or a Daru data frame
+
+```ruby
+Daru::DataFrame.from_csv("houses.csv")
+```
+
+Or a Numo NArray
+
+```ruby
+Numo::DFloat.new(3, 2).seq
+```
+
 ## Reference
 
 This library follows the [Core Data Structure and Learning API](https://xgboost.readthedocs.io/en/latest/python/python_api.html) of the Python library. Some methods and options are missing at the moment. PRs welcome!

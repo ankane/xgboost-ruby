@@ -30,6 +30,20 @@ class DMatrixTest < Minitest::Test
 
   def test_matrix
     data = Matrix.build(3, 3) { |row, col| row + col }
-    Xgb::DMatrix.new(data, label: Matrix.column_vector([4, 5, 6]))
+    label = Matrix.column_vector([4, 5, 6])
+    Xgb::DMatrix.new(data, label: label)
+  end
+
+  def test_daru_data_frame
+    data = Daru::DataFrame.from_csv("test/support/boston.csv")
+    label = data["medv"]
+    data = data.delete_vector("medv")
+    Xgb::DMatrix.new(data, label: label)
+  end
+
+  def test_numo_narray
+    data = Numo::DFloat.new(3, 5).seq
+    label = Numo::DFloat.new(5).seq
+    Xgb::DMatrix.new(data, label: label)
   end
 end
