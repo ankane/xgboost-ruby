@@ -86,6 +86,8 @@ Predict
 model.predict(x)
 ```
 
+> For classification, use `predict_proba` for probabilities
+
 Save the model to a file
 
 ```ruby

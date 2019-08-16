@@ -37,6 +37,18 @@ module Xgb
       end
     end
 
+    def predict_proba(data)
+      dmat = DMatrix.new(data)
+      y_pred = @booster.predict(dmat)
+
+      if y_pred.first.is_a?(Array)
+        # multiple classes
+        y_pred
+      else
+        y_pred.map { |v| [1 - v, v] }
+      end
+    end
+
     def save_model(fname)
       @booster.save_model(fname)
     end

@@ -73,7 +73,7 @@ class Minitest::Test
       x << row[0..-2]
       y << row[-1]
     end
-    y = y.map { |v| v > 1 ? 1 : v } if binary
+    y = y.map { |v| v > 1 ? 1.0 : v } if binary
 
     if dmatrix
       Xgb::DMatrix.new(x, label: y)
