@@ -8,6 +8,10 @@ require "xgb/dmatrix"
 require "xgb/ffi"
 require "xgb/version"
 
+# scikit-learn API
+require "xgb/classifier"
+require "xgb/regressor"
+
 module Xgb
   class Error < StandardError; end
 

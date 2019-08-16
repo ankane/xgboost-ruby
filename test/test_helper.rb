@@ -44,7 +44,28 @@ class Minitest::Test
     @iris_test_binary ||= Xgb::DMatrix.new(iris_binary.data[100..-1], label: iris_binary.label[100..-1])
   end
 
-  def load_csv(filename, binary: false)
+  def boston_data
+    @boston_data ||= begin
+      x, y = load_csv("boston.csv", dmatrix: false)
+      [x[0...300], y[0...300], x[300..-1], y[300..-1]]
+    end
+  end
+
+  def iris_data
+    @iris_data ||= begin
+      x, y = load_csv("iris.csv", dmatrix: false)
+      [x[0...100], y[0...100], x[100..-1], y[100..-1]]
+    end
+  end
+
+  def iris_data_binary
+    @iris_data_binary ||= begin
+      x, y = load_csv("iris.csv", binary: true, dmatrix: false)
+      [x[0...100], y[0...100], x[100..-1], y[100..-1]]
+    end
+  end
+
+  def load_csv(filename, binary: false, dmatrix: true)
     x = []
     y = []
     CSV.foreach("test/support/#{filename}", headers: true).each do |row|
@@ -53,7 +74,12 @@ class Minitest::Test
       y << row[-1]
     end
     y = y.map { |v| v > 1 ? 1 : v } if binary
-    Xgb::DMatrix.new(x, label: y)
+
+    if dmatrix
+      Xgb::DMatrix.new(x, label: y)
+    else
+      [x, y]
+    end
   end
 
   def regression_params
