@@ -67,15 +67,15 @@ Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
 Prep your data
 
 ```ruby
-x_train = [[1, 2], [3, 4], [5, 6], [7, 8]]
-y_train = [1, 2, 3, 4]
+x = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y = [1, 2, 3, 4]
 ```
 
 Train a model
 
 ```ruby
 model = Xgb::Regressor.new
-model.fit(x_train, y_train)
+model.fit(x, y)
 ```
 
 > For classification, use `Xgb::Classifier`
@@ -83,7 +83,7 @@ model.fit(x_train, y_train)
 Predict
 
 ```ruby
-model.predict(x_test)
+model.predict(x)
 ```
 
 Save the model to a file
