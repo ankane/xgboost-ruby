@@ -48,25 +48,25 @@ Load the model from a file
 booster = Xgb::Booster.new(model_file: "my.model")
 ```
 
-Get the importance of features [master]
+Get the importance of features
 
 ```ruby
 booster.score
 ```
 
-Early stopping [master]
+Early stopping
 
 ```ruby
 Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_stopping_rounds: 5)
 ```
 
-CV [master]
+CV
 
 ```ruby
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
 ```
 
-## Scikit-Learn API [master]
+## Scikit-Learn API
 
 Prep your data
 
@@ -110,7 +110,7 @@ Get the importance of features
 model.feature_importances
 ```
 
-## Data [master]
+## Data
 
 Data can be an array of arrays
 
