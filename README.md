@@ -18,6 +18,10 @@ gem 'xgb'
 
 ## Getting Started
 
+This library follows the [Core Data Structure, Learning and Scikit-Learn APIs](https://xgboost.readthedocs.io/en/latest/python/python_api.html) of the Python library. Some methods and options are missing at the moment. PRs welcome!
+
+## Learning API
+
 Train a model
 
 ```ruby
@@ -50,13 +54,13 @@ Get the importance of features [master]
 booster.score
 ```
 
-## Early Stopping [master]
+Early stopping [master]
 
 ```ruby
 Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_stopping_rounds: 5)
 ```
 
-## CV [master]
+CV [master]
 
 ```ruby
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
@@ -125,10 +129,6 @@ Or a Numo NArray
 ```ruby
 Numo::DFloat.new(3, 2).seq
 ```
-
-## Reference
-
-This library follows the [Core Data Structure and Learning API](https://xgboost.readthedocs.io/en/latest/python/python_api.html) of the Python library. Some methods and options are missing at the moment. PRs welcome!
 
 ## Helpful Resources
 
