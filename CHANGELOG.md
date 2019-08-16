@@ -1,5 +1,6 @@
 ## 0.1.1 [unreleased]
 
+- Added Scikit-Learn API
 - Added early stopping
 - Added `cv` method
 - Added many other methods
