@@ -8,9 +8,7 @@ class RegressorTest < Minitest::Test
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
     expected = [28.509018, 25.23551, 24.38023, 32.31889, 33.371517, 27.57522]
-    expected.zip(y_pred) do |exp, act|
-      assert_in_delta exp, act
-    end
+    assert_elements_in_delta expected, y_pred[0, 6]
 
     model.save_model("/tmp/my.model")
 

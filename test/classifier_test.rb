@@ -41,10 +41,7 @@ class ClassifierTest < Minitest::Test
 
     y_pred = model.predict_proba(x_test)
     expected = [0.01680386, 0.98319614]
-    assert_equal expected.size, y_pred[0].size
-    expected.zip(y_pred[0]) do |exp, act|
-      assert_in_delta exp, act
-    end
+    assert_elements_in_delta expected, y_pred[0]
   end
 
   def test_predict_proba_multiclass
@@ -55,9 +52,6 @@ class ClassifierTest < Minitest::Test
 
     y_pred = model.predict_proba(x_test)
     expected = [0.00768452, 0.03547496, 0.9568406]
-    assert_equal expected.size, y_pred[0].size
-    expected.zip(y_pred[0]) do |exp, act|
-      assert_in_delta exp, act
-    end
+    assert_elements_in_delta expected, y_pred[0]
   end
 end
