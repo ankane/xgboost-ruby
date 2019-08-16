@@ -4,6 +4,7 @@ require "minitest/autorun"
 require "minitest/pride"
 require "csv"
 require "json"
+require "matrix"
 
 class Minitest::Test
   private

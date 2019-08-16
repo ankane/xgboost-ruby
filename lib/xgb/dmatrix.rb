@@ -8,9 +8,19 @@ module Xgb
       @handle = ::FFI::MemoryPointer.new(:pointer)
 
       if data
-        c_data = ::FFI::MemoryPointer.new(:float, data.count * data.first.count)
-        c_data.put_array_of_float(0, data.flatten)
-        check_result FFI.XGDMatrixCreateFromMat(c_data, data.count, data.first.count, missing, @handle)
+        if matrix?(data)
+          nrow = data.row_count
+          ncol = data.column_count
+          flat_data = data.to_a.flatten
+        else
+          nrow = data.count
+          ncol = data.first.count
+          flat_data = data.flatten
+        end
+
+        c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
+        c_data.put_array_of_float(0, flat_data)
+        check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
       end
 
       set_float_info("label", label) if label
@@ -60,6 +70,7 @@ module Xgb
     private
 
     def set_float_info(field, data)
+      data = matrix?(data) ? data.to_a[0] : data
       c_data = ::FFI::MemoryPointer.new(:float, data.count)
       c_data.put_array_of_float(0, data)
       check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
@@ -71,6 +82,10 @@ module Xgb
       out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
       check_result FFI.XGDMatrixGetFloatInfo(handle_pointer, field, out_len, out_dptr)
       out_dptr.read_pointer.read_array_of_float(num_row)
+    end
+
+    def matrix?(data)
+      defined?(Matrix) && data.is_a?(Matrix)
     end
 
     include Utils

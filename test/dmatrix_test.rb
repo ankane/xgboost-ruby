@@ -27,4 +27,9 @@ class DMatrixTest < Minitest::Test
     boston.save_binary("/tmp/dtrain.bin")
     assert File.exist?("/tmp/dtrain.bin")
   end
+
+  def test_matrix
+    data = Matrix.build(3, 3) { |row, col| row + col }
+    Xgb::DMatrix.new(data, label: Matrix.column_vector([4, 5, 6]))
+  end
 end
