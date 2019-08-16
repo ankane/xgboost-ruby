@@ -18,7 +18,9 @@ module Xgb
   class << self
     def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true)
       booster = Booster.new(params: params)
-      booster.set_param("num_feature", dtrain.num_col)
+      num_feature = dtrain.num_col
+      booster.set_param("num_feature", num_feature)
+      booster.feature_names = num_feature.times.map { |i| "f#{i}" }
       evals ||= []
 
       if early_stopping_rounds

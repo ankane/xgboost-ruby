@@ -100,6 +100,12 @@ Load the model from a file
 model.load_model("my.model")
 ```
 
+Get feature importance
+
+```ruby
+model.feature_importances
+```
+
 ## Reference
 
 This library follows the [Core Data Structure and Learning API](https://xgboost.readthedocs.io/en/latest/python/python_api.html) of the Python library. Some methods and options are missing at the moment. PRs welcome!

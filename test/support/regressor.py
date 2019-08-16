@@ -13,4 +13,5 @@ y_test = y[300:]
 
 model = xgb.XGBRegressor()
 model.fit(X_train, y_train)
-print(model.predict(X_test))
+# print(model.predict(X_test))
+print(model.feature_importances_)

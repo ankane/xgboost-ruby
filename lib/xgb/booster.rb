@@ -1,6 +1,6 @@
 module Xgb
   class Booster
-    attr_accessor :best_iteration
+    attr_accessor :best_iteration, :feature_names
 
     def initialize(params: nil, model_file: nil)
       @handle = ::FFI::MemoryPointer.new(:pointer)
@@ -85,24 +85,66 @@ module Xgb
 
     def fscore(fmap: "")
       # always weight
-      score(fmap: fmap) # importance_type: "weight"
+      score(fmap: fmap, importance_type: "weight")
     end
 
-    # TODO # importance_type: "weight"
-    def score(fmap: "")
-      trees = dump(fmap: fmap, with_stats: false)
-      fmap = {}
-      trees.each do |tree|
-        tree.split("\n").each do |line|
-          arr = line.split("[")
-          next if arr.size == 1
+    def score(fmap: "", importance_type: "weight")
+      if importance_type == "weight"
+        trees = dump(fmap: fmap, with_stats: false)
+        fmap = {}
+        trees.each do |tree|
+          tree.split("\n").each do |line|
+            arr = line.split("[")
+            next if arr.size == 1
 
-          fid = arr[1].split("]")[0].split("<")[0]
-          fmap[fid] ||= 0
-          fmap[fid] += 1
+            fid = arr[1].split("]")[0].split("<")[0]
+            fmap[fid] ||= 0
+            fmap[fid] += 1
+          end
         end
+        fmap
+      else
+        average_over_splits = true
+        if importance_type == "total_gain"
+          importance_type = "gain"
+          average_over_splits = false
+        elsif importance_type == "total_cover"
+          importance_type = "cover"
+          average_over_splits = false
+        end
+
+        trees = dump(fmap: fmap, with_stats: true)
+
+        importance_type += "="
+        fmap = {}
+        gmap = {}
+        trees.each do |tree|
+          tree.split("\n").each do |line|
+            arr = line.split("[")
+            next if arr.size == 1
+
+            fid = arr[1].split("]")
+
+            g = fid[1].split(importance_type)[1].split(",")[0].to_f
+
+            fid = fid[0].split("<")[0]
+
+            fmap[fid] ||= 0
+            gmap[fid] ||= 0
+
+            fmap[fid] += 1
+            gmap[fid] += g
+          end
+        end
+
+        if average_over_splits
+          gmap.each_key do |fid|
+            gmap[fid] = gmap[fid] / fmap[fid]
+          end
+        end
+
+        gmap
       end
-      fmap
     end
 
     private
