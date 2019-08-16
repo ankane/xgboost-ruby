@@ -76,15 +76,7 @@ module Xgb
     private
 
     def set_float_info(field, data)
-      data =
-        if matrix?(data)
-          data.to_a[0]
-        elsif daru_vector?(data) || narray?(data)
-          data.to_a
-        else
-          data
-        end
-
+      data = data.to_a unless data.is_a?(Array)
       c_data = ::FFI::MemoryPointer.new(:float, data.size)
       c_data.put_array_of_float(0, data)
       check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
@@ -104,10 +96,6 @@ module Xgb
 
     def daru?(data)
       defined?(Daru::DataFrame) && data.is_a?(Daru::DataFrame)
-    end
-
-    def daru_vector?(data)
-      defined?(Daru::Vector) && data.is_a?(Daru::Vector)
     end
 
     def narray?(data)

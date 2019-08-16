@@ -30,7 +30,7 @@ class DMatrixTest < Minitest::Test
 
   def test_matrix
     data = Matrix.build(3, 3) { |row, col| row + col }
-    label = Matrix.column_vector([4, 5, 6])
+    label = Vector.elements([4, 5, 6])
     Xgb::DMatrix.new(data, label: label)
   end
 
