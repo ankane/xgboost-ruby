@@ -43,7 +43,7 @@ class DMatrixTest < Minitest::Test
 
   def test_numo_narray
     data = Numo::DFloat.new(3, 5).seq
-    label = Numo::DFloat.new(5).seq
+    label = Numo::DFloat.new(3).seq
     Xgb::DMatrix.new(data, label: label)
   end
 end
