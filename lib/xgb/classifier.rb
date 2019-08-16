@@ -36,5 +36,13 @@ module Xgb
         y_pred.map { |v| v > 0.5 ? 1 : 0 }
       end
     end
+
+    def save_model(fname)
+      @booster.save_model(fname)
+    end
+
+    def load_model(fname)
+      @booster = Booster.new(params: @params, model_file: fname)
+    end
   end
 end

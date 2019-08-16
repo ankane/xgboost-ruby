@@ -19,5 +19,13 @@ module Xgb
       dmat = DMatrix.new(data)
       @booster.predict(dmat)
     end
+
+    def save_model(fname)
+      @booster.save_model(fname)
+    end
+
+    def load_model(fname)
+      @booster = Booster.new(params: @params, model_file: fname)
+    end
   end
 end

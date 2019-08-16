@@ -35,13 +35,13 @@ booster.predict(x_test)
 Save the model to a file
 
 ```ruby
-booster.save_model("model.txt")
+booster.save_model("my.model")
 ```
 
 Load the model from a file
 
 ```ruby
-booster = Xgb::Booster.new(model_file: "model.txt")
+booster = Xgb::Booster.new(model_file: "my.model")
 ```
 
 Get feature importance [master]
@@ -60,6 +60,42 @@ Xgb.train(params, dtrain, evals: [[dtrain, "train"], [dtest, "eval"]], early_sto
 
 ```ruby
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
+```
+
+## Scikit-Learn API [master]
+
+Prep your data
+
+```ruby
+x_train = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y_train = [1, 2, 3, 4]
+```
+
+Train a model
+
+```ruby
+model = Xgb::Regressor.new
+model.fit(x_train, y_train)
+```
+
+> For classification, use `Xgb::Classifier`
+
+Predict
+
+```ruby
+model.predict(x_test)
+```
+
+Save the model to a file
+
+```ruby
+model.save_model("my.model")
+```
+
+Load the model from a file
+
+```ruby
+model.load_model("my.model")
 ```
 
 ## Reference

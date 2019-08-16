@@ -11,5 +11,11 @@ class RegressorTest < Minitest::Test
     expected.zip(y_pred) do |exp, act|
       assert_in_delta exp, act
     end
+
+    model.save_model("/tmp/my.model")
+
+    model = Xgb::Regressor.new
+    model.load_model("/tmp/my.model")
+    assert_equal y_pred, model.predict(x_test)
   end
 end
