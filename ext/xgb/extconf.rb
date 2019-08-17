@@ -17,15 +17,12 @@ def run(command)
 end
 
 arch = RbConfig::CONFIG["arch"]
-if arch.end_with?("-darwin18")
+if arch =~ /darwin/i
   # run "CC=gcc-8 CXX=g++-8 cmake .."
-elsif arch =~ /darwin/i
-  run "CC=gcc-8 CXX=g++-8 cmake .."
+  run "make -j4"
 else
   run "cmake .."
   run "make -j4"
 end
-
-puts "done"
 
 create_makefile("xgb")
