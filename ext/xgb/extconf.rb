@@ -19,7 +19,7 @@ end
 arch = RbConfig::CONFIG["arch"]
 if arch =~ /darwin/i
   # run "CC=gcc-8 CXX=g++-8 cmake .."
-  run "make -j4"
+  # run "make -j4"
 else
   run "cmake .."
   run "make -j4"
