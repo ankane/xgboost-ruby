@@ -10,10 +10,10 @@ class ClassifierTest < Minitest::Test
     expected = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1]
     assert_equal expected, y_pred
 
-    model.save_model("/tmp/my.model")
+    model.save_model(tempfile)
 
     model = Xgb::Classifier.new
-    model.load_model("/tmp/my.model")
+    model.load_model(tempfile)
     assert_equal y_pred, model.predict(x_test)
   end
 
@@ -26,10 +26,10 @@ class ClassifierTest < Minitest::Test
     expected = [2, 2, 0, 1, 1, 1, 1, 2, 1, 1, 0, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 1, 1, 2, 1, 2, 0, 2, 1, 1, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 1, 0, 1, 2, 0, 2, 1, 1]
     assert_equal expected, y_pred
 
-    model.save_model("/tmp/my.model")
+    model.save_model(tempfile)
 
     model = Xgb::Classifier.new
-    model.load_model("/tmp/my.model")
+    model.load_model(tempfile)
     assert_equal y_pred, model.predict(x_test)
   end
 

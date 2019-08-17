@@ -10,14 +10,14 @@ class BoosterTest < Minitest::Test
   end
 
   def test_dump_model_text
-    booster.dump_model("/tmp/boston.txt")
-    assert File.exist?("/tmp/boston.txt")
+    booster.dump_model(tempfile)
+    assert File.exist?(tempfile)
   end
 
   def test_dump_model_json
-    booster.dump_model("/tmp/boston.json", dump_format: "json")
-    assert File.exist?("/tmp/boston.json")
-    assert JSON.parse(File.read("/tmp/boston.json"))
+    booster.dump_model(tempfile, dump_format: "json")
+    assert File.exist?(tempfile)
+    assert JSON.parse(File.read(tempfile))
   end
 
   def test_score

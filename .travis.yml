@@ -1,18 +1,9 @@
 dist: xenial
 language: ruby
 rvm: 2.6.3
-before_install:
-  - export XGBOOST_VERSION=0.90
-  - ./test/ci/install_xgboost.sh
-  - export LD_LIBRARY_PATH=$HOME/xgboost/$XGBOOST_VERSION/lib:$LD_LIBRARY_PATH
-cache:
-  directories:
-    - $HOME/xgboost
+before_script: bundle exec ruby ext/xgb/extconf.rb
 script: bundle exec rake test
 notifications:
   email:
     on_success: never
     on_failure: change
-branches:
-  except:
-  - vendor
