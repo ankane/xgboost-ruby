@@ -18,7 +18,8 @@ end
 
 arch = RbConfig::CONFIG["arch"]
 if arch =~ /darwin/i
-  run "cp ../make/minimum.mk ../config.mk"
+  $dir = File.expand_path("../../vendor/xgboost", __dir__)
+  run "cp make/minimum.mk config.mk"
   run "make -j4"
 else
   run "cmake .."
