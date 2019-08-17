@@ -16,6 +16,7 @@ module Xgb
     end
 
     def self.finalize(pointer)
+      # must use proc instead of stabby lambda
       proc { FFI.XGBoosterFree(pointer) }
     end
 
