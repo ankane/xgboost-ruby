@@ -1,5 +1,8 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
+require "rake/extensiontask"
+
+Rake::ExtensionTask.new("xgb")
 
 task default: :test
 Rake::TestTask.new do |t|
