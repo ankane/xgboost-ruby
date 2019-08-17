@@ -4,7 +4,7 @@
 
 :fire: Uses the C API for blazing performance
 
-[![Build Status](https://travis-ci.org/ankane/xgb.svg?branch=master)](https://travis-ci.org/ankane/xgb)
+[![Build Status](https://travis-ci.org/ankane/xgb.svg?branch=master)](https://travis-ci.org/ankane/xgb) [![Build status](https://ci.appveyor.com/api/projects/status/588akcdtya9c4rw9/branch/master?svg=true)](https://ci.appveyor.com/project/ankane/xgb/branch/master)
 
 ## Installation
 
