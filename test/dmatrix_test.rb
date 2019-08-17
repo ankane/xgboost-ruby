@@ -24,8 +24,8 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_save_binary
-    boston.save_binary("/tmp/dtrain.bin")
-    assert File.exist?("/tmp/dtrain.bin")
+    boston.save_binary(tempfile)
+    assert File.exist?(tempfile)
   end
 
   def test_matrix

@@ -103,4 +103,12 @@ class Minitest::Test
   def multiclass_params
     {objective: "multi:softprob", num_class: 3}
   end
+
+  def teardown
+    @tempfile = nil
+  end
+
+  def tempfile
+    @tempfile ||= Tempfile.new(Time.now.to_f.to_s).path
+  end
 end
