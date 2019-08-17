@@ -9,6 +9,7 @@ rescue Errno::EEXIST
 end
 
 def run(command)
+  puts command
   unless system(command)
     raise "Command failed"
   end
@@ -25,3 +26,5 @@ Dir.chdir(dir) do
   end
   run "make -j4"
 end
+
+puts "done"
