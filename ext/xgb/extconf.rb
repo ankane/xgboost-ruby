@@ -18,7 +18,7 @@ end
 
 arch = RbConfig::CONFIG["arch"]
 if arch =~ /darwin/i
-  run "cp ../make/minimum.mk config.mk"
+  run "cp ../make/minimum.mk ../config.mk"
   run "make -j4"
 else
   run "cmake .."
