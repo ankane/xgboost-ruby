@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.files         = Dir["*.{md,txt}", "{lib}/**/*"]
   spec.require_path  = "lib"
 
+  spec.extensions    = ["ext/xgb/extconf.rb"]
+
   spec.required_ruby_version = ">= 2.4"
 
   spec.add_dependency "ffi"
