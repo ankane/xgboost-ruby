@@ -26,7 +26,9 @@ when /mingw/
     run "ridk exec make -j4"
   end
 else
-  Dir.chdir("#{dir}/build") do
+  build_dir = "#{dir}/build"
+  Dir.mkdir(build_dir)
+  Dir.chdir(build_dir) do
     run "cmake .."
     run "make -j4"
   end
