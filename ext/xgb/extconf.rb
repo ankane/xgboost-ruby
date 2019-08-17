@@ -23,7 +23,7 @@ when /darwin/i
 when /mingw/
   Dir.chdir(dir) do
     run "cp make/mingw64.mk config.mk"
-    run "mingw32-make -j4"
+    run "ridk exec make -j4"
   end
 else
   Dir.chdir("#{dir}/build") do
