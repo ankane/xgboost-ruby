@@ -18,7 +18,8 @@ end
 
 arch = RbConfig::CONFIG["arch"]
 if arch.end_with?("-darwin18")
-  run 'CC=gcc-8 CXX=g++-8 cmake -DOpenMP_C_LIB_NAMES="omp" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=$(brew --prefix libomp)/lib/libomp.dylib ..'
+  # run 'CC=gcc-8 CXX=g++-8 cmake -DOpenMP_C_LIB_NAMES="omp" -DOpenMP_CXX_LIB_NAMES="omp" -DOpenMP_omp_LIBRARY=$(brew --prefix libomp)/lib/libomp.dylib ..'
+  run "CC=gcc-8 CXX=g++-8 cmake .."
 elsif arch =~ /darwin/i
   run "CC=gcc-8 CXX=g++-8 cmake .."
 else
