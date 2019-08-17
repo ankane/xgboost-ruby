@@ -27,3 +27,5 @@ else
 end
 
 puts "done"
+
+create_makefile("xgb")
