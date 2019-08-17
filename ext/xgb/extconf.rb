@@ -23,6 +23,12 @@ when /darwin/i
 when /mingw/
   Dir.chdir(dir) do
     run "cp make/mingw64.mk config.mk"
+
+    if arch =~ /i386/
+      config = "#{dir}/config.mk"
+      File.write(config, File.read(config).gsub("-m64", "-m32"))
+    end
+
     run "ridk exec make -j4"
   end
 else
