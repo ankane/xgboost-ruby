@@ -1,7 +1,8 @@
 module Xgb
   module FFI
     extend ::FFI::Library
-    ffi_lib File.expand_path("../../vendor/xgboost/lib/libxgboost.so", __dir__)
+    lib_name = ::FFI.map_library_name("xgboost")
+    ffi_lib [File.expand_path("../../vendor/xgboost/lib/#{lib_name}", __dir__), "xgboost"]
 
     # https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
     # keep same order
