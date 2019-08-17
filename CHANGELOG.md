@@ -1,3 +1,7 @@
+## 0.1.2 [unreleased]
+
+- Free memory when objects are destroyed
+
 ## 0.1.1
 
 - Added Scikit-Learn API

@@ -27,10 +27,16 @@ module Xgb
         c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
         c_data.put_array_of_float(0, flat_data)
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
+
+        ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
       end
 
       set_float_info("label", label) if label
       set_float_info("weight", weight) if weight
+    end
+
+    def self.finalize(pointer)
+      proc { FFI.XGDMatrixFree(pointer) }
     end
 
     def label
