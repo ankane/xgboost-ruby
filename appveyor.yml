@@ -15,6 +15,7 @@ before_test:
   - bundle -v
 
 build_script:
+  - git submodule update --init --recursive
   - bundle exec rake compile
 
 test_script:
