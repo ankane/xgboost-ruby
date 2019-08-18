@@ -1,5 +1,6 @@
 ## 0.1.2 [unreleased]
 
+- Friendlier message when XGBoost not found
 - Free memory when objects are destroyed
 
 ## 0.1.1

@@ -1,7 +1,12 @@
 module Xgb
   module FFI
     extend ::FFI::Library
-    ffi_lib ["xgboost"]
+
+    begin
+      ffi_lib ["xgboost"]
+    rescue LoadError => e
+      raise LoadError, "Could not find XGBoost\n\n#{e.message}"
+    end
 
     # https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
     # keep same order

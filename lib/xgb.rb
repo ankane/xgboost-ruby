@@ -5,7 +5,6 @@ require "ffi"
 require "xgb/utils"
 require "xgb/booster"
 require "xgb/dmatrix"
-require "xgb/ffi"
 require "xgb/version"
 
 # scikit-learn API
@@ -14,6 +13,9 @@ require "xgb/regressor"
 
 module Xgb
   class Error < StandardError; end
+
+  # friendlier error message
+  autoload :FFI,"xgb/ffi"
 
   class << self
     def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true)
