@@ -5,7 +5,7 @@ set -e
 CACHE_DIR=$HOME/xgboost/$XGBOOST_VERSION
 
 if [ ! -d "$CACHE_DIR" ]; then
-  git clone --recursive --branch v$XGBOOST_VERSION https://github.com/dmlc/xgboost
+  git clone --recursive https://github.com/dmlc/xgboost
   mv xgboost $CACHE_DIR
   cd $CACHE_DIR
   mkdir build
