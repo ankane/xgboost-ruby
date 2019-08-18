@@ -50,10 +50,10 @@ module Xgb
 
     def predict(data, ntree_limit: nil)
       ntree_limit ||= 0
-      out_len = ::FFI::MemoryPointer.new(:ulong)
+      out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, out_len, out_result)
-      out = out_result.read_pointer.read_array_of_float(out_len.read_ulong)
+      out = out_result.read_pointer.read_array_of_float(out_len.read_uint64)
       num_class = out.size / data.num_row
       out = out.each_slice(num_class).to_a if num_class > 1
       out
@@ -65,10 +65,10 @@ module Xgb
 
     # returns an array of strings
     def dump(fmap: "", with_stats: false, dump_format: "text")
-      out_len = ::FFI::MemoryPointer.new(:ulong)
+      out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterDumpModelEx(handle_pointer, fmap, with_stats ? 1 : 0, dump_format, out_len, out_result)
-      out_result.read_pointer.get_array_of_string(0, out_len.read_ulong)
+      out_result.read_pointer.get_array_of_string(0, out_len.read_uint64)
     end
 
     def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
