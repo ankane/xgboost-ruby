@@ -8,7 +8,9 @@ require "xgb/dmatrix"
 require "xgb/version"
 
 # scikit-learn API
+require "xgb/model"
 require "xgb/classifier"
+require "xgb/ranker"
 require "xgb/regressor"
 
 module Xgb

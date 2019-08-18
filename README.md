@@ -33,7 +33,8 @@ booster = Xgb.train(params, dtrain)
 Predict
 
 ```ruby
-booster.predict(x_test)
+dtest = Xgb::DMatrix.new(x_test)
+booster.predict(dtest)
 ```
 
 Save the model to a file
