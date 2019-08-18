@@ -5,7 +5,6 @@ require "ffi"
 require "xgb/utils"
 require "xgb/booster"
 require "xgb/dmatrix"
-require "xgb/ffi"
 require "xgb/version"
 
 # scikit-learn API
@@ -14,6 +13,16 @@ require "xgb/regressor"
 
 module Xgb
   class Error < StandardError; end
+
+  class << self
+    attr_accessor :ffi_lib
+  end
+  lib_name = ::FFI.map_library_name("xgboost")
+  vendor_lib = File.expand_path("../vendor/xgboost/lib/#{lib_name}", __dir__)
+  self.ffi_lib = ["xgboost", vendor_lib]
+
+  # friendlier error message
+  autoload :FFI,"xgb/ffi"
 
   class << self
     def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true)

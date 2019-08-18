@@ -5,12 +5,19 @@ module Xgb
     def initialize(params: nil, model_file: nil)
       @handle = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterCreate(nil, 0, @handle)
+      ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
+
       if model_file
         check_result FFI.XGBoosterLoadModel(handle_pointer, model_file)
       end
 
       self.best_iteration = 0
       set_param(params)
+    end
+
+    def self.finalize(pointer)
+      # must use proc instead of stabby lambda
+      proc { FFI.XGBoosterFree(pointer) }
     end
 
     def update(dtrain, iteration)
