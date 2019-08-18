@@ -1,14 +1,7 @@
 dist: xenial
-language: ruby
-rvm: 2.6.3
-before_install:
-  - export XGBOOST_VERSION=0.90.test
-  - ./test/ci/install_xgboost.sh
-  - export LD_LIBRARY_PATH=$HOME/xgboost/$XGBOOST_VERSION/lib:$LD_LIBRARY_PATH
-cache:
-  directories:
-    - $HOME/xgboost
-script: bundle exec rake test
+language: python
+python: 3.7
+script: python test/support/ranker.py
 notifications:
   email:
     on_success: never
