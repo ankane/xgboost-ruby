@@ -2,6 +2,7 @@
 
 - Friendlier message when XGBoost not found
 - Free memory when objects are destroyed
+- Added `Ranker`
 
 ## 0.1.1
 

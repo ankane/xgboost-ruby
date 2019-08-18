@@ -48,6 +48,12 @@ module Xgb
       float_info("weight")
     end
 
+    def group=(group)
+      c_data = ::FFI::MemoryPointer.new(:int, group.size)
+      c_data.put_array_of_int(0, group)
+      check_result FFI.XGDMatrixSetGroup(handle_pointer, c_data, group.size)
+    end
+
     def num_row
       out = ::FFI::MemoryPointer.new(:ulong)
       check_result FFI.XGDMatrixNumRow(handle_pointer, out)

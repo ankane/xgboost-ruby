@@ -16,6 +16,7 @@ module Xgb
 
     # dmatrix
     attach_function :XGDMatrixCreateFromMat, %i[pointer ulong ulong float pointer], :int
+    attach_function :XGDMatrixSetGroup, %i[pointer pointer ulong], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
     attach_function :XGDMatrixNumCol, %i[pointer pointer], :int
     attach_function :XGDMatrixSliceDMatrix, %i[pointer pointer ulong pointer], :int

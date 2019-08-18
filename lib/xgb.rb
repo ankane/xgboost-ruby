@@ -9,6 +9,7 @@ require "xgb/version"
 
 # scikit-learn API
 require "xgb/classifier"
+require "xgb/ranker"
 require "xgb/regressor"
 
 module Xgb
