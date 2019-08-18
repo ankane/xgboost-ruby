@@ -25,8 +25,7 @@ module Xgb
     end
 
     def predict(data)
-      dmat = DMatrix.new(data)
-      y_pred = @booster.predict(dmat)
+      y_pred = super(data)
 
       if y_pred.first.is_a?(Array)
         # multiple classes
