@@ -16,5 +16,9 @@ group_train = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 
 model = xgb.XGBRanker()
 model.fit(X_train, y_train, group_train)
+
+print('predict')
 print(model.predict(X_test))
+
+print('feature_importances_')
 print(model.feature_importances_)
