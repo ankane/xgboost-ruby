@@ -5,7 +5,7 @@ module Xgb
     begin
       ffi_lib ["xgboost"]
     rescue LoadError => e
-      raise LoadError, "Could not find XGBoost\n\n#{e.message}"
+      raise LoadError, "Could not find XGBoost"
     end
 
     # https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
