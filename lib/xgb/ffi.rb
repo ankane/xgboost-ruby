@@ -3,7 +3,7 @@ module Xgb
     extend ::FFI::Library
 
     begin
-      ffi_lib ["xgboost"]
+      ffi_lib Xgb.ffi_lib
     rescue LoadError => e
       raise LoadError, "Could not find XGBoost"
     end

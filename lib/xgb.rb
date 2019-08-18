@@ -14,6 +14,11 @@ require "xgb/regressor"
 module Xgb
   class Error < StandardError; end
 
+  class << self
+    attr_accessor :ffi_lib
+  end
+  self.ffi_lib = ["xgboost"]
+
   # friendlier error message
   autoload :FFI,"xgb/ffi"
 
