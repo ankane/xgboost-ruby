@@ -49,8 +49,8 @@ module Xgb
     end
 
     def group=(group)
-      c_data = ::FFI::MemoryPointer.new(:int, group.size)
-      c_data.put_array_of_int(0, group)
+      c_data = ::FFI::MemoryPointer.new(:uint, group.size)
+      c_data.put_array_of_uint(0, group)
       check_result FFI.XGDMatrixSetGroup(handle_pointer, c_data, group.size)
     end
 
