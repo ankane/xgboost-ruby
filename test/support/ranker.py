@@ -12,9 +12,9 @@ y_train = y[:100]
 X_test = X[100:]
 y_test = y[100:]
 
-group_train = [20, 80]
+group_train = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 
 model = xgb.XGBRanker()
 model.fit(X_train, y_train, group_train)
-# print(model.predict(X_test))
+print(model.predict(X_test))
 print(model.feature_importances_)
