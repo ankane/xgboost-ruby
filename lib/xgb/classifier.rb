@@ -1,6 +1,6 @@
 module Xgb
   class Classifier < Model
-    def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: "binary:logistic", importance_type: "gain")
+    def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: "binary:logistic", importance_type: "gain", **options)
       super
     end
 

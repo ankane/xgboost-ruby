@@ -1,6 +1,6 @@
 module Xgb
   class Regressor < Model
-    def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: "reg:squarederror", importance_type: "gain")
+    def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: "reg:squarederror", importance_type: "gain", **options)
       super
     end
 
