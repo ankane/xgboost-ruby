@@ -22,18 +22,25 @@ This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/p
 
 ## Learning API
 
+Prep your data
+
+```ruby
+x = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y = [1, 2, 3, 4]
+```
+
 Train a model
 
 ```ruby
 params = {objective: "reg:squarederror"}
-dtrain = Xgb::DMatrix.new(x_train, label: y_train)
+dtrain = Xgb::DMatrix.new(x, label: y)
 booster = Xgb.train(params, dtrain)
 ```
 
 Predict
 
 ```ruby
-dtest = Xgb::DMatrix.new(x_test)
+dtest = Xgb::DMatrix.new(x)
 booster.predict(dtest)
 ```
 
