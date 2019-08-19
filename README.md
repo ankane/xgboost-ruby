@@ -111,6 +111,12 @@ Get the importance of features
 model.feature_importances
 ```
 
+Early stopping [master]
+
+```ruby
+model.fit(x, y, eval_set: [[x_test, y_test]], early_stopping_rounds: 5)
+```
+
 ## Data
 
 Data can be an array of arrays

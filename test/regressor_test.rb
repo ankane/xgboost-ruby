@@ -26,4 +26,12 @@ class RegressorTest < Minitest::Test
     expected = [0.01210404, 0.00495621, 0.01828066, 0.0, 0.01790345, 0.68894494, 0.01395558, 0.01747261, 0.01420494, 0.03188109, 0.03816482, 0.00890863, 0.13322297]
     assert_elements_in_delta expected, model.feature_importances
   end
+
+  def test_early_stopping
+    x_train, y_train, x_test, y_test = boston_data
+
+    model = Xgb::Regressor.new
+    model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
+    assert_equal 30, model.booster.best_iteration
+  end
 end

@@ -4,7 +4,7 @@ module Xgb
       super
     end
 
-    def fit(x, y)
+    def fit(x, y, eval_set: nil, early_stopping_rounds: nil, verbose: true)
       n_classes = y.uniq.size
 
       params = @params.dup
@@ -14,7 +14,14 @@ module Xgb
       end
 
       dtrain = DMatrix.new(x, label: y)
-      @booster = Xgb.train(params, dtrain, num_boost_round: @n_estimators)
+      evals = Array(eval_set).map.with_index { |v, i| [DMatrix.new(v[0], label: v[1]), "validation_#{i}"] }
+
+      @booster = Xgb.train(params, dtrain,
+        num_boost_round: @n_estimators,
+        early_stopping_rounds: early_stopping_rounds,
+        verbose_eval: verbose,
+        evals: evals
+      )
       nil
     end
 

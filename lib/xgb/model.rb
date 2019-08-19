@@ -1,5 +1,7 @@
 module Xgb
   class Model
+    attr_reader :booster
+
     def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: nil, importance_type: "gain", **options)
       @params = {
         max_depth: max_depth,

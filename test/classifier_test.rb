@@ -74,4 +74,12 @@ class ClassifierTest < Minitest::Test
     expected = [0.05196636, 0.3298079, 0.48029527, 0.1379305]
     assert_elements_in_delta expected, model.feature_importances
   end
+
+  def test_early_stopping
+    x_train, y_train, x_test, y_test = iris_data
+
+    model = Xgb::Classifier.new
+    model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
+    assert_equal 0, model.booster.best_iteration
+  end
 end
