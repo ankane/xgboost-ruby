@@ -111,7 +111,7 @@ Get the importance of features
 model.feature_importances
 ```
 
-Early stopping [master]
+Early stopping
 
 ```ruby
 model.fit(x, y, eval_set: [[x_test, y_test]], early_stopping_rounds: 5)
