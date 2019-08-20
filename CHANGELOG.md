@@ -1,3 +1,7 @@
+## 0.1.3 [unreleased]
+
+- Fixed Daru training and prediction
+
 ## 0.1.2
 
 - Friendlier message when XGBoost not found

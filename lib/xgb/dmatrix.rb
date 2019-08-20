@@ -14,7 +14,7 @@ module Xgb
           flat_data = data.to_a.flatten
         elsif daru?(data)
           nrow, ncol = data.shape
-          flat_data = data.each_vector.map(&:to_a).flatten
+          flat_data = data.map_rows(&:to_a).flatten
         elsif narray?(data)
           nrow, ncol = data.shape
           flat_data = data.flatten.to_a

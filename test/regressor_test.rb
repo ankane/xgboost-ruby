@@ -34,4 +34,21 @@ class RegressorTest < Minitest::Test
     model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
     assert_equal 30, model.booster.best_iteration
   end
+
+  def test_daru
+    data = Daru::DataFrame.from_csv("test/support/boston.csv")
+    y = data["medv"]
+    x = data.delete_vector("medv")
+
+    # daru has bug with 0...300
+    x_train = x.row[0..299]
+    y_train = y[0..299]
+    x_test = x.row[300..-1]
+
+    model = Xgb::Regressor.new
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+    expected = [28.509018, 25.23551, 24.38023, 32.31889, 33.371517, 27.57522]
+    assert_elements_in_delta expected, y_pred[0, 6]
+  end
 end
