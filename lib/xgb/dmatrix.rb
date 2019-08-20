@@ -31,8 +31,8 @@ module Xgb
         ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
       end
 
-      set_float_info("label", label) if label
-      set_float_info("weight", weight) if weight
+      self.label = label if label
+      self.weight = weight if weight
     end
 
     def self.finalize(pointer)
@@ -46,6 +46,14 @@ module Xgb
 
     def weight
       float_info("weight")
+    end
+
+    def label=(label)
+      set_float_info("label", label)
+    end
+
+    def weight=(weight)
+      set_float_info("weight", weight)
     end
 
     def group=(group)
