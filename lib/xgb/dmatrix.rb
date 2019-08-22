@@ -24,6 +24,7 @@ module Xgb
           flat_data = data.flatten
         end
 
+        handle_missing(flat_data, missing)
         c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
         c_data.put_array_of_float(0, flat_data)
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
@@ -121,6 +122,10 @@ module Xgb
 
     def narray?(data)
       defined?(Numo::NArray) && data.is_a?(Numo::NArray)
+    end
+
+    def handle_missing(data, missing)
+      data.map! { |v| v.nil? ? missing : v }
     end
 
     include Utils
