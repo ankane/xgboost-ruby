@@ -144,6 +144,16 @@ Or a Numo NArray
 Numo::DFloat.new(3, 2).seq
 ```
 
+## XGBoost Installation
+
+There’s an experimental branch that includes XGBoost with the gem for easiest installation.
+
+```ruby
+gem 'xgb', github: 'ankane/xgb', branch: 'vendor'
+```
+
+Please file an issue if it doesn’t work for you.
+
 ## Helpful Resources
 
 - [Parameters](https://xgboost.readthedocs.io/en/latest/parameter.html)
