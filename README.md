@@ -18,22 +18,29 @@ gem 'xgb'
 
 ## Getting Started
 
-This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html). Some methods and options are missing at the moment. PRs welcome!
+This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html), with the `get_` and `set_` prefixes removed from methods. Some methods and options are missing at the moment. PRs welcome!
 
 ## Learning API
+
+Prep your data
+
+```ruby
+x = [[1, 2], [3, 4], [5, 6], [7, 8]]
+y = [1, 2, 3, 4]
+```
 
 Train a model
 
 ```ruby
 params = {objective: "reg:squarederror"}
-dtrain = Xgb::DMatrix.new(x_train, label: y_train)
+dtrain = Xgb::DMatrix.new(x, label: y)
 booster = Xgb.train(params, dtrain)
 ```
 
 Predict
 
 ```ruby
-dtest = Xgb::DMatrix.new(x_test)
+dtest = Xgb::DMatrix.new(x)
 booster.predict(dtest)
 ```
 
@@ -136,6 +143,24 @@ Or a Numo NArray
 ```ruby
 Numo::DFloat.new(3, 2).seq
 ```
+
+## XGBoost Installation
+
+There’s an experimental branch that includes XGBoost with the gem for easiest installation.
+
+```ruby
+gem 'xgb', github: 'ankane/xgb', branch: 'vendor'
+```
+
+Please file an issue if it doesn’t work for you.
+
+You can also specify the path to XGBoost in an initializer:
+
+```ruby
+Xgb.ffi_lib << "/path/to/xgboost/lib/libxgboost.so"
+```
+
+> Use `libxgboost.dylib` for Mac and `xgboost.dll` for Windows
 
 ## Helpful Resources
 

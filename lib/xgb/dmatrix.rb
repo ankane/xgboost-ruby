@@ -14,7 +14,7 @@ module Xgb
           flat_data = data.to_a.flatten
         elsif daru?(data)
           nrow, ncol = data.shape
-          flat_data = data.each_vector.map(&:to_a).flatten
+          flat_data = data.map_rows(&:to_a).flatten
         elsif narray?(data)
           nrow, ncol = data.shape
           flat_data = data.flatten.to_a
@@ -24,6 +24,7 @@ module Xgb
           flat_data = data.flatten
         end
 
+        handle_missing(flat_data, missing)
         c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
         c_data.put_array_of_float(0, flat_data)
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
@@ -31,8 +32,8 @@ module Xgb
         ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
       end
 
-      set_float_info("label", label) if label
-      set_float_info("weight", weight) if weight
+      self.label = label if label
+      self.weight = weight if weight
     end
 
     def self.finalize(pointer)
@@ -46,6 +47,14 @@ module Xgb
 
     def weight
       float_info("weight")
+    end
+
+    def label=(label)
+      set_float_info("label", label)
+    end
+
+    def weight=(weight)
+      set_float_info("weight", weight)
     end
 
     def group=(group)
@@ -113,6 +122,10 @@ module Xgb
 
     def narray?(data)
       defined?(Numo::NArray) && data.is_a?(Numo::NArray)
+    end
+
+    def handle_missing(data, missing)
+      data.map! { |v| v.nil? ? missing : v }
     end
 
     include Utils
