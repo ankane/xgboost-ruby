@@ -154,6 +154,14 @@ gem 'xgb', github: 'ankane/xgb', branch: 'vendor'
 
 Please file an issue if it doesn’t work for you.
 
+You can also specify the path to XGBoost in an initializer:
+
+```ruby
+Xgb.ffi_lib << "/path/to/xgboost/lib/libxgboost.so"
+```
+
+> Use `libxgboost.dylib` for Mac and `xgboost.dll` for Windows
+
 ## Helpful Resources
 
 - [Parameters](https://xgboost.readthedocs.io/en/latest/parameter.html)
