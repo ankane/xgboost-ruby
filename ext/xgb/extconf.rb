@@ -33,10 +33,8 @@ when /mingw/
     run "ridk exec make -j4"
   end
 else
-  build_dir = "#{dir}/build"
-  Dir.mkdir(build_dir)
-  Dir.chdir(build_dir) do
-    run "cmake .."
+  Dir.chdir(dir) do
+    run "cp make/config.mk config.mk"
     run "make -j4"
   end
 end
