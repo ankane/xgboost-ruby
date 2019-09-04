@@ -1,6 +1,5 @@
 environment:
   matrix:
-    # - RUBY_VERSION: "25"
     - RUBY_VERSION: "25-x64"
 
 install:
