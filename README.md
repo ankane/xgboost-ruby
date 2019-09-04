@@ -8,8 +8,6 @@
 
 ## Installation
 
-First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). On Mac, copy `lib/libxgboost.dylib` to `/usr/local/lib`.
-
 Add this line to your application’s Gemfile:
 
 ```ruby
@@ -143,24 +141,6 @@ Or a Numo NArray
 ```ruby
 Numo::DFloat.new(3, 2).seq
 ```
-
-## XGBoost Installation
-
-There’s an experimental branch that includes XGBoost with the gem for easiest installation.
-
-```ruby
-gem 'xgb', github: 'ankane/xgb', branch: 'vendor'
-```
-
-Please file an issue if it doesn’t work for you.
-
-You can also specify the path to XGBoost in an initializer:
-
-```ruby
-Xgb.ffi_lib << "/path/to/xgboost/lib/libxgboost.so"
-```
-
-> Use `libxgboost.dylib` for Mac and `xgboost.dll` for Windows
 
 ## Helpful Resources
 
