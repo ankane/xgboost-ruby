@@ -66,13 +66,13 @@ module Xgb
     def num_row
       out = ::FFI::MemoryPointer.new(:uint64)
       check_result FFI.XGDMatrixNumRow(handle_pointer, out)
-      out.read_uint64
+      out.read_ulong
     end
 
     def num_col
       out = ::FFI::MemoryPointer.new(:uint64)
       check_result FFI.XGDMatrixNumCol(handle_pointer, out)
-      out.read_uint64
+      out.read_ulong
     end
 
     def slice(rindex)

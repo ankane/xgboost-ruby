@@ -2,6 +2,7 @@
 
 - Added support for missing values
 - Fixed Daru training and prediction
+- Fixed error with JRuby
 
 ## 0.1.2
 
