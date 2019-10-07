@@ -8,7 +8,11 @@
 
 ## Installation
 
-First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). On Mac, copy `lib/libxgboost.dylib` to `/usr/local/lib`.
+First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). For Homebrew, use:
+
+```sh
+brew install xgboost
+```
 
 Add this line to your application’s Gemfile:
 
