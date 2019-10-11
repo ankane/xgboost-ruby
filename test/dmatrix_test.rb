@@ -35,7 +35,7 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_daru_data_frame
-    data = Daru::DataFrame.from_csv("test/support/boston.csv")
+    data = Daru::DataFrame.from_csv("test/data/boston/boston.csv")
     label = data["medv"]
     data = data.delete_vector("medv")
     Xgb::DMatrix.new(data, label: label)
