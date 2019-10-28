@@ -35,13 +35,16 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_daru_data_frame
-    data = Daru::DataFrame.from_csv("test/support/boston.csv")
+    data = Daru::DataFrame.from_csv("test/data/boston/boston.csv")
     label = data["medv"]
     data = data.delete_vector("medv")
     Xgb::DMatrix.new(data, label: label)
   end
 
   def test_numo_narray
+    skip if RUBY_PLATFORM == "java"
+
+    require "numo/narray"
     data = Numo::DFloat.new(3, 5).seq
     label = Numo::DFloat.new(3).seq
     Xgb::DMatrix.new(data, label: label)

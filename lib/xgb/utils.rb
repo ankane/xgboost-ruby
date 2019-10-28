@@ -9,5 +9,10 @@ module Xgb
         raise Xgb::Error, message
       end
     end
+
+    # read_uint64 not available on JRuby
+    def read_uint64(ptr)
+      ptr.read_array_of_uint64(1).first
+    end
   end
 end

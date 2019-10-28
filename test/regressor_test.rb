@@ -36,7 +36,7 @@ class RegressorTest < Minitest::Test
   end
 
   def test_daru
-    data = Daru::DataFrame.from_csv("test/support/boston.csv")
+    data = Daru::DataFrame.from_csv("test/data/boston/boston.csv")
     y = data["medv"]
     x = data.delete_vector("medv")
 

@@ -8,6 +8,12 @@
 
 ## Installation
 
+First, [install XGBoost](https://xgboost.readthedocs.io/en/latest/build.html). For Homebrew, use:
+
+```sh
+brew install xgboost
+```
+
 Add this line to your application’s Gemfile:
 
 ```ruby
@@ -142,6 +148,24 @@ Or a Numo NArray
 Numo::DFloat.new(3, 2).seq
 ```
 
+## XGBoost Installation
+
+There’s an experimental branch that includes XGBoost with the gem for easiest installation.
+
+```ruby
+gem 'xgb', github: 'ankane/xgb', branch: 'vendor', submodules: true
+```
+
+Please file an issue if it doesn’t work for you.
+
+You can also specify the path to XGBoost in an initializer:
+
+```ruby
+Xgb.ffi_lib << "/path/to/xgboost/lib/libxgboost.so"
+```
+
+> Use `libxgboost.dylib` for Mac and `xgboost.dll` for Windows
+
 ## Helpful Resources
 
 - [Parameters](https://xgboost.readthedocs.io/en/latest/parameter.html)
@@ -154,7 +178,7 @@ Numo::DFloat.new(3, 2).seq
 
 ## Credits
 
-Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for serving as an initial reference, and Selva Prabhakaran for the [test datasets](https://github.com/selva86/datasets).
+Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for serving as an initial reference.
 
 ## History
 

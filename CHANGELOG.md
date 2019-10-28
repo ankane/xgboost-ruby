@@ -1,8 +1,9 @@
-## 0.1.3 [unreleased]
+## 0.1.3
 
 - Packaged XGBoost with gem
 - Added support for missing values
 - Fixed Daru training and prediction
+- Fixed error with JRuby
 
 ## 0.1.2
 
