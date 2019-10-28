@@ -1,4 +1,4 @@
-## 0.1.3 [unreleased]
+## 0.1.3
 
 - Added support for missing values
 - Fixed Daru training and prediction
