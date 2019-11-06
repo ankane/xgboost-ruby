@@ -26,7 +26,7 @@ module Xgb
 
         handle_missing(flat_data, missing)
         c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
-        c_data.put_array_of_float(0, flat_data)
+        c_data.write_array_of_float(flat_data)
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
         ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
@@ -59,7 +59,7 @@ module Xgb
 
     def group=(group)
       c_data = ::FFI::MemoryPointer.new(:int, group.size)
-      c_data.put_array_of_int(0, group)
+      c_data.write_array_of_int(group)
       check_result FFI.XGDMatrixSetGroup(handle_pointer, c_data, group.size)
     end
 
@@ -78,7 +78,7 @@ module Xgb
     def slice(rindex)
       res = DMatrix.new(nil)
       idxset = ::FFI::MemoryPointer.new(:int, rindex.count)
-      idxset.put_array_of_int(0, rindex)
+      idxset.write_array_of_int(rindex)
       check_result FFI.XGDMatrixSliceDMatrix(handle_pointer, idxset, rindex.size, res.handle)
       res
     end
@@ -100,7 +100,7 @@ module Xgb
     def set_float_info(field, data)
       data = data.to_a unless data.is_a?(Array)
       c_data = ::FFI::MemoryPointer.new(:float, data.size)
-      c_data.put_array_of_float(0, data)
+      c_data.write_array_of_float(data)
       check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
     end
 
