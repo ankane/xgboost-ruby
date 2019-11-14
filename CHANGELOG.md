@@ -1,17 +1,17 @@
-## 0.1.3
+## 0.1.3 (2019-10-27)
 
 - Added support for missing values
 - Fixed Daru training and prediction
 - Fixed error with JRuby
 
-## 0.1.2
+## 0.1.2 (2019-08-19)
 
 - Friendlier message when XGBoost not found
 - Free memory when objects are destroyed
 - Added `Ranker`
 - Added early stopping to Scikit-Learn API
 
-## 0.1.1
+## 0.1.1 (2019-08-16)
 
 - Added Scikit-Learn API
 - Added early stopping
@@ -20,6 +20,6 @@
 - Added many other methods
 - Fixed shape of multiclass predictions when loaded from file
 
-## 0.1.0
+## 0.1.0 (2019-08-15)
 
 - First release
