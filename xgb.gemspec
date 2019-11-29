@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version       = Xgb::VERSION
   spec.summary       = "XGBoost - the high performance machine learning library - for Ruby"
   spec.homepage      = "https://github.com/ankane/xgb"
-  spec.license       = "MIT"
+  spec.license       = "Apache-2.0"
 
   spec.author        = "Andrew Kane"
   spec.email         = "andrew@chartkick.com"
