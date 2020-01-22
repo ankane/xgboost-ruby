@@ -3,7 +3,7 @@ require_relative "lib/xgb/version"
 Gem::Specification.new do |spec|
   spec.name          = "xgb"
   spec.version       = Xgb::VERSION
-  spec.summary       = "XGBoost - the high performance machine learning library - for Ruby"
+  spec.summary       = "High performance gradient boosting for Ruby"
   spec.homepage      = "https://github.com/ankane/xgb"
   spec.license       = "Apache-2.0"
 

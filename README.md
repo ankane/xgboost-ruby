@@ -1,8 +1,6 @@
 # XGBoost
 
-[XGBoost](https://github.com/dmlc/xgboost) - the high performance machine learning library - for Ruby
-
-:fire: Uses the C API for blazing performance
+[XGBoost](https://github.com/dmlc/xgboost) - high performance gradient boosting - for Ruby
 
 [![Build Status](https://travis-ci.org/ankane/xgboost.svg?branch=master)](https://travis-ci.org/ankane/xgboost)
 
