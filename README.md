@@ -20,7 +20,7 @@ gem 'xgb'
 
 ## Getting Started
 
-This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html), with the `get_` and `set_` prefixes removed from methods. Some methods and options are missing at the moment. PRs welcome!
+This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html), with the `get_` and `set_` prefixes removed from methods to make it more Ruby-like.
 
 ## Learning API
 
