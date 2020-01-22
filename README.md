@@ -1,8 +1,8 @@
-# XGBoost
+# Xgb
 
 [XGBoost](https://github.com/dmlc/xgboost) - high performance gradient boosting - for Ruby
 
-[![Build Status](https://travis-ci.org/ankane/xgboost.svg?branch=master)](https://travis-ci.org/ankane/xgboost)
+[![Build Status](https://travis-ci.org/ankane/xgb.svg?branch=master)](https://travis-ci.org/ankane/xgb)
 
 ## Installation
 
@@ -151,7 +151,7 @@ Numo::DFloat.new(3, 2).seq
 There’s an experimental branch that includes XGBoost with the gem for easiest installation.
 
 ```ruby
-gem 'xgb', github: 'ankane/xgboost', branch: 'vendor', submodules: true
+gem 'xgb', github: 'ankane/xgb', branch: 'vendor', submodules: true
 ```
 
 Please file an issue if it doesn’t work for you.
@@ -180,22 +180,22 @@ Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for servi
 
 ## History
 
-View the [changelog](https://github.com/ankane/xgboost/blob/master/CHANGELOG.md)
+View the [changelog](https://github.com/ankane/xgb/blob/master/CHANGELOG.md)
 
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/xgboost/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/xgboost/pulls)
+- [Report bugs](https://github.com/ankane/xgb/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/xgb/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
 To get started with development and testing:
 
 ```sh
-git clone https://github.com/ankane/xgboost.git
-cd xgboost
+git clone https://github.com/ankane/xgb.git
+cd xgb
 bundle install
 bundle exec rake test
 ```
