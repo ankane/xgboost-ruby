@@ -1,10 +1,10 @@
-# Xgb
+# XGBoost
 
 [XGBoost](https://github.com/dmlc/xgboost) - the high performance machine learning library - for Ruby
 
 :fire: Uses the C API for blazing performance
 
-[![Build Status](https://travis-ci.org/ankane/xgb.svg?branch=master)](https://travis-ci.org/ankane/xgb)
+[![Build Status](https://travis-ci.org/ankane/xgboost.svg?branch=master)](https://travis-ci.org/ankane/xgboost)
 
 ## Installation
 
@@ -182,22 +182,22 @@ Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for servi
 
 ## History
 
-View the [changelog](https://github.com/ankane/xgb/blob/master/CHANGELOG.md)
+View the [changelog](https://github.com/ankane/xgboost/blob/master/CHANGELOG.md)
 
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/xgb/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/xgb/pulls)
+- [Report bugs](https://github.com/ankane/xgboost/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/xgboost/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
 To get started with development and testing:
 
 ```sh
-git clone https://github.com/ankane/xgb.git
-cd xgb
+git clone https://github.com/ankane/xgboost.git
+cd xgboost
 bundle install
 bundle exec rake test
 ```
