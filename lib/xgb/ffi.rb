@@ -36,5 +36,8 @@ module Xgb
     attach_function :XGBoosterLoadModel, %i[pointer string], :int
     attach_function :XGBoosterSaveModel, %i[pointer string], :int
     attach_function :XGBoosterDumpModelEx, %i[pointer string int string pointer pointer], :int
+    attach_function :XGBoosterGetAttr, %i[pointer pointer pointer pointer], :int
+    attach_function :XGBoosterSetAttr, %i[pointer pointer pointer], :int
+    attach_function :XGBoosterGetAttrNames, %i[pointer pointer pointer], :int
   end
 end
