@@ -151,7 +151,7 @@ Numo::DFloat.new(3, 2).seq
 There’s an experimental branch that includes XGBoost with the gem for easiest installation.
 
 ```ruby
-gem 'xgb', github: 'ankane/xgb', branch: 'vendor', submodules: true
+gem 'xgb', github: 'ankane/xgboost', branch: 'vendor', submodules: true
 ```
 
 Please file an issue if it doesn’t work for you.
