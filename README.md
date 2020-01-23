@@ -76,7 +76,7 @@ CV
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
 ```
 
-Set metadata about a model
+Set metadata about a model [master]
 
 ```ruby
 booster["key"] = "value"
