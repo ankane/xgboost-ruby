@@ -29,6 +29,29 @@ class BoosterTest < Minitest::Test
     assert_equal booster.score, booster.fscore
   end
 
+  def test_attributes
+    assert_nil booster["foo"]
+    assert_equal({}, booster.attributes)
+
+    booster["foo"] = "bar"
+
+    assert_equal "bar", booster["foo"]
+    assert_equal({ "foo" => "bar" }, booster.attributes)
+
+    booster["foo"] = "baz"
+
+    assert_equal "baz", booster["foo"]
+    assert_equal({ "foo" => "baz" }, booster.attributes)
+
+    booster["bar"] = "qux"
+
+    assert_equal({ "foo" => "baz", "bar" => "qux" }, booster.attributes)
+
+    booster["foo"] = nil
+
+    refute_includes(booster.attributes, "foo")
+  end
+
   private
 
   def booster

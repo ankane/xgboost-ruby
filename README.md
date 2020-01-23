@@ -75,6 +75,21 @@ CV
 ```ruby
 Xgb.cv(params, dtrain, nfold: 3, verbose_eval: true)
 ```
+## Booster Attributes
+
+String key/value attributes can be stored against a Booster, which will be exported in the binary export format emitted by `Booster#save_model`:
+
+```ruby
+booster = Xgb::Booster.new(model_file: "my.model")
+booster["key"] = "value"
+booster.save_model("my_new.model")
+
+new_booster = Xgb::Booster.new(model_file: "my_new.model")
+new_booster.attr_names # => ["key"]
+new_booster["key"] # => "value"
+```
+
+Attributes can be used to store arbitrary meta-data about a model; for example, feature names are not currently stored in the binary serialisation format by default, which hinders sharing a model between training/prediction implementations (e.g. training a model using Python, and using it to predict in Ruby). Instead, the feature names can be stored in [an attribute](https://github.com/dmlc/xgboost/issues/3089#issuecomment-370065246).
 
 ## Scikit-Learn API
 
