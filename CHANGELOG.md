@@ -1,5 +1,6 @@
 ## 0.1.4 (unreleased)
 
+- Added support for booster attributes
 - Changed to Apache 2.0 license to match XGBoost
 
 ## 0.1.3 (2019-10-27)
