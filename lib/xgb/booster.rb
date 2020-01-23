@@ -160,9 +160,8 @@ module Xgb
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
       check_result FFI.XGBoosterGetAttr(handle_pointer, key, out_result, success)
-      raise ArgumentError, "Unknown attr name: #{key_name.inspect}" unless success.read_int == 1
 
-      out_result.read_pointer.read_string
+      success.read_int == 1 ? out_result.read_pointer.read_string : nil
     end
 
     def []=(key_name, raw_value)
@@ -172,13 +171,15 @@ module Xgb
       check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
     end
 
-    def attr_names
+    def attributes
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterGetAttrNames(handle_pointer, out_len, out_result)
 
       len = read_uint64(out_len)
-      len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
+      key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
+
+      key_names.map { |key_name| [key_name, self[key_name]] }.to_h
     end
 
     private

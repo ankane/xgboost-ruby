@@ -29,50 +29,27 @@ class BoosterTest < Minitest::Test
     assert_equal booster.score, booster.fscore
   end
 
-  def test_attr_not_exist
-    assert_raises(ArgumentError, %(Unknown attr name: "foo")) do
-      booster["foo"]
-    end
-  end
+  def test_attributes
+    assert_nil booster["foo"]
+    assert_equal({}, booster.attributes)
 
-  def test_attr_set_once
     booster["foo"] = "bar"
 
     assert_equal "bar", booster["foo"]
-  end
+    assert_equal({ "foo" => "bar" }, booster.attributes)
 
-  def test_attr_set_twice
-    booster["foo"] = "bar"
     booster["foo"] = "baz"
 
     assert_equal "baz", booster["foo"]
-  end
+    assert_equal({ "foo" => "baz" }, booster.attributes)
 
-  def test_attr_set_nil
-    booster["foo"] = "bar"
+    booster["bar"] = "qux"
 
-    assert_includes(booster.attr_names, "foo")
+    assert_equal({ "foo" => "baz", "bar" => "qux" }, booster.attributes)
 
     booster["foo"] = nil
 
-    refute_includes(booster.attr_names, "foo")
-  end
-
-  def test_attr_names_when_none
-    assert_equal [], booster.attr_names
-  end
-
-  def test_attr_names_with_one
-    booster["foo"] = "bar"
-
-    assert_equal ["foo"], booster.attr_names
-  end
-
-  def test_attr_names_with_two
-    booster["foo"] = "bar"
-    booster["bar"] = "baz"
-
-    assert_equal ["foo", "bar"].sort, booster.attr_names.sort
+    refute_includes(booster.attributes, "foo")
   end
 
   private
