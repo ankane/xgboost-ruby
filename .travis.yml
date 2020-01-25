@@ -1,7 +1,7 @@
 dist: bionic
 language: ruby
 rvm: 2.6
-before_install: bundle exec rake vendor:linux
+before_script: bundle exec rake vendor:linux
 script: bundle exec rake test
 notifications:
   email:
