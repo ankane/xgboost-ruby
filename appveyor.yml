@@ -15,4 +15,4 @@ before_test:
   - bundle exec rake vendor:windows
 
 test_script:
-  - XGB_DEBUG=1 bundle exec rake test
+  - bundle exec rake test
