@@ -1,6 +1,6 @@
-## 0.2.0 (unreleased)
+## 0.2.0 (2020-01-26)
 
-- Renamed project to XGBoost
+- Prefer `XGBoost` over `Xgb`
 - Changed to Apache 2.0 license to match XGBoost
 - Added shared libraries
 - Added support for booster attributes
