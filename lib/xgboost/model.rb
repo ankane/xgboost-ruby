@@ -1,4 +1,4 @@
-module Xgb
+module XGBoost
   class Model
     attr_reader :booster
 

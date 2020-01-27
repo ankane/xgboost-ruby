@@ -55,6 +55,6 @@ class BoosterTest < Minitest::Test
   private
 
   def booster
-    @booster ||= Xgb::Booster.new(model_file: "test/support/boston.model")
+    @booster ||= XGBoost::Booster.new(model_file: "test/support/boston.model")
   end
 end

@@ -22,11 +22,11 @@ class Minitest::Test
   end
 
   def boston_train
-    @boston_train ||= Xgb::DMatrix.new(boston.data[0...300], label: boston.label[0...300])
+    @boston_train ||= XGBoost::DMatrix.new(boston.data[0...300], label: boston.label[0...300])
   end
 
   def boston_test
-    @boston_test ||= Xgb::DMatrix.new(boston.data[300..-1], label: boston.label[300..-1])
+    @boston_test ||= XGBoost::DMatrix.new(boston.data[300..-1], label: boston.label[300..-1])
   end
 
   def iris
@@ -34,11 +34,11 @@ class Minitest::Test
   end
 
   def iris_train
-    @iris_train ||= Xgb::DMatrix.new(iris.data[0...100], label: iris.label[0...100])
+    @iris_train ||= XGBoost::DMatrix.new(iris.data[0...100], label: iris.label[0...100])
   end
 
   def iris_test
-    @iris_test ||= Xgb::DMatrix.new(iris.data[100..-1], label: iris.label[100..-1])
+    @iris_test ||= XGBoost::DMatrix.new(iris.data[100..-1], label: iris.label[100..-1])
   end
 
   def iris_binary
@@ -46,11 +46,11 @@ class Minitest::Test
   end
 
   def iris_train_binary
-    @iris_train_binary ||= Xgb::DMatrix.new(iris_binary.data[0...100], label: iris_binary.label[0...100])
+    @iris_train_binary ||= XGBoost::DMatrix.new(iris_binary.data[0...100], label: iris_binary.label[0...100])
   end
 
   def iris_test_binary
-    @iris_test_binary ||= Xgb::DMatrix.new(iris_binary.data[100..-1], label: iris_binary.label[100..-1])
+    @iris_test_binary ||= XGBoost::DMatrix.new(iris_binary.data[100..-1], label: iris_binary.label[100..-1])
   end
 
   def boston_data
@@ -85,7 +85,7 @@ class Minitest::Test
     y = y.map { |v| v > 1 ? 1.0 : v } if binary
 
     if dmatrix
-      Xgb::DMatrix.new(x, label: y)
+      XGBoost::DMatrix.new(x, label: y)
     else
       [x, y]
     end

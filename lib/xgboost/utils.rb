@@ -1,4 +1,4 @@
-module Xgb
+module XGBoost
   module Utils
     private
 
@@ -6,7 +6,7 @@ module Xgb
       if err != 0
         # make friendly
         message = FFI.XGBGetLastError.split("\n").first.split(/:\d+: /, 2).last
-        raise Xgb::Error, message
+        raise XGBoost::Error, message
       end
     end
 

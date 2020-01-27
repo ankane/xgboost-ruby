@@ -1,4 +1,4 @@
-module Xgb
+module XGBoost
   class DMatrix
     attr_reader :data
 

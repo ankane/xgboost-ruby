@@ -1,5 +1,6 @@
-## 0.1.4 (unreleased)
+## 0.2.0 (unreleased)
 
+- Renamed project to XGBoost
 - Changed to Apache 2.0 license to match XGBoost
 - Added shared libraries
 - Added support for booster attributes

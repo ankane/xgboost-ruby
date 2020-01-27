@@ -1,4 +1,4 @@
-module Xgb
+module XGBoost
   class Booster
     attr_accessor :best_iteration, :feature_names
 

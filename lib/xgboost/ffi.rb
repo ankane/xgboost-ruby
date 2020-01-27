@@ -1,9 +1,9 @@
-module Xgb
+module XGBoost
   module FFI
     extend ::FFI::Library
 
     begin
-      ffi_lib Xgb.ffi_lib
+      ffi_lib XGBoost.ffi_lib
     rescue LoadError => e
       raise e if ENV["XGB_DEBUG"]
       raise LoadError, "Could not find XGBoost"

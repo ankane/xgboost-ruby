@@ -1,4 +1,4 @@
-module Xgb
+module XGBoost
   class Classifier < Model
     def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: "binary:logistic", importance_type: "gain", **options)
       super
@@ -16,7 +16,7 @@ module Xgb
       dtrain = DMatrix.new(x, label: y)
       evals = Array(eval_set).map.with_index { |v, i| [DMatrix.new(v[0], label: v[1]), "validation_#{i}"] }
 
-      @booster = Xgb.train(params, dtrain,
+      @booster = XGBoost.train(params, dtrain,
         num_boost_round: @n_estimators,
         early_stopping_rounds: early_stopping_rounds,
         verbose_eval: verbose,

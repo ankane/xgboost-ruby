@@ -2,7 +2,7 @@ require_relative "test_helper"
 
 class CvTest < Minitest::Test
   def test_regression
-    eval_hist = Xgb.cv(regression_params, boston, shuffle: false)
+    eval_hist = XGBoost.cv(regression_params, boston, shuffle: false)
     assert_in_delta 17.023441, eval_hist["train-rmse-mean"].first
     assert_in_delta 1.518630, eval_hist["train-rmse-mean"].last
     assert_in_delta 1.578547, eval_hist["train-rmse-std"].first
@@ -14,7 +14,7 @@ class CvTest < Minitest::Test
   end
 
   def test_binary
-    eval_hist = Xgb.cv(binary_params, iris_binary, shuffle: false)
+    eval_hist = XGBoost.cv(binary_params, iris_binary, shuffle: false)
     assert_in_delta 0, eval_hist["train-error-mean"].first
     assert_in_delta 0, eval_hist["train-error-mean"].last
     assert_in_delta 0, eval_hist["train-error-std"].first
@@ -26,7 +26,7 @@ class CvTest < Minitest::Test
   end
 
   def test_multiclass
-    eval_hist = Xgb.cv(multiclass_params, iris, shuffle: false)
+    eval_hist = XGBoost.cv(multiclass_params, iris, shuffle: false)
     assert_in_delta 0.013333, eval_hist["train-merror-mean"].first
     assert_in_delta 0.010000, eval_hist["train-merror-mean"].last
     assert_in_delta 0.009428, eval_hist["train-merror-std"].first
@@ -38,7 +38,7 @@ class CvTest < Minitest::Test
   end
 
   def test_early_stopping_early
-    eval_hist = Xgb.cv(regression_params, boston, shuffle: false, num_boost_round: 100, early_stopping_rounds: 5)
+    eval_hist = XGBoost.cv(regression_params, boston, shuffle: false, num_boost_round: 100, early_stopping_rounds: 5)
     assert_equal 25, eval_hist["train-rmse-mean"].size
   end
 end
