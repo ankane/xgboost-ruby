@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.author        = "Andrew Kane"
   spec.email         = "andrew@chartkick.com"
 
-  spec.files         = Dir["*.{md,txt}", "{lib}/**/*"]
+  spec.files         = Dir["*.{md,txt}", "{lib,vendor}/**/*"]
   spec.require_path  = "lib"
 
   spec.required_ruby_version = ">= 2.4"
@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest", ">= 5"
   spec.add_development_dependency "daru"
+  spec.add_development_dependency "numo-narray" unless ENV["APPVEYOR"]
 end

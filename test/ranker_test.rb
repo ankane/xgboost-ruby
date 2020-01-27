@@ -5,7 +5,7 @@ class RankerTest < Minitest::Test
     # results inconsistent between Mac and Linux
     # but consistent for Python and Ruby on same platform
     # numbers below are for Mac
-    skip if travis?
+    skip if ci?
 
     x_train, y_train, x_test, _ = iris_data
     group = [20, 80]
@@ -27,7 +27,7 @@ class RankerTest < Minitest::Test
     # results inconsistent between Mac and Linux
     # but consistent for Python and Ruby on same platform
     # numbers below are for Mac
-    skip if travis?
+    skip if ci?
 
     x_train, y_train, _, _ = iris_data
     group = [20, 80]
@@ -39,7 +39,7 @@ class RankerTest < Minitest::Test
     assert_elements_in_delta expected, model.feature_importances
   end
 
-  def travis?
-    ENV["TRAVIS"]
+  def ci?
+    ENV["CI"]
   end
 end

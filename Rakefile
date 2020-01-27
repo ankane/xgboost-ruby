@@ -7,3 +7,29 @@ Rake::TestTask.new do |t|
   t.pattern = "test/**/*_test.rb"
   t.warning = false
 end
+
+def download_file(file)
+  require "open-uri"
+
+  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-0.90/#{file}"
+  puts "Downloading #{file}..."
+  dest = "vendor/#{file}"
+  File.binwrite(dest, URI.open(url).read)
+  puts "Saved #{dest}"
+end
+
+namespace :vendor do
+  task :linux do
+    download_file("libxgboost.so")
+  end
+
+  task :mac do
+    download_file("libxgboost.dylib")
+  end
+
+  task :windows do
+    download_file("xgboost.dll")
+  end
+
+  task all: [:linux, :mac, :windows]
+end
