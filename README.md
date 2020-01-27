@@ -12,10 +12,6 @@ Add this line to your application’s Gemfile:
 gem 'xgb'
 ```
 
-## Getting Started
-
-This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html), with the `get_` and `set_` prefixes removed from methods to make it more Ruby-like.
-
 ## Learning API
 
 Prep your data
@@ -155,11 +151,13 @@ Numo::DFloat.new(3, 2).seq
 ## Related Projects
 
 - [LightGBM](https://github.com/ankane/lightgbm) - LightGBM for Ruby
-- [Eps](https://github.com/ankane/eps) - Machine Learning for Ruby
+- [Eps](https://github.com/ankane/eps) - Machine learning for Ruby
 
 ## Credits
 
-Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for serving as an initial reference.
+This library follows the [Python API](https://xgboost.readthedocs.io/en/latest/python/python_api.html), with the `get_` and `set_` prefixes removed from methods to make it more Ruby-like.
+
+Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for showing how to use FFI.
 
 ## History
 
@@ -174,11 +172,12 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
-To get started with development and testing:
+To get started with development:
 
 ```sh
 git clone https://github.com/ankane/xgboost.git
 cd xgboost
 bundle install
+bundle exec rake vendor:all
 bundle exec rake test
 ```
