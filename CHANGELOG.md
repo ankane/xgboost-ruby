@@ -1,3 +1,7 @@
+## 0.3.0 (unreleased)
+
+- Upgraded to XGBoost 1.0
+
 ## 0.2.0 (2020-01-26)
 
 - Prefer `XGBoost` over `Xgb`
