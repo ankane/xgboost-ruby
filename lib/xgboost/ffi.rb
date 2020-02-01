@@ -12,7 +12,8 @@ module XGBoost
     # https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
     # keep same order
 
-    # error
+    # general
+    attach_function :XGBoostVersion, %i[pointer pointer pointer], :void
     attach_function :XGBGetLastError, %i[], :string
 
     # dmatrix

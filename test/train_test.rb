@@ -51,6 +51,10 @@ class TrainTest < Minitest::Test
     assert_equal 8, model.best_iteration
   end
 
+  def test_lib_version
+    assert_equal "1.0.0", XGBoost.lib_version
+  end
+
   private
 
   def rsme(y_true, y_pred)

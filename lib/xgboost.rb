@@ -156,6 +156,14 @@ module XGBoost
       eval_hist
     end
 
+    def lib_version
+      major = ::FFI::MemoryPointer.new(:int)
+      minor = ::FFI::MemoryPointer.new(:int)
+      patch = ::FFI::MemoryPointer.new(:int)
+      FFI.XGBoostVersion(major, minor, patch)
+      "#{major.read_int}.#{minor.read_int}.#{patch.read_int}"
+    end
+
     private
 
     def mean(arr)
