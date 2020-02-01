@@ -60,7 +60,7 @@ module XGBoost
     def group=(group)
       c_data = ::FFI::MemoryPointer.new(:int, group.size)
       c_data.write_array_of_int(group)
-      check_result FFI.XGDMatrixSetGroup(handle_pointer, c_data, group.size)
+      check_result FFI.XGDMatrixSetUIntInfo(handle_pointer, "group", c_data, group.size)
     end
 
     def num_row

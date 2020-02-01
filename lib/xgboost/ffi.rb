@@ -17,7 +17,7 @@ module XGBoost
 
     # dmatrix
     attach_function :XGDMatrixCreateFromMat, %i[pointer uint64 uint64 float pointer], :int
-    attach_function :XGDMatrixSetGroup, %i[pointer pointer uint64], :int
+    attach_function :XGDMatrixSetUIntInfo, %i[pointer string pointer uint64], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
     attach_function :XGDMatrixNumCol, %i[pointer pointer], :int
     attach_function :XGDMatrixSliceDMatrix, %i[pointer pointer uint64 pointer], :int
@@ -32,7 +32,7 @@ module XGBoost
     attach_function :XGBoosterEvalOneIter, %i[pointer int pointer pointer uint64 pointer], :int
     attach_function :XGBoosterFree, %i[pointer], :int
     attach_function :XGBoosterSetParam, %i[pointer string string], :int
-    attach_function :XGBoosterPredict, %i[pointer pointer int int pointer pointer], :int
+    attach_function :XGBoosterPredict, %i[pointer pointer int int int pointer pointer], :int
     attach_function :XGBoosterLoadModel, %i[pointer string], :int
     attach_function :XGBoosterSaveModel, %i[pointer string], :int
     attach_function :XGBoosterDumpModelEx, %i[pointer string int string pointer pointer], :int

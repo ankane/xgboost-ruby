@@ -52,7 +52,7 @@ module XGBoost
       ntree_limit ||= 0
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, out_len, out_result)
+      check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, 0, out_len, out_result)
       out = out_result.read_pointer.read_array_of_float(read_uint64(out_len))
       num_class = out.size / data.num_row
       out = out.each_slice(num_class).to_a if num_class > 1
