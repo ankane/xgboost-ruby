@@ -13,7 +13,7 @@ class RankerTest < Minitest::Test
     model = XGBoost::Ranker.new
     model.fit(x_train, y_train, group)
     y_pred = model.predict(x_test)
-    expected = [3.690385, 4.999046, -3.8156319, 0.61984086, 0.30764353, 0.6986507]
+    expected = [5.3243084, 6.2180243, -4.9917116, 1.140212, 0.31584498, 1.2587957]
     assert_elements_in_delta expected, y_pred[0, 6]
 
     model.save_model(tempfile)
@@ -35,7 +35,7 @@ class RankerTest < Minitest::Test
     model = XGBoost::Ranker.new
     model.fit(x_train, y_train, group)
 
-    expected = [0.04503533, 0.06504705, 0.55673695, 0.33318064]
+    expected = [0.07063404, 0.0789692, 0.41161776, 0.438779]
     assert_elements_in_delta expected, model.feature_importances
   end
 
