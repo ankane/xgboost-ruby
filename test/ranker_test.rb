@@ -2,18 +2,13 @@ require_relative "test_helper"
 
 class RankerTest < Minitest::Test
   def test_works
-    # results inconsistent between Mac and Linux
-    # but consistent for Python and Ruby on same platform
-    # numbers below are for Mac
-    skip if ci?
-
-    x_train, y_train, x_test, _ = iris_data
+    x_train, y_train, x_test, _ = iris_data_binary
     group = [20, 80]
 
     model = XGBoost::Ranker.new
     model.fit(x_train, y_train, group)
     y_pred = model.predict(x_test)
-    expected = [5.3243084, 6.2180243, -4.9917116, 1.140212, 0.31584498, 1.2587957]
+    expected = [3.144913, 3.144913, -2.144913, 3.144913, 3.144913, 3.144913]
     assert_elements_in_delta expected, y_pred[0, 6]
 
     model.save_model(tempfile)
@@ -24,22 +19,13 @@ class RankerTest < Minitest::Test
   end
 
   def test_feature_importances
-    # results inconsistent between Mac and Linux
-    # but consistent for Python and Ruby on same platform
-    # numbers below are for Mac
-    skip if ci?
-
-    x_train, y_train, _, _ = iris_data
+    x_train, y_train, _, _ = iris_data_binary
     group = [20, 80]
 
     model = XGBoost::Ranker.new
     model.fit(x_train, y_train, group)
 
-    expected = [0.07063404, 0.0789692, 0.41161776, 0.438779]
+    expected = [0, 0, 1, 0]
     assert_elements_in_delta expected, model.feature_importances
-  end
-
-  def ci?
-    ENV["CI"]
   end
 end
