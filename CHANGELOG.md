@@ -1,3 +1,7 @@
+## 0.2.1 (unreleased)
+
+- Fixed `SignalException` on Windows
+
 ## 0.2.0 (2020-01-26)
 
 - Prefer `XGBoost` over `Xgb`
