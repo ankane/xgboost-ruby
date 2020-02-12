@@ -1,5 +1,6 @@
 ## 0.2.1 (unreleased)
 
+- Fixed `Could not find XGBoost` error on some Linux platforms
 - Fixed `SignalException` on Windows
 
 ## 0.2.0 (2020-01-26)
