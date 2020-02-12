@@ -1,4 +1,11 @@
-dist: bionic
+jobs:
+  include:
+    - os: linux
+      dist: bionic
+    - os: linux
+      dist: xenial
+    - os: linux
+      dist: trusty
 language: ruby
 rvm: 2.6
 before_script: bundle exec rake vendor:linux
