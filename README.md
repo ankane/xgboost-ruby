@@ -12,6 +12,12 @@ Add this line to your application’s Gemfile:
 gem 'xgb'
 ```
 
+On Mac, also install OpenMP:
+
+```sh
+brew install libomp
+```
+
 ## Learning API
 
 Prep your data
