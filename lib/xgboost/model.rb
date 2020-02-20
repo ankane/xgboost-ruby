@@ -2,12 +2,8 @@ module XGBoost
   class Model
     attr_reader :booster
 
-    def initialize(max_depth: 3, learning_rate: 0.1, n_estimators: 100, objective: nil, importance_type: "gain", **options)
-      @params = {
-        max_depth: max_depth,
-        objective: objective,
-        learning_rate: learning_rate
-      }.merge(options)
+    def initialize(n_estimators: 100, importance_type: "gain", **options)
+      @params = options
       @n_estimators = n_estimators
       @importance_type = importance_type
     end

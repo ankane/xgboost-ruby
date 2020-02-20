@@ -1,3 +1,7 @@
+## 0.3.0 (unreleased)
+
+- Updated XGBoost to 1.0.0
+
 ## 0.2.1 (2020-02-11)
 
 - Fixed `Could not find XGBoost` error on some Linux platforms
