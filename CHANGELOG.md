@@ -1,3 +1,7 @@
+## 0.3.1 (unreleased)
+
+- Added `feature_names` and `feature_types` to `DMatrix`
+
 ## 0.3.0 (2020-02-19)
 
 - Updated XGBoost to 1.0.0

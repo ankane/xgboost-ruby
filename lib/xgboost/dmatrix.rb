@@ -1,6 +1,6 @@
 module XGBoost
   class DMatrix
-    attr_reader :data
+    attr_reader :data, :feature_names, :feature_types
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
       @data = data
@@ -15,6 +15,18 @@ module XGBoost
         elsif daru?(data)
           nrow, ncol = data.shape
           flat_data = data.map_rows(&:to_a).flatten
+          @feature_names = data.each_vector.map(&:name)
+          @feature_types =
+            data.each_vector.map(&:db_type).map do |v|
+              case v
+              when "INTEGER"
+                "int"
+              when "DOUBLE"
+                "float"
+              else
+                raise Error, "Unknown feature type: #{v}"
+              end
+            end
         elsif narray?(data)
           nrow, ncol = data.shape
           flat_data = data.flatten.to_a
@@ -30,6 +42,8 @@ module XGBoost
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
         ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
+
+        @feature_names ||= ncol.times.map { |i| "f#{i}" }
       end
 
       self.label = label if label
