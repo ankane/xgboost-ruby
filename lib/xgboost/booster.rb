@@ -67,7 +67,7 @@ module XGBoost
 
       names = feature_names || []
       fnames = array_of_pointers(names.map { |fname| string_pointer(fname) })
-      ftypes = array_of_pointers(Array.new(names.size, string_pointer("float")))
+      ftypes = array_of_pointers(feature_types || Array.new(names.size, string_pointer("float")))
 
       check_result FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
 
