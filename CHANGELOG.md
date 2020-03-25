@@ -1,6 +1,7 @@
 ## 0.3.1 (unreleased)
 
 - Added `feature_names` and `feature_types` to `DMatrix`
+- Added feature names to `dump`
 
 ## 0.3.0 (2020-02-19)
 
