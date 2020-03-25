@@ -55,6 +55,12 @@ class TrainTest < Minitest::Test
     assert_equal "1.0.0", XGBoost.lib_version
   end
 
+  def test_feature_names_and_types
+    model = XGBoost.train(regression_params, boston_train)
+    assert_equal 13.times.map { |i| "f#{i}" }, model.feature_names
+    assert_nil model.feature_types
+  end
+
   private
 
   def rsme(y_true, y_pred)

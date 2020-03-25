@@ -20,6 +20,8 @@ param = {}
 # param['metric'] = ['l1', 'l2', 'rmse']
 
 bst = xgb.train(param, dtrain, num_boost_round=10) #, evals=[(dtrain, 'train'), (dtest, 'eval')], early_stopping_rounds=5)
+# print(bst.feature_names)
+# print(bst.feature_types)
 # print(bst.get_dump())
 print(bst.get_score())
 print(bst.get_fscore())

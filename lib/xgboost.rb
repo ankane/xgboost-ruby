@@ -31,7 +31,8 @@ module XGBoost
       booster = Booster.new(params: params)
       num_feature = dtrain.num_col
       booster.set_param("num_feature", num_feature)
-      booster.feature_names = num_feature.times.map { |i| "f#{i}" }
+      booster.feature_names = dtrain.feature_names
+      booster.feature_types = dtrain.feature_types
       evals ||= []
 
       if early_stopping_rounds
