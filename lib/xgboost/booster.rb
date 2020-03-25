@@ -25,11 +25,8 @@ module XGBoost
     end
 
     def eval_set(evals, iteration)
-      dmats = ::FFI::MemoryPointer.new(:pointer, evals.size)
-      dmats.write_array_of_pointer(evals.map { |v| v[0].handle_pointer })
-
-      evnames = ::FFI::MemoryPointer.new(:pointer, evals.size)
-      evnames.write_array_of_pointer(evals.map { |v| ::FFI::MemoryPointer.from_string(v[1]) })
+      dmats = array_of_pointers(evals.map { |v| v[0].handle_pointer })
+      evnames = array_of_pointers(evals.map { |v| string_pointer(v[1]) })
 
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
@@ -67,7 +64,13 @@ module XGBoost
     def dump(fmap: "", with_stats: false, dump_format: "text")
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterDumpModelEx(handle_pointer, fmap, with_stats ? 1 : 0, dump_format, out_len, out_result)
+
+      names = feature_names || []
+      fnames = array_of_pointers(names.map { |fname| string_pointer(fname) })
+      ftypes = array_of_pointers(Array.new(names.size, string_pointer("float")))
+
+      check_result FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
+
       out_result.read_pointer.get_array_of_string(0, read_uint64(out_len))
     end
 
@@ -155,7 +158,7 @@ module XGBoost
     end
 
     def [](key_name)
-      key = ::FFI::MemoryPointer.from_string(key_name)
+      key = string_pointer(key_name)
       success = ::FFI::MemoryPointer.new(:int)
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
@@ -165,8 +168,8 @@ module XGBoost
     end
 
     def []=(key_name, raw_value)
-      key = ::FFI::MemoryPointer.from_string(key_name)
-      value = raw_value.nil? ? nil : ::FFI::MemoryPointer.from_string(raw_value)
+      key = string_pointer(key_name)
+      value = raw_value.nil? ? nil : string_pointer(raw_value)
 
       check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
     end
@@ -186,6 +189,14 @@ module XGBoost
 
     def handle_pointer
       @handle.read_pointer
+    end
+
+    def array_of_pointers(values)
+      ::FFI::MemoryPointer.new(:pointer, values.size).write_array_of_pointer(values)
+    end
+
+    def string_pointer(value)
+      ::FFI::MemoryPointer.from_string(value.to_s)
     end
 
     include Utils
