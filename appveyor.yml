@@ -2,8 +2,12 @@ environment:
   matrix:
     - RUBY_VERSION: "26-x64"
 
+cache:
+  - vendor/bundle
+
 install:
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+  - bundle config --local path vendor/bundle
   - bundle install
 
 build: off
