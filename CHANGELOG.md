@@ -1,4 +1,4 @@
-## 0.3.1 (unreleased)
+## 0.3.1 (2020-04-16)
 
 - Added `feature_names` and `feature_types` to `DMatrix`
 - Added feature names to `dump`
