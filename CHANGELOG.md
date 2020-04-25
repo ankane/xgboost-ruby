@@ -1,3 +1,7 @@
+## 0.3.2 (unreleased)
+
+- Improved error message when OpenMP not found on Mac
+
 ## 0.3.1 (2020-04-16)
 
 - Added `feature_names` and `feature_types` to `DMatrix`

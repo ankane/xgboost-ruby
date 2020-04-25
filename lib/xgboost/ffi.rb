@@ -2,7 +2,15 @@ module XGBoost
   module FFI
     extend ::FFI::Library
 
-    ffi_lib XGBoost.ffi_lib
+    begin
+      ffi_lib XGBoost.ffi_lib
+    rescue LoadError => e
+      if e.message.include?("Library not loaded: /usr/local/opt/libomp/lib/libomp.dylib") && e.message.include?("Reason: image not found")
+        raise LoadError, "OpenMP not found. Run `brew install libomp`"
+      else
+        raise e
+      end
+    end
 
     # https://github.com/dmlc/xgboost/blob/master/include/xgboost/c_api.h
     # keep same order
