@@ -2,6 +2,8 @@ require_relative "test_helper"
 
 class RankerTest < Minitest::Test
   def test_works
+    skip "Inconsistent results on different platforms" if ENV["CI"]
+
     x_train, y_train, x_test, _ = binary_data
     group = [100, 200]
 
