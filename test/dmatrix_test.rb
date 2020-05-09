@@ -24,15 +24,15 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_num_row
-    assert_equal 506, boston.num_row
+    assert_equal 300, regression_train.num_row
   end
 
   def test_num_col
-    assert_equal 13, boston.num_col
+    assert_equal 4, regression_train.num_col
   end
 
   def test_save_binary
-    boston.save_binary(tempfile)
+    regression_train.save_binary(tempfile)
     assert File.exist?(tempfile)
   end
 
@@ -43,12 +43,12 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_daru_data_frame
-    data = Daru::DataFrame.from_csv("test/data/boston/boston.csv")
-    label = data["medv"]
-    data = data.delete_vector("medv")
+    data = Daru::DataFrame.from_csv(data_path)
+    label = data["y"]
+    data = data.delete_vector("y")
     dataset = XGBoost::DMatrix.new(data, label: label)
-    names = ["crim", "zn", "indus", "chas", "nox", "rm", "age", "dis", "rad", "tax", "ptratio", "b", "lstat"]
-    types = ["float", "float", "float", "int", "float", "float", "float", "float", "int", "float", "float", "float", "float"]
+    names = ["x0", "x1", "x2", "x3"]
+    types = ["float", "float", "float", "int"]
     assert_equal names, dataset.feature_names
     assert_equal types, dataset.feature_types
   end

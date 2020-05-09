@@ -2,53 +2,47 @@ require_relative "test_helper"
 
 class TrainTest < Minitest::Test
   def test_regression
-    y_test = boston_test.label
-
-    model = XGBoost.train(regression_params, boston_train)
-    y_pred = model.predict(boston_test)
-    assert_operator rsme(y_test, y_pred), :<=, 7
+    model = XGBoost.train(regression_params, regression_train)
+    y_pred = model.predict(regression_test)
+    assert_operator rsme(regression_test.label, y_pred), :<=, 0.3
 
     model.save_model(tempfile)
     model = XGBoost::Booster.new(model_file: tempfile)
-    y_pred = model.predict(boston_test)
-    assert_operator rsme(y_test, y_pred), :<=, 7
+    y_pred = model.predict(regression_test)
+    assert_operator rsme(regression_test.label, y_pred), :<=, 0.3
   end
 
   def test_binary
-    model = XGBoost.train(binary_params, iris_train_binary)
-    y_pred = model.predict(iris_test_binary)
-    assert_in_delta 0.96484315, y_pred[0]
-
-    y_pred = model.predict(iris_test)
-    assert_equal 50, y_pred.size
+    model = XGBoost.train(binary_params, binary_train)
+    y_pred = model.predict(binary_test)
+    assert_in_delta 0.9725926, y_pred.first
+    assert_equal 200, y_pred.size
 
     model.save_model(tempfile)
     model = XGBoost::Booster.new(model_file: tempfile)
-    y_pred2 = model.predict(iris_test)
+    y_pred2 = model.predict(binary_test)
     assert_equal y_pred, y_pred2
   end
 
   def test_multiclass
-    model = XGBoost.train(multiclass_params, iris_train)
-    y_pred = model.predict(iris_test)[0]
-    assert_in_delta 0.02350763, y_pred[0]
-    assert_in_delta 0.04084724, y_pred[1]
-    assert_in_delta 0.93564516, y_pred[2]
+    model = XGBoost.train(multiclass_params, multiclass_train)
 
-    y_pred = model.predict(iris_test)
+    y_pred = model.predict(multiclass_test)
+    expected = [0.04140469804406166, 0.8922330141067505, 0.06636224687099457]
+    assert_elements_in_delta expected, y_pred.first
     # ensure reshaped
-    assert_equal 50, y_pred.size
+    assert_equal 200, y_pred.size
     assert_equal 3, y_pred.first.size
 
     model.save_model(tempfile)
     model = XGBoost::Booster.new(model_file: tempfile)
-    y_pred2 = model.predict(iris_test)
+    y_pred2 = model.predict(multiclass_test)
     assert_equal y_pred, y_pred2
   end
 
   def test_early_stopping_early
-    model = XGBoost.train(regression_params, boston_train, num_boost_round: 100, evals: [[boston_train, "train"], [boston_test, "eval"]], early_stopping_rounds: 5, verbose_eval: false)
-    assert_equal 8, model.best_iteration
+    model = XGBoost.train(regression_params, regression_train, num_boost_round: 100, evals: [[regression_train, "train"], [regression_test, "eval"]], early_stopping_rounds: 5, verbose_eval: false)
+    assert_equal 14, model.best_iteration
   end
 
   def test_lib_version
@@ -56,8 +50,8 @@ class TrainTest < Minitest::Test
   end
 
   def test_feature_names_and_types
-    model = XGBoost.train(regression_params, boston_train)
-    assert_equal 13.times.map { |i| "f#{i}" }, model.feature_names
+    model = XGBoost.train(regression_params, regression_train)
+    assert_equal 4.times.map { |i| "f#{i}" }, model.feature_names
     assert_nil model.feature_types
   end
 

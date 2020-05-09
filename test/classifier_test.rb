@@ -2,13 +2,20 @@ require_relative "test_helper"
 
 class ClassifierTest < Minitest::Test
   def test_binary
-    x_train, y_train, x_test, _ = iris_data_binary
+    x_train, y_train, x_test, _ = binary_data
 
     model = XGBoost::Classifier.new
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    expected = [1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1]
-    assert_equal expected, y_pred
+    expected = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1]
+    assert_equal expected, y_pred.first(100)
+
+    y_pred_proba = model.predict_proba(x_test)
+    expected = [4.673004150390625e-05, 0.9999532699584961]
+    assert_elements_in_delta expected, y_pred_proba.first
+
+    expected = [0.20577579736709595, 0.2845814824104309, 0.41184839606285095, 0.09779435396194458]
+    assert_elements_in_delta expected, model.feature_importances
 
     model.save_model(tempfile)
 
@@ -18,13 +25,20 @@ class ClassifierTest < Minitest::Test
   end
 
   def test_multiclass
-    x_train, y_train, x_test, _ = iris_data
+    x_train, y_train, x_test, _ = multiclass_data
 
     model = XGBoost::Classifier.new
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    expected = [2, 2, 0, 1, 1, 1, 1, 2, 1, 1, 0, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 1, 1, 2, 1, 2, 0, 2, 1, 1, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 1, 0, 1, 2, 0, 2, 1, 1]
-    assert_equal expected, y_pred
+    expected = [1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1]
+    assert_equal expected, y_pred.first(100)
+
+    y_pred_proba = model.predict_proba(x_test)
+    expected = [0.001134952763095498, 0.9439229965209961, 0.054942041635513306]
+    assert_elements_in_delta expected, y_pred_proba.first
+
+    expected = [0.17008447647094727, 0.33299949765205383, 0.38294878602027893, 0.11396723240613937]
+    assert_elements_in_delta expected, model.feature_importances
 
     model.save_model(tempfile)
 
@@ -33,62 +47,22 @@ class ClassifierTest < Minitest::Test
     assert_equal y_pred, model.predict(x_test)
   end
 
-  def test_predict_proba_binary
-    x_train, y_train, x_test, _ = iris_data_binary
-
-    model = XGBoost::Classifier.new
-    model.fit(x_train, y_train)
-
-    y_pred = model.predict_proba(x_test)
-    expected = [0.01680386, 0.98319614]
-    assert_elements_in_delta expected, y_pred[0]
-  end
-
-  def test_predict_proba_multiclass
-    x_train, y_train, x_test, _ = iris_data
-
-    model = XGBoost::Classifier.new
-    model.fit(x_train, y_train)
-
-    y_pred = model.predict_proba(x_test)
-    expected = [0.00768452, 0.03547496, 0.9568406]
-    assert_elements_in_delta expected, y_pred[0]
-  end
-
-  def test_feature_importances_binary
-    x_train, y_train, _, _ = iris_data_binary
-
-    model = XGBoost::Classifier.new
-    model.fit(x_train, y_train)
-
-    expected = [0.0, 0.0, 1.0, 0.0]
-    assert_elements_in_delta expected, model.feature_importances
-  end
-
-  def test_feature_importances_multiclass
-    x_train, y_train, _, _ = iris_data
-
-    model = XGBoost::Classifier.new
-    model.fit(x_train, y_train)
-
-    expected = [0.05196636, 0.3298079, 0.48029527, 0.1379305]
-    assert_elements_in_delta expected, model.feature_importances
-  end
-
   def test_early_stopping
-    x_train, y_train, x_test, y_test = iris_data
+    x_train, y_train, x_test, y_test = multiclass_data
 
     model = XGBoost::Classifier.new
     model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
-    assert_equal 0, model.booster.best_iteration
+    assert_equal 7, model.booster.best_iteration
   end
 
   def test_missing
-    x_train, y_train, x_test, _ = iris_data
+    x_train, y_train, x_test, _ = multiclass_data
 
     [x_train, x_test].each do |xt|
       xt.each do |x|
-        x[1] = nil if x[1] == 2.8
+        x.size.times do |i|
+          x[i] = nil if x[i] == 3.7
+        end
       end
     end
 
@@ -96,10 +70,10 @@ class ClassifierTest < Minitest::Test
     model.fit(x_train, y_train)
 
     y_pred = model.predict(x_test)
-    expected = [2, 2, 0, 1, 1, 1, 1, 2, 1, 1, 0, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 1, 1, 2, 1, 2, 0, 2, 1, 1, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 1, 0, 1, 2, 0, 2, 1, 1]
-    assert_equal expected, y_pred
+    expected = [1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1]
+    assert_equal expected, y_pred.first(100)
 
-    expected = [0.05196636, 0.3298079, 0.48029527, 0.1379305]
+    expected = [0.15985175967216492, 0.3488382399082184, 0.3853622376918793, 0.10594776272773743]
     assert_elements_in_delta expected, model.feature_importances
   end
 end

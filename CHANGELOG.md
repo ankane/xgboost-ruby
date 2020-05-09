@@ -1,5 +1,6 @@
-## 0.3.2 (unreleased)
+## 0.4.0 (unreleased)
 
+- Changed default `learning_rate` and `max_depth` for Scikit-Learn API to match Python
 - Improved error message when OpenMP not found on Mac
 
 ## 0.3.1 (2020-04-16)
