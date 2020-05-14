@@ -27,18 +27,25 @@ module XGBoost
                 raise Error, "Unknown feature type: #{v}"
               end
             end
-        elsif narray?(data)
+        elsif numo?(data)
           nrow, ncol = data.shape
-          flat_data = data.flatten.to_a
+        elsif rover?(data)
+          nrow, ncol = data.shape
+          @feature_names = data.keys
+          data = data.to_numo
         else
           nrow = data.count
           ncol = data.first.count
           flat_data = data.flatten
         end
 
-        handle_missing(flat_data, missing)
         c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
-        c_data.write_array_of_float(flat_data)
+        if numo?(data)
+          c_data.write_bytes(data.cast_to(Numo::SFloat).to_string)
+        else
+          handle_missing(flat_data, missing)
+          c_data.write_array_of_float(flat_data)
+        end
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
         ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
@@ -134,8 +141,12 @@ module XGBoost
       defined?(Daru::DataFrame) && data.is_a?(Daru::DataFrame)
     end
 
-    def narray?(data)
+    def numo?(data)
       defined?(Numo::NArray) && data.is_a?(Numo::NArray)
+    end
+
+    def rover?(data)
+      defined?(Rover::DataFrame) && data.is_a?(Rover::DataFrame)
     end
 
     def handle_missing(data, missing)

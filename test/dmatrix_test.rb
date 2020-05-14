@@ -42,23 +42,37 @@ class DMatrixTest < Minitest::Test
     XGBoost::DMatrix.new(data, label: label)
   end
 
-  def test_daru_data_frame
+  def test_daru
     data = Daru::DataFrame.from_csv(data_path)
     label = data["y"]
     data = data.delete_vector("y")
     dataset = XGBoost::DMatrix.new(data, label: label)
     names = ["x0", "x1", "x2", "x3"]
-    types = ["float", "float", "float", "int"]
     assert_equal names, dataset.feature_names
+    types = ["float", "float", "float", "int"]
     assert_equal types, dataset.feature_types
   end
 
-  def test_numo_narray
+  def test_numo
     skip if RUBY_PLATFORM == "java"
 
     require "numo/narray"
     data = Numo::DFloat.new(3, 5).seq
     label = Numo::DFloat.new(3).seq
     XGBoost::DMatrix.new(data, label: label)
+  end
+
+  def test_rover
+    skip if RUBY_PLATFORM == "java"
+
+    require "rover"
+    data = Rover.read_csv(data_path)
+    label = data.delete("y")
+    dataset = XGBoost::DMatrix.new(data, label: label)
+    names = ["x0", "x1", "x2", "x3"]
+    assert_equal names, dataset.feature_names
+    # TODO add types
+    # types = ["float", "float", "float", "int"]
+    # assert_equal types, dataset.feature_types
   end
 end

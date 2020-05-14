@@ -2,6 +2,8 @@
 
 - Changed default `learning_rate` and `max_depth` for Scikit-Learn API to match Python
 - Improved error message when OpenMP not found on Mac
+- Added support for Rover
+- Improved performance of Numo datasets
 
 ## 0.3.1 (2020-04-16)
 
