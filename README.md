@@ -143,7 +143,7 @@ Or a Numo NArray
 Numo::DFloat.new(3, 2).seq
 ```
 
-Or a Rover data frame [master]
+Or a Rover data frame
 
 ```ruby
 Rover.read_csv("houses.csv")

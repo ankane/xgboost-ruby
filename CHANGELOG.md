@@ -1,4 +1,4 @@
-## 0.4.0 (unreleased)
+## 0.4.0 (2020-05-17)
 
 - Updated XGBoost to 1.1.0
 - Changed default `learning_rate` and `max_depth` for Scikit-Learn API to match Python
