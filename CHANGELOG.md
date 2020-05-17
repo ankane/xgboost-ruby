@@ -1,5 +1,6 @@
 ## 0.4.0 (unreleased)
 
+- Updated XGBoost to 1.1.0
 - Changed default `learning_rate` and `max_depth` for Scikit-Learn API to match Python
 - Improved error message when OpenMP not found on Mac
 - Added support for Rover
