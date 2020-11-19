@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, mac-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -15,7 +15,7 @@ jobs:
         ruby-version: 2.7
         bundler-cache: true
     - run: bundle update
-    - if: ${{ startsWith(matrix.os, 'mac-latest') }}
+    - if: ${{ startsWith(matrix.os, 'macos') }}
       run: brew install libomp
     - run: bundle exec rake vendor:all
     - run: bundle exec rake test
