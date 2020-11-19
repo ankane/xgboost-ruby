@@ -15,7 +15,7 @@ jobs:
         ruby-version: 2.7
         bundler-cache: true
     - run: bundle update
-    - if: ${{ matrix.os == 'mac-latest' }}
+    - if: ${{ startsWith(matrix.os, 'mac-latest') }}
       run: brew install libomp
     - run: bundle exec rake vendor:all
     - run: bundle exec rake test
