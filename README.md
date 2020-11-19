@@ -2,7 +2,7 @@
 
 [XGBoost](https://github.com/dmlc/xgboost) - high performance gradient boosting - for Ruby
 
-[![Build Status](https://travis-ci.org/ankane/xgboost.svg?branch=master)](https://travis-ci.org/ankane/xgboost) [![Build status](https://ci.appveyor.com/api/projects/status/s8umwyuahvj68m6p/branch/master?svg=true)](https://ci.appveyor.com/project/ankane/xgboost/branch/master)
+[![Build Status](https://github.com/ankane/xgboost/workflows/build/badge.svg?branch=master)](https://github.com/ankane/xgboost/actions)
 
 ## Installation
 
