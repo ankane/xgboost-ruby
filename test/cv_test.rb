@@ -15,26 +15,26 @@ class CvTest < Minitest::Test
 
   def test_binary
     eval_hist = XGBoost.cv(binary_params, binary_train, shuffle: false)
-    assert_in_delta 0.036666666666666674, eval_hist["train-error-mean"].first
-    assert_in_delta 0.006666666666666667, eval_hist["train-error-mean"].last
-    assert_in_delta 0.008498365855987974, eval_hist["train-error-std"].first
-    assert_in_delta 0.0062360956446232355, eval_hist["train-error-std"].last
-    assert_in_delta 0.09999999999999999, eval_hist["test-error-mean"].first
-    assert_in_delta 0.05666666666666667, eval_hist["test-error-mean"].last
-    assert_in_delta 0.02160246899469287, eval_hist["test-error-std"].first
-    assert_in_delta 0.012472191289246473, eval_hist["test-error-std"].last
+    assert_in_delta 0.484217, eval_hist["train-logloss-mean"].first
+    assert_in_delta 0.079635, eval_hist["train-logloss-mean"].last
+    assert_in_delta 0.006151, eval_hist["train-logloss-std"].first
+    assert_in_delta 0.005936, eval_hist["train-logloss-std"].last
+    assert_in_delta 0.511421, eval_hist["test-logloss-mean"].first
+    assert_in_delta 0.169691, eval_hist["test-logloss-mean"].last
+    assert_in_delta 0.006912, eval_hist["test-logloss-std"].first
+    assert_in_delta 0.030953, eval_hist["test-logloss-std"].last
   end
 
   def test_multiclass
     eval_hist = XGBoost.cv(multiclass_params, multiclass_train, shuffle: false)
-    assert_in_delta 0.06, eval_hist["train-merror-mean"].first
-    assert_in_delta 0.0016666666666666668, eval_hist["train-merror-mean"].last
-    assert_in_delta 0.008164965809277263, eval_hist["train-merror-std"].first
-    assert_in_delta 0.0023570226039551583, eval_hist["train-merror-std"].last
-    assert_in_delta 0.15, eval_hist["test-merror-mean"].first
-    assert_in_delta 0.11666666666666665, eval_hist["test-merror-mean"].last
-    assert_in_delta 0.029439202887759492, eval_hist["test-merror-std"].first
-    assert_in_delta 0.004714045207910314, eval_hist["test-merror-std"].last
+    assert_in_delta 0.789279, eval_hist["train-mlogloss-mean"].first
+    assert_in_delta 0.120741, eval_hist["train-mlogloss-mean"].last
+    assert_in_delta 0.006837, eval_hist["train-mlogloss-std"].first
+    assert_in_delta 0.009493, eval_hist["train-mlogloss-std"].last
+    assert_in_delta 0.840854, eval_hist["test-mlogloss-mean"].first
+    assert_in_delta 0.375845, eval_hist["test-mlogloss-mean"].last
+    assert_in_delta 0.003656, eval_hist["test-mlogloss-std"].first
+    assert_in_delta 0.027267, eval_hist["test-mlogloss-std"].last
   end
 
   def test_early_stopping_early

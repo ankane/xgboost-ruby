@@ -11,7 +11,7 @@ end
 def download_file(file)
   require "open-uri"
 
-  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-1.2.0/#{file}"
+  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-1.3.0/#{file}"
   puts "Downloading #{file}..."
   dest = "vendor/#{file}"
   File.binwrite(dest, URI.open(url).read)

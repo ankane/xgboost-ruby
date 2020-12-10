@@ -52,7 +52,7 @@ class ClassifierTest < Minitest::Test
 
     model = XGBoost::Classifier.new
     model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
-    assert_equal 7, model.booster.best_iteration
+    assert_equal 36, model.booster.best_iteration
   end
 
   def test_missing

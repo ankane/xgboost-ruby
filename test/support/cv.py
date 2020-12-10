@@ -26,9 +26,9 @@ print('test_binary')
 binary_params = {'objective': 'binary:logistic'}
 binary_train = xgb.DMatrix(X_train, label=y_train.replace(2, 1))
 eval_hist = xgb.cv(binary_params, binary_train, shuffle=False, as_pandas=False)
-for k in ['train-error-mean', 'train-error-std', 'test-error-mean', 'test-error-std']:
-  print(k, eval_hist[k][0])
-  print(k, eval_hist[k][-1])
+for k in ['train-logloss-mean', 'train-logloss-std', 'test-logloss-mean', 'test-logloss-std']:
+  print("%-20s %f" % (k, eval_hist[k][0]))
+  print("%-20s %f" % (k, eval_hist[k][-1]))
 
 print()
 print('test_multiclass')
@@ -36,9 +36,9 @@ print('test_multiclass')
 multiclass_params = {'objective': 'multi:softprob', 'num_class': 3}
 multiclass_train = xgb.DMatrix(X_train, label=y_train)
 eval_hist = xgb.cv(multiclass_params, multiclass_train, shuffle=False, as_pandas=False)
-for k in ['train-merror-mean', 'train-merror-std', 'test-merror-mean', 'test-merror-std']:
-  print(k, eval_hist[k][0])
-  print(k, eval_hist[k][-1])
+for k in ['train-mlogloss-mean', 'train-mlogloss-std', 'test-mlogloss-mean', 'test-mlogloss-std']:
+  print("%-20s %f" % (k, eval_hist[k][0]))
+  print("%-20s %f" % (k, eval_hist[k][-1]))
 
 print('')
 print('test_early_stopping_early')
