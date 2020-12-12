@@ -1,4 +1,4 @@
-## 0.5.0 (unreleased)
+## 0.5.0 (2020-12-12)
 
 - Updated XGBoost to 1.3.0
 
