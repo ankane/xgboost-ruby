@@ -1,3 +1,7 @@
+## 0.5.1 (unreleased)
+
+- Fixed error with validation sets without early stopping
+
 ## 0.5.0 (2020-12-12)
 
 - Updated XGBoost to 1.3.0

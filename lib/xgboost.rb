@@ -61,7 +61,7 @@ module XGBoost
             best_score = score
             best_iter = iteration
             best_message = message
-          elsif iteration - best_iter >= early_stopping_rounds
+          elsif early_stopping_rounds && iteration - best_iter >= early_stopping_rounds
             booster.best_iteration = best_iter
             puts "Stopping. Best iteration:\n#{best_message}" if verbose_eval
             break
