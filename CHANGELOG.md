@@ -1,4 +1,4 @@
-## 0.5.1 (unreleased)
+## 0.5.1 (2021-02-08)
 
 - Fixed error with validation sets without early stopping
 
