@@ -16,5 +16,5 @@ jobs:
         bundler-cache: true
     - if: ${{ startsWith(matrix.os, 'macos') }}
       run: brew install libomp
-    - run: bundle exec rake vendor:all
+    - run: bundle exec rake vendor:platform
     - run: bundle exec rake test
