@@ -25,6 +25,7 @@ namespace :vendor do
 
   task :mac do
     download_file("libxgboost.dylib")
+    download_file("libxgboost.arm64.dylib")
   end
 
   task :windows do

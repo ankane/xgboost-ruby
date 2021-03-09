@@ -5,7 +5,7 @@ module XGBoost
     begin
       ffi_lib XGBoost.ffi_lib
     rescue LoadError => e
-      if e.message.include?("Library not loaded: /usr/local/opt/libomp/lib/libomp.dylib") && e.message.include?("Reason: image not found")
+      if ["/usr/local", "/opt/homebrew"].any? { |v| e.message.include?("Library not loaded: #{v}/opt/libomp/lib/libomp.dylib") } && e.message.include?("Reason: image not found")
         raise LoadError, "OpenMP not found. Run `brew install libomp`"
       else
         raise e
