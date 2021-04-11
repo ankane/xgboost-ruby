@@ -1,3 +1,8 @@
+## 0.5.3 (unreleased)
+
+- Updated XGBoost to 1.4.0
+- Added ARM shared library for Linux
+
 ## 0.5.2 (2021-03-09)
 
 - Added ARM shared library for Mac

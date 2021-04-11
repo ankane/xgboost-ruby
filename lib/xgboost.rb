@@ -20,10 +20,20 @@ module XGBoost
     attr_accessor :ffi_lib
   end
   lib_name =
-    if RbConfig::CONFIG["host_os"] =~ /darwin/i && RbConfig::CONFIG["host_cpu"] =~ /arm/i
-      FFI.map_library_name("xgboost.arm64")
+    if Gem.win_platform?
+      "xgboost.dll"
+    elsif RbConfig::CONFIG["host_os"] =~ /darwin/i
+      if RbConfig::CONFIG["host_cpu"] =~ /arm/i
+        "libxgboost.arm64.dylib"
+      else
+        "libxgboost.dylib"
+      end
     else
-      FFI.map_library_name("xgboost")
+      if RbConfig::CONFIG["host_cpu"] =~ /aarch64/i
+        "libxgboost.arm64.so"
+      else
+        "libxgboost.so"
+      end
     end
   vendor_lib = File.expand_path("../vendor/#{lib_name}", __dir__)
   self.ffi_lib = [vendor_lib]

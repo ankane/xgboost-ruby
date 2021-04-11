@@ -9,7 +9,7 @@ class BoosterTest < Minitest::Test
   def test_dump_json
     booster_dump = booster.dump(dump_format: "json").first
     assert JSON.parse(booster_dump)
-    assert_equal 2, JSON.parse(booster_dump).fetch("split")
+    assert_equal "2", JSON.parse(booster_dump).fetch("split")
 
     feature_booster_dump = booster_with_feature_names.dump(dump_format: "json").first
     assert JSON.parse(feature_booster_dump)
