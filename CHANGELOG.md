@@ -1,4 +1,4 @@
-## 0.6.0 (unreleased)
+## 0.5.3 (2021-05-12)
 
 - Updated XGBoost to 1.4.0
 - Added ARM shared library for Linux
