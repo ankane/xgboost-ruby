@@ -1,8 +1,8 @@
-# XGBoost
+# XGBoost Ruby
 
 [XGBoost](https://github.com/dmlc/xgboost) - high performance gradient boosting - for Ruby
 
-[![Build Status](https://github.com/ankane/xgboost/workflows/build/badge.svg?branch=master)](https://github.com/ankane/xgboost/actions)
+[![Build Status](https://github.com/ankane/xgboost-ruby/workflows/build/badge.svg?branch=master)](https://github.com/ankane/xgboost-ruby/actions)
 
 ## Installation
 
@@ -173,22 +173,22 @@ Thanks to the [xgboost](https://github.com/PairOnAir/xgboost-ruby) gem for showi
 
 ## History
 
-View the [changelog](https://github.com/ankane/xgboost/blob/master/CHANGELOG.md)
+View the [changelog](https://github.com/ankane/xgboost-ruby/blob/master/CHANGELOG.md)
 
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/xgboost/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/xgboost/pulls)
+- [Report bugs](https://github.com/ankane/xgboost-ruby/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/xgboost-ruby/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
 To get started with development:
 
 ```sh
-git clone https://github.com/ankane/xgboost.git
-cd xgboost
+git clone https://github.com/ankane/xgboost-ruby.git
+cd xgboost-ruby
 bundle install
 bundle exec rake vendor:all
 bundle exec rake test
