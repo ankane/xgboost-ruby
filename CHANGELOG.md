@@ -1,3 +1,7 @@
+## 0.6.0 (unreleased)
+
+- Updated XGBoost to 1.5.0
+
 ## 0.5.3 (2021-05-12)
 
 - Updated XGBoost to 1.4.0

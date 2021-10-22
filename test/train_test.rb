@@ -46,7 +46,7 @@ class TrainTest < Minitest::Test
   end
 
   def test_lib_version
-    assert_equal "1.4.0", XGBoost.lib_version
+    assert_equal "1.5.0", XGBoost.lib_version
   end
 
   def test_feature_names_and_types

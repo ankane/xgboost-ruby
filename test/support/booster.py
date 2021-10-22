@@ -24,3 +24,5 @@ with open('/tmp/model.json') as f:
   booster_dump = json.load(f)[0]
 
 print('split', booster_dump['split'])
+
+print('attributes', bst.attributes())

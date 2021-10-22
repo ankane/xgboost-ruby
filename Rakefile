@@ -11,7 +11,7 @@ end
 def download_file(file, sha256)
   require "open-uri"
 
-  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-1.4.0/#{file}"
+  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-1.5.0/#{file}"
   puts "Downloading #{file}..."
   contents = URI.open(url).read
 
@@ -25,17 +25,17 @@ end
 
 namespace :vendor do
   task :linux do
-    download_file("libxgboost.so", "5da56b56fac6c396f62dabd83d9dc1a6b38e839e31d7e5679079c575ecfa991a")
-    download_file("libxgboost.arm64.so", "104e23553f49ffeb12cd19fcbfd6687d64b912bdbfac46980d5a6726a794e661")
+    download_file("libxgboost.so", "c1e5c8f9bffeb15e40b5f1c5db7b0208d0fd0fbf01d37df68da44eaecb3e240c")
+    download_file("libxgboost.arm64.so", "b08238e175f09d18ddb5a090a3974626cfc1c1ac63545f185c01277ba218bbd6")
   end
 
   task :mac do
-    download_file("libxgboost.dylib", "f7b0594bcd1042acaff3c6e3c6ec8fae01ec4b4c1cf56cf3b0c0795d06c6c5ce")
-    download_file("libxgboost.arm64.dylib", "56e2212a16419725979f67e5c0f8c5a7ab5391699ebccf1e96158c9ef725862b")
+    download_file("libxgboost.dylib", "9129797ef9ea9968d1ea4f24e9b8fc81ba55647c6456d61d22e08bc337d2f21a")
+    download_file("libxgboost.arm64.dylib", "710b0649c58a0e189432ba638c4b855f90d7e243e4e9f9c00837cf110a8074f3")
   end
 
   task :windows do
-    download_file("xgboost.dll", "5306f3617622ecfdb09ffb734aecc53b1ef234ffc1a207034aa38281c5449315")
+    download_file("xgboost.dll", "f26127f82e9f07a0c7e826d18809d96e8ed2874d035836163ba439501f2865bf")
   end
 
   task all: [:linux, :mac, :windows]

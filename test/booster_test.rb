@@ -9,7 +9,7 @@ class BoosterTest < Minitest::Test
   def test_dump_json
     booster_dump = booster.dump(dump_format: "json").first
     assert JSON.parse(booster_dump)
-    assert_equal "2", JSON.parse(booster_dump).fetch("split")
+    assert_equal "f2", JSON.parse(booster_dump).fetch("split")
 
     feature_booster_dump = booster_with_feature_names.dump(dump_format: "json").first
     assert JSON.parse(feature_booster_dump)
@@ -37,22 +37,24 @@ class BoosterTest < Minitest::Test
   end
 
   def test_attributes
+    default_attributes = {"best_iteration" => "9", "best_ntree_limit" => "10"}
+
     assert_nil booster["foo"]
-    assert_equal({}, booster.attributes)
+    assert_equal(default_attributes, booster.attributes)
 
     booster["foo"] = "bar"
 
     assert_equal "bar", booster["foo"]
-    assert_equal({ "foo" => "bar" }, booster.attributes)
+    assert_equal(default_attributes.merge("foo" => "bar"), booster.attributes)
 
     booster["foo"] = "baz"
 
     assert_equal "baz", booster["foo"]
-    assert_equal({ "foo" => "baz" }, booster.attributes)
+    assert_equal(default_attributes.merge("foo" => "baz"), booster.attributes)
 
     booster["bar"] = "qux"
 
-    assert_equal({ "foo" => "baz", "bar" => "qux" }, booster.attributes)
+    assert_equal(default_attributes.merge("foo" => "baz", "bar" => "qux"), booster.attributes)
 
     booster["foo"] = nil
 
@@ -71,7 +73,7 @@ class BoosterTest < Minitest::Test
 
   def booster_with_feature_names
     @booster_with_feature_names ||= load_booster.tap do |booster|
-      booster.feature_names = (0...3).map { |idx| "feat#{idx}" }
+      booster.feature_names = 4.times.map { |idx| "feat#{idx}" }
     end
   end
 end
