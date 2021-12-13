@@ -23,13 +23,13 @@ module XGBoost
     if Gem.win_platform?
       "xgboost.dll"
     elsif RbConfig::CONFIG["host_os"] =~ /darwin/i
-      if RbConfig::CONFIG["host_cpu"] =~ /arm/i
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
         "libxgboost.arm64.dylib"
       else
         "libxgboost.dylib"
       end
     else
-      if RbConfig::CONFIG["host_cpu"] =~ /aarch64/i
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
         "libxgboost.arm64.so"
       else
         "libxgboost.so"
