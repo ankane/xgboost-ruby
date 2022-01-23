@@ -9,7 +9,7 @@
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'xgb'
+gem "xgb"
 ```
 
 On Mac, also install OpenMP:
