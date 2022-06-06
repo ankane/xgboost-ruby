@@ -8,34 +8,43 @@ Rake::TestTask.new do |t|
   t.warning = false
 end
 
-def download_file(file, sha256)
-  require "open-uri"
+def download_file(target, sha256)
+  version = "1.6.1"
 
-  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-1.5.0/#{file}"
+  require "fileutils"
+  require "open-uri"
+  require "tmpdir"
+
+  file = "xgboost-#{version}-#{target}.zip"
+  url = "https://github.com/ankane/ml-builds/releases/download/xgboost-#{version}/#{file}"
   puts "Downloading #{file}..."
   contents = URI.open(url).read
 
   computed_sha256 = Digest::SHA256.hexdigest(contents)
   raise "Bad hash: #{computed_sha256}" if computed_sha256 != sha256
 
-  dest = "vendor/#{file}"
-  File.binwrite(dest, contents)
-  puts "Saved #{dest}"
+  Dir.chdir(Dir.mktmpdir) do
+    File.binwrite(file, contents)
+    dest = File.expand_path("vendor/#{target}", __dir__)
+    FileUtils.rm_r(dest) if Dir.exist?(dest)
+    # run apt install unzip on Linux
+    system "unzip", "-q", file, "-d", dest, exception: true
+  end
 end
 
 namespace :vendor do
   task :linux do
-    download_file("libxgboost.so", "c1e5c8f9bffeb15e40b5f1c5db7b0208d0fd0fbf01d37df68da44eaecb3e240c")
-    download_file("libxgboost.arm64.so", "b08238e175f09d18ddb5a090a3974626cfc1c1ac63545f185c01277ba218bbd6")
+    download_file("x86_64-linux", "cb2972ef63c2a80411e801b40f0d0387a3455d376f27b7e8c8eae9106b4653a4")
+    download_file("aarch64-linux", "e6428ae7e3833d6a57bbce647328c468915228a4a5db8c50d053b78686ae89ed")
   end
 
   task :mac do
-    download_file("libxgboost.dylib", "9129797ef9ea9968d1ea4f24e9b8fc81ba55647c6456d61d22e08bc337d2f21a")
-    download_file("libxgboost.arm64.dylib", "710b0649c58a0e189432ba638c4b855f90d7e243e4e9f9c00837cf110a8074f3")
+    download_file("x86_64-darwin", "23b4aa67f4f50ae2c6e4f4610bc002ef728d596d507d4c530df497add00ff762")
+    download_file("aarch64-darwin", "c0ea037a8ded16cc69173ac3bf9fc329f6ce486a4b617bb70be8094824403901")
   end
 
   task :windows do
-    download_file("xgboost.dll", "f26127f82e9f07a0c7e826d18809d96e8ed2874d035836163ba439501f2865bf")
+    download_file("x86_64-windows", "3c60b036cabb8dc37ff60af4d849d1fda3a93e45b017c8f0dc28c9b392d4dc64")
   end
 
   task all: [:linux, :mac, :windows]

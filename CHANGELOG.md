@@ -1,5 +1,6 @@
-## 0.6.1 (unreleased)
+## 0.7.0 (unreleased)
 
+- Updated XGBoost to 1.6.1
 - Improved ARM detection
 
 ## 0.6.0 (2021-10-23)

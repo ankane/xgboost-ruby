@@ -7,6 +7,6 @@
 /spec/reports/
 /tmp/
 *.lock
-*.so
-*.dylib
-*.dll
+/vendor/*-darwin/
+/vendor/*-linux/
+/vendor/*-windows/

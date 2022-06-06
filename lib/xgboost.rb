@@ -19,23 +19,23 @@ module XGBoost
   class << self
     attr_accessor :ffi_lib
   end
-  lib_name =
+  lib_path =
     if Gem.win_platform?
-      "xgboost.dll"
+      "x86_64-windows/xgboost.dll"
     elsif RbConfig::CONFIG["host_os"] =~ /darwin/i
       if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
-        "libxgboost.arm64.dylib"
+        "aarch64-darwin/libxgboost.dylib"
       else
-        "libxgboost.dylib"
+        "x86_64-darwin/libxgboost.dylib"
       end
     else
       if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
-        "libxgboost.arm64.so"
+        "aarch64-linux/libxgboost.so"
       else
-        "libxgboost.so"
+        "x86_64-linux/libxgboost.so"
       end
     end
-  vendor_lib = File.expand_path("../vendor/#{lib_name}", __dir__)
+  vendor_lib = File.expand_path("../vendor/#{lib_path}", __dir__)
   self.ffi_lib = [vendor_lib]
 
   # friendlier error message
