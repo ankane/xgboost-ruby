@@ -2,6 +2,7 @@
 
 - Updated XGBoost to 1.6.1
 - Improved ARM detection
+- Dropped support for Ruby < 2.7
 
 ## 0.6.0 (2021-10-23)
 
