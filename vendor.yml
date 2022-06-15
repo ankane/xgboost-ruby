@@ -1,0 +1,16 @@
+platforms:
+  x86_64-linux:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.6.1/xgboost-1.6.1-x86_64-linux.zip
+    sha256: cb2972ef63c2a80411e801b40f0d0387a3455d376f27b7e8c8eae9106b4653a4
+  aarch64-linux:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.6.1/xgboost-1.6.1-aarch64-linux.zip
+    sha256: e6428ae7e3833d6a57bbce647328c468915228a4a5db8c50d053b78686ae89ed
+  x86_64-darwin:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.6.1/xgboost-1.6.1-x86_64-darwin.zip
+    sha256: 23b4aa67f4f50ae2c6e4f4610bc002ef728d596d507d4c530df497add00ff762
+  arm64-darwin:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.6.1/xgboost-1.6.1-aarch64-darwin.zip
+    sha256: c0ea037a8ded16cc69173ac3bf9fc329f6ce486a4b617bb70be8094824403901
+  x64-mingw:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.6.1/xgboost-1.6.1-x86_64-windows.zip
+    sha256: 3c60b036cabb8dc37ff60af4d849d1fda3a93e45b017c8f0dc28c9b392d4dc64
