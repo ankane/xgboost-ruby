@@ -2,16 +2,16 @@
 require "ffi"
 
 # modules
-require "xgboost/utils"
-require "xgboost/booster"
-require "xgboost/dmatrix"
-require "xgboost/version"
+require_relative "xgboost/utils"
+require_relative "xgboost/booster"
+require_relative "xgboost/dmatrix"
+require_relative "xgboost/version"
 
 # scikit-learn API
-require "xgboost/model"
-require "xgboost/classifier"
-require "xgboost/ranker"
-require "xgboost/regressor"
+require_relative "xgboost/model"
+require_relative "xgboost/classifier"
+require_relative "xgboost/ranker"
+require_relative "xgboost/regressor"
 
 module XGBoost
   class Error < StandardError; end
