@@ -1,3 +1,7 @@
+## 0.7.2 (unreleased)
+
+- Improved error message for invalid matrix
+
 ## 0.7.1 (2022-10-31)
 
 - Updated XGBoost to 1.7.0

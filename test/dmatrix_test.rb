@@ -75,4 +75,12 @@ class DMatrixTest < Minitest::Test
     # types = ["float", "float", "float", "int"]
     # assert_equal types, dataset.feature_types
   end
+
+  def test_invalid
+    data = [[1, 2], [3, 4, 5]]
+    error = assert_raises(IndexError) do
+      XGBoost::DMatrix.new(data)
+    end
+    assert_equal "Rows have different sizes", error.message
+  end
 end
