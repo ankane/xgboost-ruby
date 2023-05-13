@@ -1,5 +1,6 @@
 ## 0.7.2 (unreleased)
 
+- Added musl shared library for Linux
 - Improved error message for invalid matrix
 
 ## 0.7.1 (2022-10-31)

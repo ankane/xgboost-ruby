@@ -68,6 +68,8 @@ namespace :vendor do
       else
         download_platform("x86_64-darwin")
       end
+    elsif RbConfig::CONFIG["host_os"] =~ /linux-musl/i
+      download_platform("x86_64-linux-musl")
     else
       if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
         download_platform("aarch64-linux")

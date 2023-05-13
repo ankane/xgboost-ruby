@@ -2,6 +2,9 @@ platforms:
   x86_64-linux:
     url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.7.0/xgboost-1.7.0-x86_64-linux.zip
     sha256: 13e7d6914ba309e0bdfce7df452d3d177e294da94dccf2c3d944e7fdce8c423a
+  x86_64-linux-musl:
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.7.0/xgboost-1.7.0-x86_64-linux-musl.zip
+    sha256: 648f1c4c1da5a402e265a376317b806f48b135673a3f73a8d69c887768692c3c
   aarch64-linux:
     url: https://github.com/ankane/ml-builds/releases/download/xgboost-1.7.0/xgboost-1.7.0-aarch64-linux.zip
     sha256: 11f2647f9fd7701aa2e90409cd5ba1e6bd47e71a0009931eb5d6e0f046dd7cf8

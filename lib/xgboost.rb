@@ -28,6 +28,8 @@ module XGBoost
       else
         "x86_64-darwin/libxgboost.dylib"
       end
+    elsif RbConfig::CONFIG["host_os"] =~ /linux-musl/i
+      "x86_64-linux-musl/libxgboost.so"
     else
       if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
         "aarch64-linux/libxgboost.so"
