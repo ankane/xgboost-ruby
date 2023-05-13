@@ -1,4 +1,4 @@
-## 0.7.2 (unreleased)
+## 0.7.2 (2023-05-12)
 
 - Updated XGBoost to 1.7.5
 - Added musl shared library for Linux
