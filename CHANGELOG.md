@@ -1,5 +1,6 @@
 ## 0.7.2 (unreleased)
 
+- Updated XGBoost to 1.7.5
 - Added musl shared library for Linux
 - Improved error message for invalid matrix
 
