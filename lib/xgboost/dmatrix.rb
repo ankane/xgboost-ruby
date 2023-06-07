@@ -52,7 +52,7 @@ module XGBoost
         end
         check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
-        ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
+        ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
 
         @feature_names ||= ncol.times.map { |i| "f#{i}" }
       end
@@ -61,9 +61,9 @@ module XGBoost
       self.weight = weight if weight
     end
 
-    def self.finalize(pointer)
+    def self.finalize(addr)
       # must use proc instead of stabby lambda
-      proc { FFI.XGDMatrixFree(pointer) }
+      proc { FFI.XGDMatrixFree(::FFI::Pointer.new(:pointer, addr)) }
     end
 
     def label

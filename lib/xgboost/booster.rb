@@ -5,7 +5,7 @@ module XGBoost
     def initialize(params: nil, model_file: nil)
       @handle = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterCreate(nil, 0, @handle)
-      ObjectSpace.define_finalizer(self, self.class.finalize(handle_pointer))
+      ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
 
       if model_file
         check_result FFI.XGBoosterLoadModel(handle_pointer, model_file)
@@ -15,9 +15,9 @@ module XGBoost
       set_param(params)
     end
 
-    def self.finalize(pointer)
+    def self.finalize(addr)
       # must use proc instead of stabby lambda
-      proc { FFI.XGBoosterFree(pointer) }
+      proc { FFI.XGBoosterFree(::FFI::Pointer.new(:pointer, addr)) }
     end
 
     def update(dtrain, iteration)

@@ -83,4 +83,9 @@ class DMatrixTest < Minitest::Test
     end
     assert_equal "Rows have different sizes", error.message
   end
+
+  def test_copy
+    regression_train.dup
+    regression_train.clone
+  end
 end

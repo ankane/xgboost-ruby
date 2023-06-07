@@ -61,6 +61,11 @@ class BoosterTest < Minitest::Test
     refute_includes(booster.attributes, "foo")
   end
 
+  def test_copy
+    booster.dup
+    booster.clone
+  end
+
   private
 
   def load_booster
