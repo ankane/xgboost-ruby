@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.name          = "xgb"
   spec.version       = XGBoost::VERSION
   spec.summary       = "High performance gradient boosting for Ruby"
-  spec.homepage      = "https://github.com/ruby-ml/xgboost-ruby"
+  spec.homepage      = "https://github.com/ankane/xgboost-ruby"
   spec.license       = "Apache-2.0"
 
   spec.author        = "Andrew Kane"
