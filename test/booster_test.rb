@@ -28,7 +28,7 @@ class BoosterTest < Minitest::Test
   end
 
   def test_score
-    expected = {"f2" => 99, "f1" => 104, "f0" => 99, "f3" => 40}
+    expected = {"f0" => 118, "f2" => 93, "f1" => 104, "f3" => 43}
     assert_equal expected.values.sort, booster.score.values.sort
   end
 
@@ -37,7 +37,7 @@ class BoosterTest < Minitest::Test
   end
 
   def test_attributes
-    default_attributes = {"best_iteration" => "9", "best_ntree_limit" => "10"}
+    default_attributes = {}
 
     assert_nil booster["foo"]
     assert_equal(default_attributes, booster.attributes)

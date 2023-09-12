@@ -1,6 +1,6 @@
 module XGBoost
   class Ranker < Model
-    def initialize(n_estimators: 100, objective: "rank:pairwise", importance_type: "gain", **options)
+    def initialize(objective: "rank:ndcg", **options)
       super
     end
 

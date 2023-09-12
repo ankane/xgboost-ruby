@@ -14,6 +14,6 @@ y_test = y[300:]
 group = [100, 200]
 
 model = xgb.XGBRanker()
-model.fit(X_train, y_train, group)
+model.fit(X_train, y_train, group=group)
 print(model.predict(X_test)[0:6].tolist())
 print(model.feature_importances_.tolist())

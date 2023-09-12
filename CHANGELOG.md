@@ -1,3 +1,7 @@
+## 0.8.0 (unreleased)
+
+- Updated XGBoost to 2.0.0
+
 ## 0.7.3 (2023-07-24)
 
 - Fixed error with `dup` and `clone`

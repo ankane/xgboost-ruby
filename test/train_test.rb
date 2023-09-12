@@ -4,18 +4,18 @@ class TrainTest < Minitest::Test
   def test_regression
     model = XGBoost.train(regression_params, regression_train)
     y_pred = model.predict(regression_test)
-    assert_operator rsme(regression_test.label, y_pred), :<=, 0.3
+    assert_operator rsme(regression_test.label, y_pred), :<=, 0.32
 
     model.save_model(tempfile)
     model = XGBoost::Booster.new(model_file: tempfile)
     y_pred = model.predict(regression_test)
-    assert_operator rsme(regression_test.label, y_pred), :<=, 0.3
+    assert_operator rsme(regression_test.label, y_pred), :<=, 0.32
   end
 
   def test_binary
     model = XGBoost.train(binary_params, binary_train)
     y_pred = model.predict(binary_test)
-    assert_in_delta 0.9725926, y_pred.first
+    assert_in_delta 0.9866828, y_pred.first
     assert_equal 200, y_pred.size
 
     model.save_model(tempfile)
@@ -42,7 +42,7 @@ class TrainTest < Minitest::Test
 
   def test_early_stopping_early
     model = XGBoost.train(regression_params, regression_train, num_boost_round: 100, evals: [[regression_train, "train"], [regression_test, "eval"]], early_stopping_rounds: 5, verbose_eval: false)
-    assert_equal 14, model.best_iteration
+    assert_equal 9, model.best_iteration
   end
 
   def test_lib_version

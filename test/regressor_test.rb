@@ -7,10 +7,10 @@ class RegressorTest < Minitest::Test
     model = XGBoost::Regressor.new
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    expected = [1.1791534423828125, 1.7054706811904907, 1.5178813934326172, 0.5577107071876526, 0.9730352163314819, 1.1123452186584473]
+    expected = [1.1507850885391235, 1.3788503408432007, 1.66087806224823, 0.5367319583892822, 1.0890085697174072, 1.3380072116851807]
     assert_elements_in_delta expected, y_pred.first(6)
 
-    expected = [0.10412569344043732, 0.3034818470478058, 0.47513794898986816, 0.11725451052188873]
+    expected = [0.10230803489685059, 0.3298805356025696, 0.4885728359222412, 0.07923857867717743]
     assert_elements_in_delta expected, model.feature_importances
 
     model.save_model(tempfile)
@@ -25,7 +25,7 @@ class RegressorTest < Minitest::Test
 
     model = XGBoost::Regressor.new
     model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
-    assert_equal 14, model.booster.best_iteration
+    assert_equal 9, model.booster.best_iteration
   end
 
   def test_daru
@@ -41,7 +41,7 @@ class RegressorTest < Minitest::Test
     model = XGBoost::Regressor.new
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    expected = [1.1791534423828125, 1.7054706811904907, 1.5178813934326172, 0.5577107071876526, 0.9730352163314819, 1.1123452186584473]
+    expected = [1.1507850885391235, 1.3788503408432007, 1.66087806224823, 0.5367319583892822, 1.0890085697174072, 1.3380072116851807]
     assert_elements_in_delta expected, y_pred.first(6)
   end
 end
