@@ -1,4 +1,4 @@
-## 0.8.0 (unreleased)
+## 0.8.0 (2023-09-13)
 
 - Updated XGBoost to 2.0.0
 - Dropped support for Ruby < 3
