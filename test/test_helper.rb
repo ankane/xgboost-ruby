@@ -101,6 +101,6 @@ class Minitest::Test
   end
 
   def tempfile
-    @tempfile ||= "#{Dir.mktmpdir}/#{Time.now.to_f}"
+    @tempfile ||= "#{Dir.mktmpdir}/#{Time.now.to_f}.json"
   end
 end
