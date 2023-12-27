@@ -8,3 +8,4 @@ gem "daru"
 gem "matrix" # for daru
 gem "numo-narray"
 gem "rover-df"
+gem "csv"
