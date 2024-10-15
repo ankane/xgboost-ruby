@@ -1,4 +1,4 @@
-require_relative "test_helper"
+require_relative 'test_helper'
 
 class CallbacksTest < Minitest::Test
   class MockCallback < XGBoost::TrainingCallback
@@ -30,13 +30,13 @@ class CallbacksTest < Minitest::Test
     def before_iteration(model: nil, epoch: nil)
       @before_iteration_count += 1
       @before_iteration_args << { epoch: epoch }
-      return true
+      true
     end
 
     def after_iteration(model: nil, epoch: nil, history: nil)
       @after_iteration_count += 1
       @history = history
-      return true
+      true
     end
   end
 
@@ -92,7 +92,8 @@ class CallbacksTest < Minitest::Test
     def callback.before_iteration(model: nil, epoch: nil)
       @before_iteration_count += 1
       @before_iteration_args << { epoch: epoch }
-      return (epoch % 2 == 0)
+      # If any callback returns false, break
+      epoch.even?
     end
     num_boost_round = 10
 
@@ -130,7 +131,7 @@ class CallbacksTest < Minitest::Test
     def callback.after_iteration(model: nil, epoch: nil, history: nil)
       @after_iteration_count += 1
       @history = history
-      return epoch < 7
+      epoch < 7
     end
     num_boost_round = 10
 
@@ -166,8 +167,8 @@ class CallbacksTest < Minitest::Test
   def test_updates_model_before_training
     callback = MockCallback.new
     def callback.before_training(model: nil)
-      model["device"] = "cuda:0"
-      return model
+      model['device'] = 'cuda:0'
+      model
     end
 
     num_boost_round = 10
@@ -180,6 +181,6 @@ class CallbacksTest < Minitest::Test
       evals: [[regression_train, 'train'], [regression_test, 'eval']]
     )
 
-    assert_equal model["device"], "cuda:0"
+    assert_equal model['device'], 'cuda:0'
   end
 end

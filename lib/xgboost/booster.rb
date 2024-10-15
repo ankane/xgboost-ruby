@@ -1,8 +1,9 @@
 module XGBoost
   class Booster
-    attr_accessor :best_iteration, :feature_names, :feature_types, :best_score
+    attr_accessor :best_iteration, :feature_names, :feature_types, :best_score, :params
 
     def initialize(params: nil, model_file: nil)
+      @params = params
       @handle = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterCreate(nil, 0, @handle)
       ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))

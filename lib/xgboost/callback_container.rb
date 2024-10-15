@@ -31,16 +31,18 @@ module XGBoost
       model
     end
 
+    # If ANY callback returns false, then EXIT
     def before_iteration(model: nil, epoch: nil)
-      callbacks.none? || callbacks.any? do |callback|
+      callbacks.none? || callbacks.all? do |callback|
         callback.before_iteration(model: model, epoch: epoch)
       end
     end
 
+    # If ANY callback returns false, then EXIT
     def after_iteration(model: nil, epoch: nil, res: nil)
       update_history(res)
 
-      callbacks.none? || callbacks.any? do |callback|
+      callbacks.none? || callbacks.all? do |callback|
         callback.after_iteration(model: model, epoch: epoch, history: history)
       end
     end
