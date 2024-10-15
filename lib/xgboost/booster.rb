@@ -1,6 +1,6 @@
 module XGBoost
   class Booster
-    attr_accessor :best_iteration, :feature_names, :feature_types
+    attr_accessor :best_iteration, :feature_names, :feature_types, :best_score
 
     def initialize(params: nil, model_file: nil)
       @handle = ::FFI::MemoryPointer.new(:pointer)

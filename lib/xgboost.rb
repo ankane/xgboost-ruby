@@ -6,6 +6,8 @@ require_relative "xgboost/utils"
 require_relative "xgboost/booster"
 require_relative "xgboost/dmatrix"
 require_relative "xgboost/version"
+require_relative "xgboost/training_callback"
+require_relative "xgboost/callback_container"
 
 # scikit-learn API
 require_relative "xgboost/model"
@@ -44,8 +46,11 @@ module XGBoost
   autoload :FFI, "xgboost/ffi"
 
   class << self
-    def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true)
+    def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true, callbacks: [])
       booster = Booster.new(params: params)
+      cb_container = CallbackContainer.new(callbacks)
+      booster = cb_container.before_training(model: booster)
+
       num_feature = dtrain.num_col
       booster.set_param("num_feature", num_feature)
       booster.feature_names = dtrain.feature_names
@@ -59,6 +64,7 @@ module XGBoost
       end
 
       num_boost_round.times do |iteration|
+        break unless cb_container.before_iteration(model: booster, epoch: iteration)
         booster.update(dtrain, iteration)
 
         if evals.any?
@@ -80,11 +86,14 @@ module XGBoost
             best_message = message
           elsif early_stopping_rounds && iteration - best_iter >= early_stopping_rounds
             booster.best_iteration = best_iter
+            booster.best_score = best_score
             puts "Stopping. Best iteration:\n#{best_message}" if verbose_eval
             break
           end
+          break unless cb_container.after_iteration(model: booster, epoch: iteration, res: res)
         end
       end
+      booster = cb_container.after_training(model: booster)
 
       booster
     end
