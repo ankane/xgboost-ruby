@@ -2,6 +2,7 @@
 
 - Updated XGBoost to 2.1.1
 - Added support for callbacks
+- Added `save_config` method to `Booster`
 - Dropped support for Ruby < 3.1
 
 ## 0.8.0 (2023-09-13)

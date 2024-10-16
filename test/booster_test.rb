@@ -27,6 +27,12 @@ class BoosterTest < Minitest::Test
     assert JSON.parse(File.read(tempfile))
   end
 
+  def test_save_config
+    config = booster.save_config
+    assert_kind_of Hash, JSON.parse(config)
+    assert_equal Encoding::UTF_8, config.encoding
+  end
+
   def test_score
     expected = {"f0" => 118, "f2" => 93, "f1" => 104, "f3" => 43}
     assert_equal expected.values.sort, booster.score.values.sort

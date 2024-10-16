@@ -40,6 +40,13 @@ module XGBoost
       set_attr(**{key_name => raw_value})
     end
 
+    def save_config
+      length = ::FFI::MemoryPointer.new(:int)
+      json_string = ::FFI::MemoryPointer.new(:pointer)
+      check_result FFI.XGBoosterSaveJsonConfig(handle_pointer, length, json_string)
+      json_string.read_pointer.read_string(length.read_int).force_encoding(Encoding::UTF_8)
+    end
+
     def attr(key_name)
       key = string_pointer(key_name.to_s)
       success = ::FFI::MemoryPointer.new(:int)

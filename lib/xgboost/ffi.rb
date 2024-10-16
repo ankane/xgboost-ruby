@@ -40,6 +40,7 @@ module XGBoost
     attach_function :XGBoosterPredict, %i[pointer pointer int int int pointer pointer], :int
     attach_function :XGBoosterLoadModel, %i[pointer string], :int
     attach_function :XGBoosterSaveModel, %i[pointer string], :int
+    attach_function :XGBoosterSaveJsonConfig, %i[pointer pointer pointer], :int
     attach_function :XGBoosterDumpModelExWithFeatures, %i[pointer int pointer pointer int string pointer pointer], :int
     attach_function :XGBoosterGetAttr, %i[pointer pointer pointer pointer], :int
     attach_function :XGBoosterSetAttr, %i[pointer pointer pointer], :int
