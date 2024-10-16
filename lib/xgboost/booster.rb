@@ -183,11 +183,17 @@ module XGBoost
       success.read_int == 1 ? out_result.read_pointer.read_string : nil
     end
 
-    def []=(key_name, raw_value)
-      key = string_pointer(key_name)
-      value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
+    def set_attr(**kwargs)
+      kwargs.each do |key_name, raw_value|
+        key = string_pointer(key_name)
+        value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
 
-      check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
+        check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
+      end
+    end
+
+    def []=(key_name, raw_value)
+      set_attr(**{key_name => raw_value})
     end
 
     def attributes
@@ -202,19 +208,19 @@ module XGBoost
     end
 
     def best_iteration
-      self["best_iteration"]&.to_i
+      attr(:best_iteration)&.to_i
     end
 
     def best_iteration=(iteration)
-      self["best_iteration"] = iteration
+      set_attr(best_iteration: iteration)
     end
 
     def best_score
-      self["best_score"]&.to_i
+      attr(:best_score)&.to_f
     end
 
     def best_score=(score)
-      self["best_score"] = score
+      set_attr(best_score: score)
     end
 
     def num_boosted_rounds
