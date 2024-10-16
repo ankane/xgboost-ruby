@@ -91,8 +91,9 @@ module XGBoost
             puts "Stopping. Best iteration:\n#{best_message}" if verbose_eval
             break
           end
-          break if cb_container.after_iteration(booster, iteration, dtrain, evals)
         end
+
+        break if cb_container.after_iteration(booster, iteration, dtrain, evals)
       end
       booster = cb_container.after_training(booster)
 
