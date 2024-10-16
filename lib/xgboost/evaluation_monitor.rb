@@ -33,9 +33,9 @@ module XGBoost
 
     def fmt_metric(data, metric, score, std)
       if !std.nil? && @show_stdv
-        "\t#{data + "-" + metric}:#{score}+#{std}"
+        "\t%s:%.5f+%.5f" % [data + "-" + metric, score, std]
       else
-        "\t#{data + "-" + metric}:#{score}"
+        "\t%s:%.5f" % [data + "-" + metric, score]
       end
     end
   end
