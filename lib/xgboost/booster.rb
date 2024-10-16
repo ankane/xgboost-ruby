@@ -69,11 +69,8 @@ module XGBoost
     end
 
     def set_attr(**kwargs)
-      kwargs.each do |key_name, raw_value|
-        key = string_pointer(key_name)
-        value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
-
-        check_call FFI.XGBoosterSetAttr(handle, key, value)
+      kwargs.each do |key, value|
+        check_call FFI.XGBoosterSetAttr(handle, key.to_s, value&.to_s)
       end
     end
 
