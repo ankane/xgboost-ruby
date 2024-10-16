@@ -114,7 +114,7 @@ module XGBoost
 
       if verbose_eval
         verbose_eval = verbose_eval == true ? 1 : verbose_eval
-        callbacks << EvaluationMonitor.new(period: verbose_eval)
+        callbacks << EvaluationMonitor.new(period: verbose_eval, show_stdv: show_stdv)
       end
       if early_stopping_rounds
         callbacks << EarlyStopping.new(rounds: early_stopping_rounds)
