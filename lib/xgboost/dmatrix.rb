@@ -2,66 +2,62 @@ module XGBoost
   class DMatrix
     include Utils
 
-    attr_reader :data, :handle
+    attr_reader :handle
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
-      @data = data
-
-      if @data.is_a?(::FFI::AutoPointer)
-        @handle = @data
+      if data.is_a?(::FFI::AutoPointer)
+        @handle = data
         return
       end
 
-      if data
-        if matrix?(data)
-          nrow = data.row_count
-          ncol = data.column_count
-          flat_data = data.to_a.flatten
-        elsif daru?(data)
-          nrow, ncol = data.shape
-          flat_data = data.map_rows(&:to_a).flatten
-          feature_names = data.each_vector.map(&:name)
-          feature_types =
-            data.each_vector.map(&:db_type).map do |v|
-              case v
-              when "INTEGER"
-                "int"
-              when "DOUBLE"
-                "float"
-              else
-                raise Error, "Unknown feature type: #{v}"
-              end
+      if matrix?(data)
+        nrow = data.row_count
+        ncol = data.column_count
+        flat_data = data.to_a.flatten
+      elsif daru?(data)
+        nrow, ncol = data.shape
+        flat_data = data.map_rows(&:to_a).flatten
+        feature_names = data.each_vector.map(&:name)
+        feature_types =
+          data.each_vector.map(&:db_type).map do |v|
+            case v
+            when "INTEGER"
+              "int"
+            when "DOUBLE"
+              "float"
+            else
+              raise Error, "Unknown feature type: #{v}"
             end
-        elsif numo?(data)
-          nrow, ncol = data.shape
-        elsif rover?(data)
-          nrow, ncol = data.shape
-          feature_names = data.keys
-          data = data.to_numo
-        else
-          nrow = data.count
-          ncol = data.first.count
-          if !data.all? { |r| r.size == ncol }
-            raise ArgumentError, "Rows have different sizes"
           end
-          flat_data = data.flatten
+      elsif numo?(data)
+        nrow, ncol = data.shape
+      elsif rover?(data)
+        nrow, ncol = data.shape
+        feature_names = data.keys
+        data = data.to_numo
+      else
+        nrow = data.count
+        ncol = data.first.count
+        if !data.all? { |r| r.size == ncol }
+          raise ArgumentError, "Rows have different sizes"
         end
-
-        c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
-        if numo?(data)
-          c_data.write_bytes(data.cast_to(Numo::SFloat).to_string)
-        else
-          handle_missing(flat_data, missing)
-          c_data.write_array_of_float(flat_data)
-        end
-
-        out = ::FFI::MemoryPointer.new(:pointer)
-        check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, out)
-        @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
-
-        self.feature_names = feature_names || ncol.times.map { |i| "f#{i}" }
-        self.feature_types = feature_types if feature_types
+        flat_data = data.flatten
       end
+
+      c_data = ::FFI::MemoryPointer.new(:float, nrow * ncol)
+      if numo?(data)
+        c_data.write_bytes(data.cast_to(Numo::SFloat).to_string)
+      else
+        handle_missing(flat_data, missing)
+        c_data.write_array_of_float(flat_data)
+      end
+
+      out = ::FFI::MemoryPointer.new(:pointer)
+      check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, out)
+      @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
+
+      self.feature_names = feature_names || ncol.times.map { |i| "f#{i}" }
+      self.feature_types = feature_types if feature_types
 
       self.label = label if label
       self.weight = weight if weight
