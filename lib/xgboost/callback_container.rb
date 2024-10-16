@@ -1,6 +1,6 @@
 module XGBoost
   class CallbackContainer
-    attr_reader :aggregated_cv
+    attr_reader :aggregated_cv, :history
 
     def initialize(callbacks, is_cv: false)
       @callbacks = callbacks

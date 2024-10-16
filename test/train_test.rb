@@ -45,6 +45,12 @@ class TrainTest < Minitest::Test
     assert_equal 9, model.best_iteration
   end
 
+  def test_evals_result
+    evals_result = {}
+    XGBoost.train(regression_params, regression_train, evals: [[regression_train, "train"], [regression_test, "eval"]], evals_result: evals_result, verbose_eval: false)
+    assert evals_result["train"]["rmse"]
+  end
+
   def test_lib_version
     assert_match(/\A\d+\.\d+\.\d+\z/, XGBoost.lib_version)
   end

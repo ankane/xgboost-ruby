@@ -59,6 +59,7 @@ module XGBoost
       evals: nil,
       maximize: nil,
       early_stopping_rounds: nil,
+      evals_result: nil,
       verbose_eval: true,
       callbacks: nil
     )
@@ -85,6 +86,10 @@ module XGBoost
       end
 
       bst = cb_container.after_training(bst)
+
+      if !evals_result.nil?
+        evals_result.merge!(cb_container.history)
+      end
 
       bst
     end
