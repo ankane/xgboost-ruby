@@ -93,12 +93,12 @@ module XGBoost
       dtrain,
       num_boost_round: 10,
       nfold: 3,
-      seed: 0,
-      shuffle: true,
+      early_stopping_rounds: nil,
       verbose_eval: nil,
       show_stdv: true,
-      early_stopping_rounds: nil,
-      callbacks: nil
+      seed: 0,
+      callbacks: nil,
+      shuffle: true
     )
       results = {}
       cvfolds =
