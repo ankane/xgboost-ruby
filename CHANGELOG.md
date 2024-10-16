@@ -1,6 +1,7 @@
-## 0.8.1 (unreleased)
+## 0.9.0 (unreleased)
 
 - Added support for callbacks
+- Dropped support for Ruby < 3.1
 
 ## 0.8.0 (2023-09-13)
 
