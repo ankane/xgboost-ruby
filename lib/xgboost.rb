@@ -10,6 +10,7 @@ require_relative "xgboost/version"
 
 # callbacks
 require_relative "xgboost/training_callback"
+require_relative "xgboost/early_stopping"
 require_relative "xgboost/evaluation_monitor"
 
 # scikit-learn API
@@ -55,9 +56,12 @@ module XGBoost
 
       bst = Booster.new(params: params, cache: [dtrain] + evals.map { |d| d[0] })
 
-      # TODO split into separate callbacks in 0.9.0
-      if verbose_eval || early_stopping_rounds
-        callbacks << EvaluationMonitor.new(verbose_eval: verbose_eval, early_stopping_rounds: early_stopping_rounds)
+      if verbose_eval
+        verbose_eval = verbose_eval == true ? 1 : verbose_eval
+        callbacks << EvaluationMonitor.new(period: verbose_eval)
+      end
+      if early_stopping_rounds
+        callbacks << EarlyStopping.new(rounds: early_stopping_rounds)
       end
       cb_container = CallbackContainer.new(callbacks)
 

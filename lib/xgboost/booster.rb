@@ -197,6 +197,12 @@ module XGBoost
       key_names.map { |key_name| [key_name, self[key_name]] }.to_h
     end
 
+    def num_boosted_rounds
+      rounds = ::FFI::MemoryPointer.new(:int)
+      check_result FFI.XGBoosterBoostedRounds(handle_pointer, rounds)
+      rounds.read_int
+    end
+
     private
 
     def handle_pointer

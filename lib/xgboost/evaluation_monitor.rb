@@ -1,25 +1,12 @@
 module XGBoost
   class EvaluationMonitor < TrainingCallback
-    def initialize(verbose_eval:, early_stopping_rounds:)
-      @verbose_eval = verbose_eval
-      @early_stopping_rounds = early_stopping_rounds
-
-      @best_score = nil
-      @best_iter = nil
-      @best_message = nil
+    def initialize(period:)
+      @period = period
     end
 
     def after_iteration(model, epoch, evals_log)
       if evals_log.empty?
         return false
-      end
-
-      data_name = evals_log.keys[-1]
-      data_log = evals_log[data_name]
-      metric_name = data_log.keys[-1]
-
-      if @early_stopping_rounds && epoch == 0
-        puts "Will train until #{data_name}-#{metric_name} hasn't improved in #{@early_stopping_rounds.to_i} rounds." if @verbose_eval
       end
 
       msg = "[#{epoch}]"
@@ -31,21 +18,7 @@ module XGBoost
         end
       end
       msg += "\n"
-
-      puts msg if @verbose_eval
-      score = data_log[metric_name][-1]
-
-      # TODO handle larger better
-      if @best_score.nil? || score < @best_score
-        @best_score = score
-        @best_iter = epoch
-        @best_message = msg
-      elsif @early_stopping_rounds && epoch - @best_iter >= @early_stopping_rounds
-        model.best_iteration = @best_iter
-        model.best_score = @best_score
-        puts "Stopping. Best iteration:\n#{@best_message}" if @verbose_eval
-        return true
-      end
+      puts msg
 
       false
     end
