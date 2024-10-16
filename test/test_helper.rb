@@ -64,7 +64,7 @@ class Minitest::Test
   def load_data
     x = []
     CSV.foreach(data_path, headers: true, converters: :numeric) do |row|
-      x << row.to_h.values
+      x << row.fields
     end
     y = x.map(&:pop)
     [x, y]

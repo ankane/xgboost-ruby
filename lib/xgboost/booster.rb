@@ -193,7 +193,7 @@ module XGBoost
       len = read_uint64(out_len)
       key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
 
-      key_names.map { |key_name| [key_name, self[key_name]] }.to_h
+      key_names.to_h { |key_name| [key_name, self[key_name]] }
     end
 
     def best_iteration
