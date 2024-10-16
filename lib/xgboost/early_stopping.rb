@@ -91,9 +91,15 @@ module XGBoost
         value.is_a?(Array) ? value[0] : value
       end
 
-      improve_op = lambda do |new_, best|
+      maximize = lambda do |new_, best|
+        get_s.(new_) - @min_delta > get_s.(best)
+      end
+
+      minimize = lambda do |new_, best|
         get_s.(best) - @min_delta > get_s.(new_)
       end
+
+      improve_op = @maximize ? maximize : minimize
 
       if @stopping_history.empty?
         # First round

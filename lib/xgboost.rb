@@ -57,6 +57,7 @@ module XGBoost
       dtrain,
       num_boost_round: 10,
       evals: nil,
+      maximize: nil,
       early_stopping_rounds: nil,
       verbose_eval: true,
       callbacks: nil
@@ -71,7 +72,7 @@ module XGBoost
         callbacks << EvaluationMonitor.new(period: verbose_eval)
       end
       if early_stopping_rounds
-        callbacks << EarlyStopping.new(rounds: early_stopping_rounds)
+        callbacks << EarlyStopping.new(rounds: early_stopping_rounds, maximize: maximize)
       end
       cb_container = CallbackContainer.new(callbacks)
 
