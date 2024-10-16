@@ -1,6 +1,6 @@
 module XGBoost
   class Booster
-    attr_accessor :best_iteration, :feature_names, :feature_types, :best_score
+    attr_accessor :feature_names, :feature_types
 
     def initialize(params: nil, cache: nil, model_file: nil)
       cache ||= []
@@ -23,7 +23,6 @@ module XGBoost
         check_result FFI.XGBoosterLoadModel(handle_pointer, model_file)
       end
 
-      self.best_iteration = 0
       set_param(params)
     end
 
@@ -170,7 +169,7 @@ module XGBoost
     end
 
     def [](key_name)
-      key = string_pointer(key_name)
+      key = string_pointer(key_name.to_s)
       success = ::FFI::MemoryPointer.new(:int)
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
@@ -180,8 +179,8 @@ module XGBoost
     end
 
     def []=(key_name, raw_value)
-      key = string_pointer(key_name)
-      value = raw_value.nil? ? nil : string_pointer(raw_value)
+      key = string_pointer(key_name.to_s)
+      value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
 
       check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
     end
@@ -195,6 +194,22 @@ module XGBoost
       key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
 
       key_names.map { |key_name| [key_name, self[key_name]] }.to_h
+    end
+
+    def best_iteration
+      self["best_iteration"]&.to_i
+    end
+
+    def best_iteration=(iteration)
+      self["best_iteration"] = iteration
+    end
+
+    def best_score
+      self["best_score"]&.to_i
+    end
+
+    def best_score=(score)
+      self["best_score"] = score
     end
 
     def num_boosted_rounds
