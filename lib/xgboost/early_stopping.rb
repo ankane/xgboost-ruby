@@ -118,7 +118,7 @@ module XGBoost
         @stopping_history[name][metric] << score
         @best_scores[name][metric] << score
         record = @stopping_history[name][metric][-1]
-        model.set_attr(best_score: record, best_iteration: epoch)
+        model.set_attr(best_score: get_s.(record), best_iteration: epoch)
         @current_rounds = 0
       end
 
