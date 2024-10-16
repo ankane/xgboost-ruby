@@ -10,6 +10,16 @@ module XGBoost
       end
     end
 
+    def set_attr(**kwargs)
+      @cvfolds.each do |f|
+        f.bst.set_attr(**kwargs)
+      end
+    end
+
+    def attr(key)
+      @cvfolds[0].bst.attr(key)
+    end
+
     def eval_set(iteration)
       @cvfolds.map { |f| f.eval_set(iteration) }
     end
