@@ -53,13 +53,7 @@ module XGBoost
       callbacks = callbacks.nil? ? [] : callbacks.dup
       evals ||= []
 
-      bst = Booster.new(params: params)
-
-      # TODO move
-      num_feature = dtrain.num_col
-      bst.set_param("num_feature", num_feature)
-      bst.feature_names = dtrain.feature_names
-      bst.feature_types = dtrain.feature_types
+      bst = Booster.new(params: params, cache: [dtrain] + evals.map { |d| d[0] })
 
       # TODO split into separate callbacks in 0.9.0
       if verbose_eval || early_stopping_rounds

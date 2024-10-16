@@ -2,10 +2,23 @@ module XGBoost
   class Booster
     attr_accessor :best_iteration, :feature_names, :feature_types, :best_score
 
-    def initialize(params: nil, model_file: nil)
+    def initialize(params: nil, cache: nil, model_file: nil)
+      cache ||= []
+      cache.each do |d|
+        if !d.is_a?(DMatrix)
+          raise TypeError, "invalid cache item: #{d.class.name}"
+        end
+      end
+
+      dmats = ::FFI::MemoryPointer.new(:pointer, cache.length)
+      dmats.write_array_of_pointer(cache.map { |d| d.handle_pointer })
       @handle = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterCreate(nil, 0, @handle)
+      check_result FFI.XGBoosterCreate(dmats, cache.length, @handle)
       ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
+
+      cache.each do |d|
+        assign_dmatrix_features(d)
+      end
 
       if model_file
         check_result FFI.XGBoosterLoadModel(handle_pointer, model_file)
@@ -197,6 +210,22 @@ module XGBoost
 
     def string_pointer(value)
       ::FFI::MemoryPointer.from_string(value.to_s)
+    end
+
+    def assign_dmatrix_features(data)
+      if data.num_row == 0
+        return
+      end
+
+      fn = data.feature_names
+      ft = data.feature_types
+
+      if @feature_names.nil?
+        @feature_names = fn
+      end
+      if @feature_types.nil?
+        @feature_types = ft
+      end
     end
 
     include Utils
