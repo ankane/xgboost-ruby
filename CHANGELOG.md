@@ -2,7 +2,7 @@
 
 - Updated XGBoost to 2.1.1
 - Added support for callbacks
-- Added `save_config` method to `Booster`
+- Added `num_features` and `save_config` methods to `Booster`
 - Added `num_nonmissing` and `data_split_mode` methods to `DMatrix`
 - Dropped support for Ruby < 3.1
 

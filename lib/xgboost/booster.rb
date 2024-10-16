@@ -146,6 +146,12 @@ module XGBoost
       rounds.read_int
     end
 
+    def num_features
+      features = ::FFI::MemoryPointer.new(:uint64)
+      check_call FFI.XGBoosterGetNumFeature(handle, features)
+      read_uint64(features)
+    end
+
     def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
       ret = dump(fmap: fmap, with_stats: with_stats, dump_format: dump_format)
       File.open(fout, "wb") do |f|

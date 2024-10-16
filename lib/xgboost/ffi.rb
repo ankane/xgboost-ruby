@@ -41,6 +41,7 @@ module XGBoost
     attach_function :XGBoosterFree, %i[pointer], :int
     attach_function :XGBoosterBoostedRounds, %i[pointer pointer], :int
     attach_function :XGBoosterSetParam, %i[pointer string string], :int
+    attach_function :XGBoosterGetNumFeature, %i[pointer pointer], :int
     attach_function :XGBoosterPredict, %i[pointer pointer int int int pointer pointer], :int
     attach_function :XGBoosterLoadModel, %i[pointer string], :int
     attach_function :XGBoosterSaveModel, %i[pointer string], :int
