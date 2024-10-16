@@ -204,7 +204,11 @@ module XGBoost
     end
 
     def array_of_pointers(values)
-      ::FFI::MemoryPointer.new(:pointer, values.size).write_array_of_pointer(values)
+      arr = ::FFI::MemoryPointer.new(:pointer, values.size)
+      arr.write_array_of_pointer(values)
+      # keep reference for string pointers
+      arr.instance_variable_set(:@xgboost_ref, values)
+      arr
     end
 
     def string_pointer(value)
