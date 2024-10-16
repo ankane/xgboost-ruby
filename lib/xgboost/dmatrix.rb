@@ -140,8 +140,14 @@ module XGBoost
         return
       end
 
-      # TODO _validate_feature_info
-
+      # validate feature name
+      feature_names =
+        validate_feature_info(
+          feature_names,
+          num_col,
+          # data_split_mode == DataSplitMode.COL,
+          "feature names"
+        )
       if feature_names.length != feature_names.uniq.length
         raise ArgumentError, "feature_names must be unique"
       end
@@ -187,7 +193,13 @@ module XGBoost
         return
       end
 
-      # TODO _validate_feature_info
+      feature_types =
+        validate_feature_info(
+          feature_types,
+          num_col,
+          # data_split_mode == DataSplitMode.COL,
+          "feature types"
+        )
 
       c_feature_types = array_of_pointers(feature_types.map { |f| string_pointer(f) })
       check_call(
@@ -215,6 +227,20 @@ module XGBoost
       out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
       check_call FFI.XGDMatrixGetFloatInfo(handle, field, out_len, out_dptr)
       out_dptr.read_pointer.read_array_of_float(num_row)
+    end
+
+    def validate_feature_info(feature_info, n_features, name)
+      if !feature_info.is_a?(Array)
+        raise TypeError, "Expecting an array of strings for #{name}, got: #{feature_info.class.name}"
+      end
+      if feature_info.length != n_features && n_features != 0
+        msg = (
+          "#{name} must have the same length as the number of data columns, " +
+          "expected #{n_features}, got #{feature_info.length}"
+        )
+        raise ArgumentError, msg
+      end
+      feature_info
     end
 
     def matrix?(data)
