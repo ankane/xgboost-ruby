@@ -26,6 +26,8 @@ module XGBoost
     attach_function :XGDMatrixGetStrFeatureInfo, %i[pointer string pointer pointer], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
     attach_function :XGDMatrixNumCol, %i[pointer pointer], :int
+    attach_function :XGDMatrixNumNonMissing, %i[pointer pointer], :int
+    attach_function :XGDMatrixDataSplitMode, %i[pointer pointer], :int
     attach_function :XGDMatrixSliceDMatrix, %i[pointer pointer uint64 pointer], :int
     attach_function :XGDMatrixFree, %i[pointer], :int
     attach_function :XGDMatrixSaveBinary, %i[pointer string int], :int

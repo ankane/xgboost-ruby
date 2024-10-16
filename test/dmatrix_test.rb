@@ -31,6 +31,14 @@ class DMatrixTest < Minitest::Test
     assert_equal 4, regression_train.num_col
   end
 
+  def test_num_nonmissing
+    assert_equal 1200, regression_train.num_nonmissing
+  end
+
+  def test_data_split_mode
+    assert_equal :row, regression_train.data_split_mode
+  end
+
   def test_save_binary
     regression_train.save_binary(tempfile)
     assert File.exist?(tempfile)

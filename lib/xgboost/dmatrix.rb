@@ -105,6 +105,18 @@ module XGBoost
       read_uint64(out)
     end
 
+    def num_nonmissing
+      out = ::FFI::MemoryPointer.new(:uint64)
+      check_call FFI.XGDMatrixNumNonMissing(handle, out)
+      read_uint64(out)
+    end
+
+    def data_split_mode
+      out = ::FFI::MemoryPointer.new(:uint64)
+      check_call FFI.XGDMatrixDataSplitMode(handle, out)
+      read_uint64(out) == 0 ? :row : :col
+    end
+
     def slice(rindex)
       idxset = ::FFI::MemoryPointer.new(:int, rindex.count)
       idxset.write_array_of_int(rindex)
@@ -145,7 +157,7 @@ module XGBoost
         validate_feature_info(
           feature_names,
           num_col,
-          # data_split_mode == DataSplitMode.COL,
+          data_split_mode == :col,
           "feature names"
         )
       if feature_names.length != feature_names.uniq.length
@@ -197,7 +209,7 @@ module XGBoost
         validate_feature_info(
           feature_types,
           num_col,
-          # data_split_mode == DataSplitMode.COL,
+          data_split_mode == :col,
           "feature types"
         )
 
@@ -229,11 +241,11 @@ module XGBoost
       out_dptr.read_pointer.read_array_of_float(num_row)
     end
 
-    def validate_feature_info(feature_info, n_features, name)
+    def validate_feature_info(feature_info, n_features, is_column_split, name)
       if !feature_info.is_a?(Array)
         raise TypeError, "Expecting an array of strings for #{name}, got: #{feature_info.class.name}"
       end
-      if feature_info.length != n_features && n_features != 0
+      if feature_info.length != n_features && n_features != 0 && !is_column_split
         msg = (
           "#{name} must have the same length as the number of data columns, " +
           "expected #{n_features}, got #{feature_info.length}"
