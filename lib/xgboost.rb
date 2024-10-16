@@ -79,27 +79,14 @@ module XGBoost
     end
 
     def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true, early_stopping_rounds: nil)
-      rand_idx = (0...dtrain.num_row).to_a
-      rand_idx.shuffle!(random: Random.new(seed)) if shuffle
-
-      kstep = (rand_idx.size / nfold.to_f).ceil
-      test_id = rand_idx.each_slice(kstep).to_a[0...nfold]
-      train_id = []
-      nfold.times do |i|
-        idx = test_id.dup
-        idx.delete_at(i)
-        train_id << idx.flatten
-      end
-
-      folds = train_id.zip(test_id)
-      cvfolds = []
-      folds.each do |(train_idx, test_idx)|
-        fold_dtrain = dtrain.slice(train_idx)
-        fold_dvalid = dtrain.slice(test_idx)
-        booster = Booster.new(params: params)
-        booster.set_param("num_feature", dtrain.num_col)
-        cvfolds << [booster, fold_dtrain, fold_dvalid]
-      end
+      cvfolds =
+        mknfold(
+          dall: dtrain,
+          param: params,
+          nfold: nfold,
+          seed: seed,
+          shuffle: shuffle
+        )
 
       eval_hist = {}
 
@@ -172,6 +159,31 @@ module XGBoost
     end
 
     private
+
+    def mknfold(dall:, param:, nfold:, seed:, shuffle:)
+      rand_idx = (0...dall.num_row).to_a
+      rand_idx.shuffle!(random: Random.new(seed)) if shuffle
+
+      kstep = (rand_idx.size / nfold.to_f).ceil
+      test_id = rand_idx.each_slice(kstep).to_a[0...nfold]
+      train_id = []
+      nfold.times do |i|
+        idx = test_id.dup
+        idx.delete_at(i)
+        train_id << idx.flatten
+      end
+
+      folds = train_id.zip(test_id)
+      cvfolds = []
+      folds.each do |(train_idx, test_idx)|
+        fold_dtrain = dall.slice(train_idx)
+        fold_dvalid = dall.slice(test_idx)
+        booster = Booster.new(params: param)
+        booster.set_param("num_feature", dall.num_col)
+        cvfolds << [booster, fold_dtrain, fold_dvalid]
+      end
+      cvfolds
+    end
 
     def mean(arr)
       arr.sum / arr.size.to_f
