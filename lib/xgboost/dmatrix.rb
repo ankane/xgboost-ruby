@@ -66,12 +66,8 @@ module XGBoost
       self.weight = weight if weight
     end
 
-    def label
-      float_info("label")
-    end
-
-    def weight
-      float_info("weight")
+    def save_binary(fname, silent: true)
+      check_call FFI.XGDMatrixSaveBinary(handle, fname, silent ? 1 : 0)
     end
 
     def label=(label)
@@ -86,6 +82,14 @@ module XGBoost
       c_data = ::FFI::MemoryPointer.new(:int, group.size)
       c_data.write_array_of_int(group)
       check_call FFI.XGDMatrixSetUIntInfo(handle, "group", c_data, group.size)
+    end
+
+    def label
+      float_info("label")
+    end
+
+    def weight
+      float_info("weight")
     end
 
     def num_row
@@ -108,10 +112,6 @@ module XGBoost
 
       handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
       DMatrix.new(handle)
-    end
-
-    def save_binary(fname, silent: true)
-      check_call FFI.XGDMatrixSaveBinary(handle, fname, silent ? 1 : 0)
     end
 
     private
