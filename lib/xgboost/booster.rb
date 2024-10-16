@@ -1,5 +1,7 @@
 module XGBoost
   class Booster
+    include Utils
+
     attr_accessor :feature_names, :feature_types
 
     def initialize(params: nil, cache: nil, model_file: nil)
@@ -41,10 +43,10 @@ module XGBoost
     end
 
     def save_config
-      length = ::FFI::MemoryPointer.new(:int)
+      length = ::FFI::MemoryPointer.new(:uint64)
       json_string = ::FFI::MemoryPointer.new(:pointer)
       check_call FFI.XGBoosterSaveJsonConfig(handle_pointer, length, json_string)
-      json_string.read_pointer.read_string(length.read_int).force_encoding(Encoding::UTF_8)
+      json_string.read_pointer.read_string(read_uint64(length)).force_encoding(Encoding::UTF_8)
     end
 
     def attr(key_name)
@@ -269,7 +271,5 @@ module XGBoost
         @feature_types = ft
       end
     end
-
-    include Utils
   end
 end

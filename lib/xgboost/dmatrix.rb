@@ -1,5 +1,7 @@
 module XGBoost
   class DMatrix
+    include Utils
+
     attr_reader :data, :feature_names, :feature_types
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
@@ -156,7 +158,5 @@ module XGBoost
     def handle_missing(data, missing)
       data.map! { |v| v.nil? ? missing : v }
     end
-
-    include Utils
   end
 end
