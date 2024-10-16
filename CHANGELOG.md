@@ -1,5 +1,6 @@
 ## 0.9.0 (unreleased)
 
+- Updated XGBoost to 2.1.1
 - Added support for callbacks
 - Dropped support for Ruby < 3.1
 
