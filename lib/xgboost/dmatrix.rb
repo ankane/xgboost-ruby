@@ -7,7 +7,10 @@ module XGBoost
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
       @data = data
 
-      @handle = ::FFI::MemoryPointer.new(:pointer)
+      if @data.is_a?(::FFI::AutoPointer)
+        @handle = @data
+        return
+      end
 
       if data
         if matrix?(data)
@@ -52,20 +55,16 @@ module XGBoost
           handle_missing(flat_data, missing)
           c_data.write_array_of_float(flat_data)
         end
-        check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
-        ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
+        out = ::FFI::MemoryPointer.new(:pointer)
+        check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, out)
+        @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
 
         @feature_names ||= ncol.times.map { |i| "f#{i}" }
       end
 
       self.label = label if label
       self.weight = weight if weight
-    end
-
-    def self.finalize(addr)
-      # must use proc instead of stabby lambda
-      proc { FFI.XGDMatrixFree(::FFI::Pointer.new(:pointer, addr)) }
     end
 
     def label
@@ -103,23 +102,21 @@ module XGBoost
     end
 
     def slice(rindex)
-      res = DMatrix.new(nil)
       idxset = ::FFI::MemoryPointer.new(:int, rindex.count)
       idxset.write_array_of_int(rindex)
-      check_call FFI.XGDMatrixSliceDMatrix(handle_pointer, idxset, rindex.size, res.handle)
-      res
+      out = ::FFI::MemoryPointer.new(:pointer)
+      check_call FFI.XGDMatrixSliceDMatrix(handle_pointer, idxset, rindex.size, out)
+
+      handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
+      DMatrix.new(handle)
     end
 
     def save_binary(fname, silent: true)
       check_call FFI.XGDMatrixSaveBinary(handle_pointer, fname, silent ? 1 : 0)
     end
 
-    def handle
-      @handle
-    end
-
     def handle_pointer
-      @handle.read_pointer
+      @handle
     end
 
     private
