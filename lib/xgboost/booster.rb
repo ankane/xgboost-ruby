@@ -11,9 +11,10 @@ module XGBoost
       end
 
       dmats = array_of_pointers(cache.map { |d| d.handle_pointer })
-      @handle = ::FFI::MemoryPointer.new(:pointer)
-      check_call FFI.XGBoosterCreate(dmats, cache.length, @handle)
-      ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
+      handle_ref = ::FFI::MemoryPointer.new(:pointer)
+      check_call FFI.XGBoosterCreate(dmats, cache.length, handle_ref)
+      @handle = handle_ref.read_pointer
+      ObjectSpace.define_finalizer(@handle, self.class.finalize(@handle.to_i))
 
       cache.each do |d|
         assign_dmatrix_features(d)
@@ -255,7 +256,7 @@ module XGBoost
     private
 
     def handle_pointer
-      @handle.read_pointer
+      @handle
     end
 
     def array_of_pointers(values)
