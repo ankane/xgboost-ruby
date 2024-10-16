@@ -24,8 +24,10 @@ module XGBoost
         end
       end
       msg += "\n"
-      puts msg
 
+      if epoch % @period == 0
+        puts msg
+      end
       false
     end
 
