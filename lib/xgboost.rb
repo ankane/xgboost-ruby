@@ -50,7 +50,15 @@ module XGBoost
   autoload :FFI, "xgboost/ffi"
 
   class << self
-    def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true, callbacks: nil)
+    def train(
+      params,
+      dtrain,
+      num_boost_round: 10,
+      evals: nil,
+      early_stopping_rounds: nil,
+      verbose_eval: true,
+      callbacks: nil
+    )
       callbacks = callbacks.nil? ? [] : callbacks.dup
       evals ||= []
 
@@ -78,7 +86,17 @@ module XGBoost
       bst
     end
 
-    def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true, early_stopping_rounds: nil)
+    def cv(
+      params,
+      dtrain,
+      num_boost_round: 10,
+      nfold: 3,
+      seed: 0,
+      shuffle: true,
+      verbose_eval: nil,
+      show_stdv: true,
+      early_stopping_rounds: nil
+    )
       cvfolds =
         mknfold(
           dall: dtrain,
