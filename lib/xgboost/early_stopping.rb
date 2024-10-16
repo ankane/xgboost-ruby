@@ -108,7 +108,7 @@ module XGBoost
         @stopping_history[name][metric] = [score]
         @best_scores[name] = {}
         @best_scores[name][metric] = [score]
-        model.set_attr(best_score: score, best_iteration: epoch)
+        model.set_attr(best_score: get_s.(score), best_iteration: epoch)
       elsif !improve_op.(score, @best_scores[name][metric][-1])
         # Not improved
         @stopping_history[name][metric] << score
