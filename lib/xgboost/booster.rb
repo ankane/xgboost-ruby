@@ -31,6 +31,55 @@ module XGBoost
       proc { FFI.XGBoosterFree(::FFI::Pointer.new(:pointer, addr)) }
     end
 
+    # TODO slice for non-string keys
+    def [](key_name)
+      attr(key_name)
+    end
+
+    def []=(key_name, raw_value)
+      set_attr(**{key_name => raw_value})
+    end
+
+    def attr(key_name)
+      key = string_pointer(key_name.to_s)
+      success = ::FFI::MemoryPointer.new(:int)
+      out_result = ::FFI::MemoryPointer.new(:pointer)
+
+      check_result FFI.XGBoosterGetAttr(handle_pointer, key, out_result, success)
+
+      success.read_int == 1 ? out_result.read_pointer.read_string : nil
+    end
+
+    def attributes
+      out_len = ::FFI::MemoryPointer.new(:uint64)
+      out_result = ::FFI::MemoryPointer.new(:pointer)
+      check_result FFI.XGBoosterGetAttrNames(handle_pointer, out_len, out_result)
+
+      len = read_uint64(out_len)
+      key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
+
+      key_names.to_h { |key_name| [key_name, self[key_name]] }
+    end
+
+    def set_attr(**kwargs)
+      kwargs.each do |key_name, raw_value|
+        key = string_pointer(key_name)
+        value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
+
+        check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
+      end
+    end
+
+    def set_param(params, value = nil)
+      if params.is_a?(Enumerable)
+        params.each do |k, v|
+          check_result FFI.XGBoosterSetParam(handle_pointer, k.to_s, v.to_s)
+        end
+      else
+        check_result FFI.XGBoosterSetParam(handle_pointer, params.to_s, value.to_s)
+      end
+    end
+
     def update(dtrain, iteration)
       check_result FFI.XGBoosterUpdateOneIter(handle_pointer, iteration, dtrain.handle_pointer)
     end
@@ -44,16 +93,6 @@ module XGBoost
       check_result FFI.XGBoosterEvalOneIter(handle_pointer, iteration, dmats, evnames, evals.size, out_result)
 
       out_result.read_pointer.read_string
-    end
-
-    def set_param(params, value = nil)
-      if params.is_a?(Enumerable)
-        params.each do |k, v|
-          check_result FFI.XGBoosterSetParam(handle_pointer, k.to_s, v.to_s)
-        end
-      else
-        check_result FFI.XGBoosterSetParam(handle_pointer, params.to_s, value.to_s)
-      end
     end
 
     def predict(data, ntree_limit: nil)
@@ -71,18 +110,26 @@ module XGBoost
       check_result FFI.XGBoosterSaveModel(handle_pointer, fname)
     end
 
-    # returns an array of strings
-    def dump(fmap: "", with_stats: false, dump_format: "text")
-      out_len = ::FFI::MemoryPointer.new(:uint64)
-      out_result = ::FFI::MemoryPointer.new(:pointer)
+    def best_iteration
+      attr(:best_iteration)&.to_i
+    end
 
-      names = feature_names || []
-      fnames = array_of_pointers(names.map { |fname| string_pointer(fname) })
-      ftypes = array_of_pointers(feature_types || Array.new(names.size, string_pointer("float")))
+    def best_iteration=(iteration)
+      set_attr(best_iteration: iteration)
+    end
 
-      check_result FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
+    def best_score
+      attr(:best_score)&.to_f
+    end
 
-      out_result.read_pointer.get_array_of_string(0, read_uint64(out_len))
+    def best_score=(score)
+      set_attr(best_score: score)
+    end
+
+    def num_boosted_rounds
+      rounds = ::FFI::MemoryPointer.new(:int)
+      check_result FFI.XGBoosterBoostedRounds(handle_pointer, rounds)
+      rounds.read_int
     end
 
     def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
@@ -102,6 +149,20 @@ module XGBoost
           end
         end
       end
+    end
+
+    # returns an array of strings
+    def dump(fmap: "", with_stats: false, dump_format: "text")
+      out_len = ::FFI::MemoryPointer.new(:uint64)
+      out_result = ::FFI::MemoryPointer.new(:pointer)
+
+      names = feature_names || []
+      fnames = array_of_pointers(names.map { |fname| string_pointer(fname) })
+      ftypes = array_of_pointers(feature_types || Array.new(names.size, string_pointer("float")))
+
+      check_result FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
+
+      out_result.read_pointer.get_array_of_string(0, read_uint64(out_len))
     end
 
     def fscore(fmap: "")
@@ -166,67 +227,6 @@ module XGBoost
 
         gmap
       end
-    end
-
-    # TODO slice for non-string keys
-    def [](key_name)
-      attr(key_name)
-    end
-
-    def []=(key_name, raw_value)
-      set_attr(**{key_name => raw_value})
-    end
-
-    def attr(key_name)
-      key = string_pointer(key_name.to_s)
-      success = ::FFI::MemoryPointer.new(:int)
-      out_result = ::FFI::MemoryPointer.new(:pointer)
-
-      check_result FFI.XGBoosterGetAttr(handle_pointer, key, out_result, success)
-
-      success.read_int == 1 ? out_result.read_pointer.read_string : nil
-    end
-
-    def attributes
-      out_len = ::FFI::MemoryPointer.new(:uint64)
-      out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterGetAttrNames(handle_pointer, out_len, out_result)
-
-      len = read_uint64(out_len)
-      key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
-
-      key_names.to_h { |key_name| [key_name, self[key_name]] }
-    end
-
-    def set_attr(**kwargs)
-      kwargs.each do |key_name, raw_value|
-        key = string_pointer(key_name)
-        value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
-
-        check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
-      end
-    end
-
-    def best_iteration
-      attr(:best_iteration)&.to_i
-    end
-
-    def best_iteration=(iteration)
-      set_attr(best_iteration: iteration)
-    end
-
-    def best_score
-      attr(:best_score)&.to_f
-    end
-
-    def best_score=(score)
-      set_attr(best_score: score)
-    end
-
-    def num_boosted_rounds
-      rounds = ::FFI::MemoryPointer.new(:int)
-      check_result FFI.XGBoosterBoostedRounds(handle_pointer, rounds)
-      rounds.read_int
     end
 
     private
