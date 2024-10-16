@@ -42,8 +42,7 @@ module XGBoost
           nrow = data.count
           ncol = data.first.count
           if !data.all? { |r| r.size == ncol }
-            # TODO raise ArgumentError in 0.8.0
-            raise IndexError, "Rows have different sizes"
+            raise ArgumentError, "Rows have different sizes"
           end
           flat_data = data.flatten
         end

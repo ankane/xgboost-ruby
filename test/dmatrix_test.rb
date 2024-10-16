@@ -78,7 +78,7 @@ class DMatrixTest < Minitest::Test
 
   def test_invalid
     data = [[1, 2], [3, 4, 5]]
-    error = assert_raises(IndexError) do
+    error = assert_raises(ArgumentError) do
       XGBoost::DMatrix.new(data)
     end
     assert_equal "Rows have different sizes", error.message
