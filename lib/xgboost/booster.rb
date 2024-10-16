@@ -12,7 +12,7 @@ module XGBoost
 
       dmats = array_of_pointers(cache.map { |d| d.handle_pointer })
       @handle = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterCreate(dmats, cache.length, @handle)
+      check_call FFI.XGBoosterCreate(dmats, cache.length, @handle)
       ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
 
       cache.each do |d|
@@ -20,7 +20,7 @@ module XGBoost
       end
 
       if model_file
-        check_result FFI.XGBoosterLoadModel(handle_pointer, model_file)
+        check_call FFI.XGBoosterLoadModel(handle_pointer, model_file)
       end
 
       set_param(params)
@@ -43,7 +43,7 @@ module XGBoost
     def save_config
       length = ::FFI::MemoryPointer.new(:int)
       json_string = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterSaveJsonConfig(handle_pointer, length, json_string)
+      check_call FFI.XGBoosterSaveJsonConfig(handle_pointer, length, json_string)
       json_string.read_pointer.read_string(length.read_int).force_encoding(Encoding::UTF_8)
     end
 
@@ -52,7 +52,7 @@ module XGBoost
       success = ::FFI::MemoryPointer.new(:int)
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
-      check_result FFI.XGBoosterGetAttr(handle_pointer, key, out_result, success)
+      check_call FFI.XGBoosterGetAttr(handle_pointer, key, out_result, success)
 
       success.read_int == 1 ? out_result.read_pointer.read_string : nil
     end
@@ -60,7 +60,7 @@ module XGBoost
     def attributes
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterGetAttrNames(handle_pointer, out_len, out_result)
+      check_call FFI.XGBoosterGetAttrNames(handle_pointer, out_len, out_result)
 
       len = read_uint64(out_len)
       key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
@@ -73,22 +73,22 @@ module XGBoost
         key = string_pointer(key_name)
         value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
 
-        check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
+        check_call FFI.XGBoosterSetAttr(handle_pointer, key, value)
       end
     end
 
     def set_param(params, value = nil)
       if params.is_a?(Enumerable)
         params.each do |k, v|
-          check_result FFI.XGBoosterSetParam(handle_pointer, k.to_s, v.to_s)
+          check_call FFI.XGBoosterSetParam(handle_pointer, k.to_s, v.to_s)
         end
       else
-        check_result FFI.XGBoosterSetParam(handle_pointer, params.to_s, value.to_s)
+        check_call FFI.XGBoosterSetParam(handle_pointer, params.to_s, value.to_s)
       end
     end
 
     def update(dtrain, iteration)
-      check_result FFI.XGBoosterUpdateOneIter(handle_pointer, iteration, dtrain.handle_pointer)
+      check_call FFI.XGBoosterUpdateOneIter(handle_pointer, iteration, dtrain.handle_pointer)
     end
 
     def eval_set(evals, iteration)
@@ -97,7 +97,7 @@ module XGBoost
 
       out_result = ::FFI::MemoryPointer.new(:pointer)
 
-      check_result FFI.XGBoosterEvalOneIter(handle_pointer, iteration, dmats, evnames, evals.size, out_result)
+      check_call FFI.XGBoosterEvalOneIter(handle_pointer, iteration, dmats, evnames, evals.size, out_result)
 
       out_result.read_pointer.read_string
     end
@@ -106,7 +106,7 @@ module XGBoost
       ntree_limit ||= 0
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_result FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, 0, out_len, out_result)
+      check_call FFI.XGBoosterPredict(handle_pointer, data.handle_pointer, 0, ntree_limit, 0, out_len, out_result)
       out = out_result.read_pointer.read_array_of_float(read_uint64(out_len))
       num_class = out.size / data.num_row
       out = out.each_slice(num_class).to_a if num_class > 1
@@ -114,7 +114,7 @@ module XGBoost
     end
 
     def save_model(fname)
-      check_result FFI.XGBoosterSaveModel(handle_pointer, fname)
+      check_call FFI.XGBoosterSaveModel(handle_pointer, fname)
     end
 
     def best_iteration
@@ -135,7 +135,7 @@ module XGBoost
 
     def num_boosted_rounds
       rounds = ::FFI::MemoryPointer.new(:int)
-      check_result FFI.XGBoosterBoostedRounds(handle_pointer, rounds)
+      check_call FFI.XGBoosterBoostedRounds(handle_pointer, rounds)
       rounds.read_int
     end
 
@@ -167,7 +167,7 @@ module XGBoost
       fnames = array_of_pointers(names.map { |fname| string_pointer(fname) })
       ftypes = array_of_pointers(feature_types || Array.new(names.size, string_pointer("float")))
 
-      check_result FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
+      check_call FFI.XGBoosterDumpModelExWithFeatures(handle_pointer, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
 
       out_result.read_pointer.get_array_of_string(0, read_uint64(out_len))
     end

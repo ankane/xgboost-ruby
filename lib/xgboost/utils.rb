@@ -2,7 +2,7 @@ module XGBoost
   module Utils
     private
 
-    def check_result(err)
+    def check_call(err)
       if err != 0
         # make friendly
         message = FFI.XGBGetLastError.split("\n").first.split(/:\d+: /, 2).last

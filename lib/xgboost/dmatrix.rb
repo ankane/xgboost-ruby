@@ -50,7 +50,7 @@ module XGBoost
           handle_missing(flat_data, missing)
           c_data.write_array_of_float(flat_data)
         end
-        check_result FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
+        check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, @handle)
 
         ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
 
@@ -85,18 +85,18 @@ module XGBoost
     def group=(group)
       c_data = ::FFI::MemoryPointer.new(:int, group.size)
       c_data.write_array_of_int(group)
-      check_result FFI.XGDMatrixSetUIntInfo(handle_pointer, "group", c_data, group.size)
+      check_call FFI.XGDMatrixSetUIntInfo(handle_pointer, "group", c_data, group.size)
     end
 
     def num_row
       out = ::FFI::MemoryPointer.new(:uint64)
-      check_result FFI.XGDMatrixNumRow(handle_pointer, out)
+      check_call FFI.XGDMatrixNumRow(handle_pointer, out)
       read_uint64(out)
     end
 
     def num_col
       out = ::FFI::MemoryPointer.new(:uint64)
-      check_result FFI.XGDMatrixNumCol(handle_pointer, out)
+      check_call FFI.XGDMatrixNumCol(handle_pointer, out)
       read_uint64(out)
     end
 
@@ -104,12 +104,12 @@ module XGBoost
       res = DMatrix.new(nil)
       idxset = ::FFI::MemoryPointer.new(:int, rindex.count)
       idxset.write_array_of_int(rindex)
-      check_result FFI.XGDMatrixSliceDMatrix(handle_pointer, idxset, rindex.size, res.handle)
+      check_call FFI.XGDMatrixSliceDMatrix(handle_pointer, idxset, rindex.size, res.handle)
       res
     end
 
     def save_binary(fname, silent: true)
-      check_result FFI.XGDMatrixSaveBinary(handle_pointer, fname, silent ? 1 : 0)
+      check_call FFI.XGDMatrixSaveBinary(handle_pointer, fname, silent ? 1 : 0)
     end
 
     def handle
@@ -126,14 +126,14 @@ module XGBoost
       data = data.to_a unless data.is_a?(Array)
       c_data = ::FFI::MemoryPointer.new(:float, data.size)
       c_data.write_array_of_float(data)
-      check_result FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
+      check_call FFI.XGDMatrixSetFloatInfo(handle_pointer, field.to_s, c_data, data.size)
     end
 
     def float_info(field)
       num_row ||= num_row()
       out_len = ::FFI::MemoryPointer.new(:int)
       out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
-      check_result FFI.XGDMatrixGetFloatInfo(handle_pointer, field, out_len, out_dptr)
+      check_call FFI.XGDMatrixGetFloatInfo(handle_pointer, field, out_len, out_dptr)
       out_dptr.read_pointer.read_array_of_float(num_row)
     end
 
