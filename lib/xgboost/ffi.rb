@@ -45,5 +45,7 @@ module XGBoost
     attach_function :XGBoosterGetAttr, %i[pointer pointer pointer pointer], :int
     attach_function :XGBoosterSetAttr, %i[pointer pointer pointer], :int
     attach_function :XGBoosterGetAttrNames, %i[pointer pointer pointer], :int
+    attach_function :XGBoosterSetStrFeatureInfo, %i[pointer string pointer uint64], :int
+    attach_function :XGBoosterGetStrFeatureInfo, %i[pointer string pointer pointer], :int
   end
 end

@@ -2,8 +2,6 @@ module XGBoost
   class Booster
     include Utils
 
-    attr_accessor :feature_names, :feature_types
-
     def initialize(params: nil, cache: nil, model_file: nil)
       cache ||= []
       cache.each do |d|
@@ -77,6 +75,22 @@ module XGBoost
 
         check_call FFI.XGBoosterSetAttr(handle_pointer, key, value)
       end
+    end
+
+    def feature_types
+      get_feature_info("feature_type")
+    end
+
+    def feature_types=(features)
+      set_feature_info(features, "feature_type")
+    end
+
+    def feature_names
+      get_feature_info("feature_name")
+    end
+
+    def feature_names=(features)
+      set_feature_info(features, "feature_name")
     end
 
     def set_param(params, value = nil)
@@ -264,11 +278,60 @@ module XGBoost
       fn = data.feature_names
       ft = data.feature_types
 
-      if @feature_names.nil?
-        @feature_names = fn
+      if feature_names.nil?
+        self.feature_names = fn
       end
-      if @feature_types.nil?
-        @feature_types = ft
+      if feature_types.nil?
+        self.feature_types = ft
+      end
+    end
+
+    def get_feature_info(field)
+      length = ::FFI::MemoryPointer.new(:uint64)
+      sarr = ::FFI::MemoryPointer.new(:pointer)
+      if @handle.nil?
+        return nil
+      end
+      check_call(
+        FFI.XGBoosterGetStrFeatureInfo(
+          handle_pointer,
+          field,
+          length,
+          sarr
+        )
+      )
+      feature_info = from_cstr_to_rbstr(sarr, length)
+      !feature_info.empty? ? feature_info : nil
+    end
+
+    def from_cstr_to_rbstr(data, length)
+      res = []
+      read_uint64(length).times do |i|
+        res << data.read_pointer[i * ::FFI::Pointer.size].read_pointer.read_string
+      end
+      res
+    end
+
+    def set_feature_info(features, field)
+      if !features.nil?
+        if !features.is_a?(Array)
+          raise TypeError, "features must be an array"
+        end
+        c_feature_info = array_of_pointers(features.map { |f| string_pointer(f) })
+        check_call(
+          FFI.XGBoosterSetStrFeatureInfo(
+            handle_pointer,
+            field,
+            c_feature_info,
+            features.length
+          )
+        )
+      else
+        check_call(
+          FFI.XGBoosterSetStrFeatureInfo(
+            handle_pointer, field, nil, 0
+          )
+        )
       end
     end
   end
