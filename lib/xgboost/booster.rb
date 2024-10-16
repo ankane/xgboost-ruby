@@ -11,10 +11,9 @@ module XGBoost
       end
 
       dmats = array_of_pointers(cache.map { |d| d.handle_pointer })
-      handle_ref = ::FFI::MemoryPointer.new(:pointer)
-      check_call FFI.XGBoosterCreate(dmats, cache.length, handle_ref)
-      @handle = handle_ref.read_pointer
-      ObjectSpace.define_finalizer(@handle, self.class.finalize(@handle.to_i))
+      out = ::FFI::MemoryPointer.new(:pointer)
+      check_call FFI.XGBoosterCreate(dmats, cache.length, out)
+      @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGBoosterFree))
 
       cache.each do |d|
         assign_dmatrix_features(d)
@@ -25,11 +24,6 @@ module XGBoost
       end
 
       set_param(params)
-    end
-
-    def self.finalize(addr)
-      # must use proc instead of stabby lambda
-      proc { FFI.XGBoosterFree(::FFI::Pointer.new(:pointer, addr)) }
     end
 
     # TODO slice for non-string keys
