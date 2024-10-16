@@ -2,7 +2,7 @@ module XGBoost
   class DMatrix
     include Utils
 
-    attr_reader :data, :feature_names, :feature_types, :handle
+    attr_reader :data, :handle
 
     def initialize(data, label: nil, weight: nil, missing: Float::NAN)
       @data = data
@@ -20,8 +20,8 @@ module XGBoost
         elsif daru?(data)
           nrow, ncol = data.shape
           flat_data = data.map_rows(&:to_a).flatten
-          @feature_names = data.each_vector.map(&:name)
-          @feature_types =
+          feature_names = data.each_vector.map(&:name)
+          feature_types =
             data.each_vector.map(&:db_type).map do |v|
               case v
               when "INTEGER"
@@ -36,7 +36,7 @@ module XGBoost
           nrow, ncol = data.shape
         elsif rover?(data)
           nrow, ncol = data.shape
-          @feature_names = data.keys
+          feature_names = data.keys
           data = data.to_numo
         else
           nrow = data.count
@@ -59,7 +59,8 @@ module XGBoost
         check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, out)
         @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
 
-        @feature_names ||= ncol.times.map { |i| "f#{i}" }
+        self.feature_names = feature_names || ncol.times.map { |i| "f#{i}" }
+        self.feature_types = feature_types if feature_types
       end
 
       self.label = label if label
@@ -112,6 +113,82 @@ module XGBoost
 
       handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
       DMatrix.new(handle)
+    end
+
+    def feature_names
+      length = ::FFI::MemoryPointer.new(:uint64)
+      sarr = ::FFI::MemoryPointer.new(:pointer)
+      check_call(
+        FFI.XGDMatrixGetStrFeatureInfo(
+          handle,
+          "feature_name",
+          length,
+          sarr
+        )
+      )
+      feature_names = from_cstr_to_rbstr(sarr, length)
+      feature_names.empty? ? nil : feature_names
+    end
+
+    def feature_names=(feature_names)
+      if feature_names.nil?
+        check_call(
+          FFI.XGDMatrixSetStrFeatureInfo(
+            handle, "feature_name", nil, 0
+          )
+        )
+        return
+      end
+
+      # TODO validate
+
+      c_feature_names = array_of_pointers(feature_names.map { |f| string_pointer(f) })
+      check_call(
+        FFI.XGDMatrixSetStrFeatureInfo(
+          handle,
+          "feature_name",
+          c_feature_names,
+          feature_names.length
+        )
+      )
+    end
+
+    def feature_types
+      length = ::FFI::MemoryPointer.new(:uint64)
+      sarr = ::FFI::MemoryPointer.new(:pointer)
+      check_call(
+        FFI.XGDMatrixGetStrFeatureInfo(
+          handle,
+          "feature_type",
+          length,
+          sarr
+        )
+      )
+      res = from_cstr_to_rbstr(sarr, length)
+      res.empty? ? nil : res
+    end
+
+    def feature_types=(feature_types)
+      if feature_types.nil?
+        check_call(
+          FFI.XGDMatrixSetStrFeatureInfo(
+            handle, "feature_type", nil, 0
+          )
+        )
+        return
+      end
+
+      # TODO validate
+
+      c_feature_types = array_of_pointers(feature_types.map { |f| string_pointer(f) })
+      check_call(
+        FFI.XGDMatrixSetStrFeatureInfo(
+          handle,
+          "feature_type",
+          c_feature_types,
+          feature_types.length
+        )
+      )
     end
 
     private

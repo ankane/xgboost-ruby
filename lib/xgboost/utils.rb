@@ -10,6 +10,26 @@ module XGBoost
       end
     end
 
+    def array_of_pointers(values)
+      arr = ::FFI::MemoryPointer.new(:pointer, values.size)
+      arr.write_array_of_pointer(values)
+      # keep reference for string pointers
+      arr.instance_variable_set(:@xgboost_ref, values)
+      arr
+    end
+
+    def string_pointer(value)
+      ::FFI::MemoryPointer.from_string(value.to_s)
+    end
+
+    def from_cstr_to_rbstr(data, length)
+      res = []
+      read_uint64(length).times do |i|
+        res << data.read_pointer[i * ::FFI::Pointer.size].read_pointer.read_string.force_encoding(Encoding::UTF_8)
+      end
+      res
+    end
+
     # read_uint64 not available on JRuby
     def read_uint64(ptr)
       ptr.read_array_of_uint64(1).first

@@ -22,6 +22,8 @@ module XGBoost
     # dmatrix
     attach_function :XGDMatrixCreateFromMat, %i[pointer uint64 uint64 float pointer], :int
     attach_function :XGDMatrixSetUIntInfo, %i[pointer string pointer uint64], :int
+    attach_function :XGDMatrixSetStrFeatureInfo, %i[pointer string pointer uint64], :int
+    attach_function :XGDMatrixGetStrFeatureInfo, %i[pointer string pointer pointer], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
     attach_function :XGDMatrixNumCol, %i[pointer pointer], :int
     attach_function :XGDMatrixSliceDMatrix, %i[pointer pointer uint64 pointer], :int
