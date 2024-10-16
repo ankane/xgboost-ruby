@@ -26,9 +26,14 @@ module XGBoost
       set_param(params)
     end
 
-    # TODO slice for non-string keys
     def [](key_name)
-      attr(key_name)
+      if key_name.is_a?(String)
+        return attr(key_name)
+      end
+
+      # TODO slice
+
+      raise TypeError, "expected string"
     end
 
     def []=(key_name, raw_value)
