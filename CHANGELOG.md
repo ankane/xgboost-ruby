@@ -1,3 +1,7 @@
+## 0.8.1 (unreleased)
+
+- Added support for callbacks
+
 ## 0.8.0 (2023-09-13)
 
 - Updated XGBoost to 2.0.0
