@@ -87,8 +87,12 @@ module XGBoost
     private
 
     def update_rounds(score, name, metric, model, epoch)
+      get_s = lambda do |value|
+        value.is_a?(Array) ? value[0] : value
+      end
+
       improve_op = lambda do |new_, best|
-        best - @min_delta > new_
+        get_s.(best) - @min_delta > get_s.(new_)
       end
 
       if @stopping_history.empty?
@@ -101,7 +105,7 @@ module XGBoost
         # TODO use model.set_attr
         model.best_score = score
         model.best_iteration = epoch
-      elsif !improve_op.call(score, @best_scores[name][metric][-1])
+      elsif !improve_op.(score, @best_scores[name][metric][-1])
         # Not improved
         @stopping_history[name][metric] << score
         @current_rounds += 1

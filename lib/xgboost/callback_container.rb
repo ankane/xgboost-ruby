@@ -1,6 +1,8 @@
 module XGBoost
   class CallbackContainer
-    def initialize(callbacks)
+    attr_reader :aggregated_cv
+
+    def initialize(callbacks, is_cv: false)
       @callbacks = callbacks
       callbacks.each do |callback|
         unless callback.is_a?(TrainingCallback)
@@ -9,13 +11,20 @@ module XGBoost
       end
 
       @history = {}
+      @is_cv = is_cv
     end
 
     def before_training(model)
       @callbacks.each do |callback|
         model = callback.before_training(model)
-        unless model.is_a?(Booster)
-          raise TypeError, "before_training should return the model"
+        if @is_cv
+          unless model.is_a?(PackedBooster)
+            raise TypeError, "before_training should return the model"
+          end
+        else
+          unless model.is_a?(Booster)
+            raise TypeError, "before_training should return the model"
+          end
         end
       end
       model
@@ -24,8 +33,14 @@ module XGBoost
     def after_training(model)
       @callbacks.each do |callback|
         model = callback.after_training(model)
-        unless model.is_a?(Booster)
-          raise TypeError, "after_training should return the model"
+        if @is_cv
+          unless model.is_a?(PackedBooster)
+            raise TypeError, "after_training should return the model"
+          end
+        else
+          unless model.is_a?(Booster)
+            raise TypeError, "after_training should return the model"
+          end
         end
       end
       model
@@ -38,15 +53,22 @@ module XGBoost
     end
 
     def after_iteration(model, epoch, dtrain, evals)
-      evals ||= []
-      evals.each do |_, name|
-        if name.include?("-")
-          raise ArgumentError, "Dataset name should not contain `-`"
+      if @is_cv
+        scores = model.eval_set(epoch)
+        scores = aggcv(scores)
+        @aggregated_cv = scores
+        update_history(scores, epoch)
+      else
+        evals ||= []
+        evals.each do |_, name|
+          if name.include?("-")
+            raise ArgumentError, "Dataset name should not contain `-`"
+          end
         end
+        score = model.eval_set(evals, epoch)
+        metric_score = parse_eval_str(score)
+        update_history(metric_score, epoch)
       end
-      score = model.eval_set(evals, epoch)
-      metric_score = parse_eval_str(score)
-      update_history(metric_score, epoch)
 
       @callbacks.any? do |callback|
         callback.after_iteration(model, epoch, @history)
@@ -59,7 +81,12 @@ module XGBoost
       score.each do |d|
         name = d[0]
         s = d[1]
-        x = s
+        if @is_cv
+          std = d[2]
+          x = [s, std]
+        else
+          x = s
+        end
         splited_names = name.split("-")
         data_name = splited_names[0]
         metric_name = splited_names[1..].join("-")
@@ -67,7 +94,7 @@ module XGBoost
         data_history = @history[data_name]
         data_history[metric_name] ||= []
         metric_history = data_history[metric_name]
-        metric_history << x.to_f
+        metric_history << x
       end
     end
 
@@ -79,6 +106,40 @@ module XGBoost
       # convert to float
       metric_score = metric_score_str.map { |n, s| [n, s.to_f] }
       metric_score
+    end
+
+    def aggcv(rlist)
+      cvmap = {}
+      idx = rlist[0].split[0]
+      rlist.each do |line|
+        arr = line.split
+        arr[1..].each_with_index do |it, metric_idx|
+          k, v = it.split(":")
+          (cvmap[[metric_idx, k]] ||= []) << v.to_f
+        end
+      end
+      msg = idx
+      results = []
+      cvmap.sort { |x| x[0][0] }.each do |(_, name), s|
+        mean = mean(s)
+        std = stdev(s)
+        results << [name, mean, std]
+      end
+      results
+    end
+
+    def mean(arr)
+      arr.sum / arr.size.to_f
+    end
+
+    # don't subtract one from arr.size
+    def stdev(arr)
+      m = mean(arr)
+      sum = 0
+      arr.each do |v|
+        sum += (v - m) ** 2
+      end
+      Math.sqrt(sum / arr.size)
     end
   end
 end

@@ -5,7 +5,9 @@ require "ffi"
 require_relative "xgboost/utils"
 require_relative "xgboost/booster"
 require_relative "xgboost/callback_container"
+require_relative "xgboost/cv_pack"
 require_relative "xgboost/dmatrix"
+require_relative "xgboost/packed_booster"
 require_relative "xgboost/version"
 
 # callbacks
@@ -95,8 +97,10 @@ module XGBoost
       shuffle: true,
       verbose_eval: nil,
       show_stdv: true,
-      early_stopping_rounds: nil
+      early_stopping_rounds: nil,
+      callbacks: nil
     )
+      results = {}
       cvfolds =
         mknfold(
           dall: dtrain,
@@ -106,66 +110,48 @@ module XGBoost
           shuffle: shuffle
         )
 
-      eval_hist = {}
+      callbacks = callbacks.nil? ? [] : callbacks.dup
 
+      if verbose_eval
+        verbose_eval = verbose_eval == true ? 1 : verbose_eval
+        callbacks << EvaluationMonitor.new(period: verbose_eval)
+      end
       if early_stopping_rounds
-        best_score = nil
-        best_iter = nil
+        callbacks << EarlyStopping.new(rounds: early_stopping_rounds)
+      end
+      callbacks_container = CallbackContainer.new(callbacks, is_cv: true)
+
+      booster = PackedBooster.new(cvfolds)
+      callbacks_container.before_training(booster)
+
+      num_boost_round.times do |i|
+        break if callbacks_container.before_iteration(booster, i, dtrain, nil)
+        booster.update(i)
+
+        should_break = callbacks_container.after_iteration(booster, i, dtrain, nil)
+        res = callbacks_container.aggregated_cv
+        res.each do |key, mean, std|
+          if !results.include?(key + "-mean")
+            results[key + "-mean"] = []
+          end
+          if !results.include?(key + "-std")
+            results[key + "-std"] = []
+          end
+          results[key + "-mean"] << mean
+          results[key + "-std"] << std
+        end
+
+        if should_break
+          results.keys.each do |k|
+            results[k] = results[k][..booster.best_iteration]
+          end
+          break
+        end
       end
 
-      num_boost_round.times do |iteration|
-        scores = {}
+      callbacks_container.after_training(booster)
 
-        cvfolds.each do |(booster, fold_dtrain, fold_dvalid)|
-          booster.update(fold_dtrain, iteration)
-          message = booster.eval_set([[fold_dtrain, "train"], [fold_dvalid, "test"]], iteration)
-
-          res = message.split.map { |x| x.split(":") }[1..-1].map { |k, v| [k, v.to_f] }
-          res.each do |k, v|
-            (scores[k] ||= []) << v
-          end
-        end
-
-        message_parts = ["[#{iteration}]"]
-
-        last_mean = nil
-        means = {}
-        scores.each do |eval_name, vals|
-          mean = mean(vals)
-          stdev = stdev(vals)
-
-          (eval_hist["#{eval_name}-mean"] ||= []) << mean
-          (eval_hist["#{eval_name}-std"] ||= []) << stdev
-
-          means[eval_name] = mean
-          last_mean = mean
-
-          if show_stdv
-            message_parts << "%s:%g+%g" % [eval_name, mean, stdev]
-          else
-            message_parts << "%s:%g" % [eval_name, mean]
-          end
-        end
-
-        if early_stopping_rounds
-          score = last_mean
-          # TODO handle larger better
-          if best_score.nil? || score < best_score
-            best_score = score
-            best_iter = iteration
-          elsif iteration - best_iter >= early_stopping_rounds
-            eval_hist.each_key do |k|
-              eval_hist[k] = eval_hist[k][0..best_iter]
-            end
-            break
-          end
-        end
-
-        # put at end to keep output consistent with Python
-        puts message_parts.join("\t") if verbose_eval
-      end
-
-      eval_hist
+      results
     end
 
     def lib_version
@@ -196,25 +182,9 @@ module XGBoost
       folds.each do |(train_idx, test_idx)|
         fold_dtrain = dall.slice(train_idx)
         fold_dvalid = dall.slice(test_idx)
-        booster = Booster.new(params: param)
-        booster.set_param("num_feature", dall.num_col)
-        cvfolds << [booster, fold_dtrain, fold_dvalid]
+        cvfolds << CVPack.new(fold_dtrain, fold_dvalid, param)
       end
       cvfolds
-    end
-
-    def mean(arr)
-      arr.sum / arr.size.to_f
-    end
-
-    # don't subtract one from arr.size
-    def stdev(arr)
-      m = mean(arr)
-      sum = 0
-      arr.each do |v|
-        sum += (v - m) ** 2
-      end
-      Math.sqrt(sum / arr.size)
     end
   end
 end
