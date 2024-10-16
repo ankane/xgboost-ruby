@@ -168,7 +168,12 @@ module XGBoost
       end
     end
 
+    # TODO slice for non-string keys
     def [](key_name)
+      attr(key_name)
+    end
+
+    def attr(key_name)
       key = string_pointer(key_name.to_s)
       success = ::FFI::MemoryPointer.new(:int)
       out_result = ::FFI::MemoryPointer.new(:pointer)
@@ -179,7 +184,7 @@ module XGBoost
     end
 
     def []=(key_name, raw_value)
-      key = string_pointer(key_name.to_s)
+      key = string_pointer(key_name)
       value = raw_value.nil? ? nil : string_pointer(raw_value.to_s)
 
       check_result FFI.XGBoosterSetAttr(handle_pointer, key, value)
