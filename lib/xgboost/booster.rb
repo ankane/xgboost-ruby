@@ -10,8 +10,7 @@ module XGBoost
         end
       end
 
-      dmats = ::FFI::MemoryPointer.new(:pointer, cache.length)
-      dmats.write_array_of_pointer(cache.map { |d| d.handle_pointer })
+      dmats = array_of_pointers(cache.map { |d| d.handle_pointer })
       @handle = ::FFI::MemoryPointer.new(:pointer)
       check_result FFI.XGBoosterCreate(dmats, cache.length, @handle)
       ObjectSpace.define_finalizer(@handle, self.class.finalize(handle_pointer.to_i))
