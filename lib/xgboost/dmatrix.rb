@@ -140,7 +140,16 @@ module XGBoost
         return
       end
 
-      # TODO validate
+      # TODO _validate_feature_info
+
+      if feature_names.length != feature_names.uniq.length
+        raise ArgumentError, "feature_names must be unique"
+      end
+
+      # prohibit the use symbols that may affect parsing. e.g. []<
+      if !feature_names.all? { |f| f.is_a?(String) && !["[", "]", "<"].any? { |x| f.include?(x) } }
+        raise ArgumentError, "feature_names must be string, and may not contain [, ] or <"
+      end
 
       c_feature_names = array_of_pointers(feature_names.map { |f| string_pointer(f) })
       check_call(
@@ -178,7 +187,7 @@ module XGBoost
         return
       end
 
-      # TODO validate
+      # TODO _validate_feature_info
 
       c_feature_types = array_of_pointers(feature_types.map { |f| string_pointer(f) })
       check_call(
