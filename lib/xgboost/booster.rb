@@ -47,25 +47,19 @@ module XGBoost
       json_string.read_pointer.read_string(read_uint64(length)).force_encoding(Encoding::UTF_8)
     end
 
-    def attr(key_name)
-      key = string_pointer(key_name.to_s)
+    def attr(key)
+      ret = ::FFI::MemoryPointer.new(:pointer)
       success = ::FFI::MemoryPointer.new(:int)
-      out_result = ::FFI::MemoryPointer.new(:pointer)
-
-      check_call FFI.XGBoosterGetAttr(handle, key, out_result, success)
-
-      success.read_int == 1 ? out_result.read_pointer.read_string : nil
+      check_call FFI.XGBoosterGetAttr(handle, key.to_s, ret, success)
+      success.read_int != 0 ? ret.read_pointer.read_string : nil
     end
 
     def attributes
-      out_len = ::FFI::MemoryPointer.new(:uint64)
-      out_result = ::FFI::MemoryPointer.new(:pointer)
-      check_call FFI.XGBoosterGetAttrNames(handle, out_len, out_result)
-
-      len = read_uint64(out_len)
-      key_names = len.zero? ? [] : out_result.read_pointer.get_array_of_string(0, len)
-
-      key_names.to_h { |key_name| [key_name, self[key_name]] }
+      length = ::FFI::MemoryPointer.new(:uint64)
+      sarr = ::FFI::MemoryPointer.new(:pointer)
+      check_call FFI.XGBoosterGetAttrNames(handle, length, sarr)
+      attr_names = from_cstr_to_rbstr(sarr, length)
+      attr_names.to_h { |n| [n, attr(n)] }
     end
 
     def set_attr(**kwargs)

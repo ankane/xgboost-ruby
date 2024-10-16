@@ -46,7 +46,7 @@ module XGBoost
     attach_function :XGBoosterSaveModel, %i[pointer string], :int
     attach_function :XGBoosterSaveJsonConfig, %i[pointer pointer pointer], :int
     attach_function :XGBoosterDumpModelExWithFeatures, %i[pointer int pointer pointer int string pointer pointer], :int
-    attach_function :XGBoosterGetAttr, %i[pointer pointer pointer pointer], :int
+    attach_function :XGBoosterGetAttr, %i[pointer string pointer pointer], :int
     attach_function :XGBoosterSetAttr, %i[pointer string string], :int
     attach_function :XGBoosterGetAttrNames, %i[pointer pointer pointer], :int
     attach_function :XGBoosterSetStrFeatureInfo, %i[pointer string pointer uint64], :int
