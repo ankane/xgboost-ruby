@@ -169,22 +169,21 @@ module XGBoost
       rand_idx.shuffle!(random: Random.new(seed)) if shuffle
 
       kstep = (rand_idx.size / nfold.to_f).ceil
-      test_id = rand_idx.each_slice(kstep).to_a[0...nfold]
-      train_id = []
+      out_idset = rand_idx.each_slice(kstep).to_a[0...nfold]
+      in_idset = []
       nfold.times do |i|
-        idx = test_id.dup
+        idx = out_idset.dup
         idx.delete_at(i)
-        train_id << idx.flatten
+        in_idset << idx.flatten
       end
 
-      folds = train_id.zip(test_id)
-      cvfolds = []
-      folds.each do |(train_idx, test_idx)|
-        fold_dtrain = dall.slice(train_idx)
-        fold_dvalid = dall.slice(test_idx)
-        cvfolds << CVPack.new(fold_dtrain, fold_dvalid, param)
+      ret = []
+      nfold.times do |k|
+        fold_dtrain = dall.slice(in_idset[k])
+        fold_dvalid = dall.slice(out_idset[k])
+        ret << CVPack.new(fold_dtrain, fold_dvalid, param)
       end
-      cvfolds
+      ret
     end
   end
 end
