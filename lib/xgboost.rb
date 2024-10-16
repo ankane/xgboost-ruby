@@ -6,8 +6,11 @@ require_relative "xgboost/utils"
 require_relative "xgboost/booster"
 require_relative "xgboost/callback_container"
 require_relative "xgboost/dmatrix"
-require_relative "xgboost/training_callback"
 require_relative "xgboost/version"
+
+# callbacks
+require_relative "xgboost/training_callback"
+require_relative "xgboost/evaluation_monitor"
 
 # scikit-learn API
 require_relative "xgboost/model"
@@ -47,57 +50,34 @@ module XGBoost
 
   class << self
     def train(params, dtrain, num_boost_round: 10, evals: nil, early_stopping_rounds: nil, verbose_eval: true, callbacks: nil)
-      callbacks ||= []
-      booster = Booster.new(params: params)
-      cb_container = CallbackContainer.new(callbacks)
-      booster = cb_container.before_training(booster)
-
-      num_feature = dtrain.num_col
-      booster.set_param("num_feature", num_feature)
-      booster.feature_names = dtrain.feature_names
-      booster.feature_types = dtrain.feature_types
+      callbacks = callbacks.nil? ? [] : callbacks.dup
       evals ||= []
 
-      if early_stopping_rounds
-        best_score = nil
-        best_iter = nil
-        best_message = nil
+      bst = Booster.new(params: params)
+
+      # TODO move
+      num_feature = dtrain.num_col
+      bst.set_param("num_feature", num_feature)
+      bst.feature_names = dtrain.feature_names
+      bst.feature_types = dtrain.feature_types
+
+      # TODO split into separate callbacks in 0.9.0
+      if verbose_eval || early_stopping_rounds
+        callbacks << EvaluationMonitor.new(verbose_eval: verbose_eval, early_stopping_rounds: early_stopping_rounds)
+      end
+      cb_container = CallbackContainer.new(callbacks)
+
+      bst = cb_container.before_training(bst)
+
+      num_boost_round.times do |i|
+        break if cb_container.before_iteration(bst, i, dtrain, evals)
+        bst.update(dtrain, i)
+        break if cb_container.after_iteration(bst, i, dtrain, evals)
       end
 
-      num_boost_round.times do |iteration|
-        break if cb_container.before_iteration(booster, iteration, dtrain, evals)
-        booster.update(dtrain, iteration)
+      bst = cb_container.after_training(bst)
 
-        if evals.any?
-          message = booster.eval_set(evals, iteration)
-          res = message.split.map { |x| x.split(":") }[1..-1].map { |k, v| [k, v.to_f] }
-
-          if early_stopping_rounds && iteration == 0
-            metric = res[-1][0]
-            puts "Will train until #{metric} hasn't improved in #{early_stopping_rounds.to_i} rounds." if verbose_eval
-          end
-
-          puts message if verbose_eval
-          score = res[-1][1]
-
-          # TODO handle larger better
-          if best_score.nil? || score < best_score
-            best_score = score
-            best_iter = iteration
-            best_message = message
-          elsif early_stopping_rounds && iteration - best_iter >= early_stopping_rounds
-            booster.best_iteration = best_iter
-            booster.best_score = best_score
-            puts "Stopping. Best iteration:\n#{best_message}" if verbose_eval
-            break
-          end
-        end
-
-        break if cb_container.after_iteration(booster, iteration, dtrain, evals)
-      end
-      booster = cb_container.after_training(booster)
-
-      booster
+      bst
     end
 
     def cv(params, dtrain, num_boost_round: 10, nfold: 3, seed: 0, shuffle: true, verbose_eval: nil, show_stdv: true, early_stopping_rounds: nil)
