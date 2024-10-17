@@ -231,7 +231,7 @@ module XGBoost
 
     def float_info(field)
       num_row ||= num_row()
-      out_len = ::FFI::MemoryPointer.new(:int)
+      out_len = ::FFI::MemoryPointer.new(:uint64)
       out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
       check_call FFI.XGDMatrixGetFloatInfo(handle, field, out_len, out_dptr)
       out_dptr.read_pointer.read_array_of_float(num_row)
