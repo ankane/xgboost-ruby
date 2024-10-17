@@ -44,7 +44,7 @@ module XGBoost
       length = ::FFI::MemoryPointer.new(:uint64)
       json_string = ::FFI::MemoryPointer.new(:pointer)
       check_call FFI.XGBoosterSaveJsonConfig(handle, length, json_string)
-      json_string.read_pointer.read_string(read_uint64(length)).force_encoding(Encoding::UTF_8)
+      json_string.read_pointer.read_string(length.read_uint64).force_encoding(Encoding::UTF_8)
     end
 
     def attr(key)
@@ -114,7 +114,7 @@ module XGBoost
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_result = ::FFI::MemoryPointer.new(:pointer)
       check_call FFI.XGBoosterPredict(handle, data.handle, 0, ntree_limit, 0, out_len, out_result)
-      out = out_result.read_pointer.read_array_of_float(read_uint64(out_len))
+      out = out_result.read_pointer.read_array_of_float(out_len.read_uint64)
       num_class = out.size / data.num_row
       out = out.each_slice(num_class).to_a if num_class > 1
       out
@@ -149,7 +149,7 @@ module XGBoost
     def num_features
       features = ::FFI::MemoryPointer.new(:uint64)
       check_call FFI.XGBoosterGetNumFeature(handle, features)
-      read_uint64(features)
+      features.read_uint64
     end
 
     def dump_model(fout, fmap: "", with_stats: false, dump_format: "text")
@@ -182,7 +182,7 @@ module XGBoost
 
       check_call FFI.XGBoosterDumpModelExWithFeatures(handle, names.size, fnames, ftypes, with_stats ? 1 : 0, dump_format, out_len, out_result)
 
-      out_result.read_pointer.get_array_of_string(0, read_uint64(out_len))
+      out_result.read_pointer.get_array_of_string(0, out_len.read_uint64)
     end
 
     def fscore(fmap: "")

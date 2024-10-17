@@ -92,25 +92,25 @@ module XGBoost
     def num_row
       out = ::FFI::MemoryPointer.new(:uint64)
       check_call FFI.XGDMatrixNumRow(handle, out)
-      read_uint64(out)
+      out.read_uint64
     end
 
     def num_col
       out = ::FFI::MemoryPointer.new(:uint64)
       check_call FFI.XGDMatrixNumCol(handle, out)
-      read_uint64(out)
+      out.read_uint64
     end
 
     def num_nonmissing
       out = ::FFI::MemoryPointer.new(:uint64)
       check_call FFI.XGDMatrixNumNonMissing(handle, out)
-      read_uint64(out)
+      out.read_uint64
     end
 
     def data_split_mode
       out = ::FFI::MemoryPointer.new(:uint64)
       check_call FFI.XGDMatrixDataSplitMode(handle, out)
-      read_uint64(out) == 0 ? :row : :col
+      out.read_uint64 == 0 ? :row : :col
     end
 
     def slice(rindex)

@@ -24,15 +24,10 @@ module XGBoost
 
     def from_cstr_to_rbstr(data, length)
       res = []
-      read_uint64(length).times do |i|
+      length.read_uint64.times do |i|
         res << data.read_pointer[i * ::FFI::Pointer.size].read_pointer.read_string.force_encoding(Encoding::UTF_8)
       end
       res
-    end
-
-    # read_uint64 not available on JRuby
-    def read_uint64(ptr)
-      ptr.read_array_of_uint64(1).first
     end
   end
 end
