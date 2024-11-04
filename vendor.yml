@@ -1,19 +1,19 @@
 platforms:
   x86_64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-linux.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-x86_64-linux.zip
     sha256: 38ee0df132257e0017290a2508a84e7bf78e47240ee46e01e9c29e9ed1e8bcf5
   x86_64-linux-musl:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-linux-musl.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-x86_64-linux-musl.zip
     sha256: 8a0d6d0593fb3326e36c62ba5657cc0116b91a9532b0fb0976a24fe8e080c967
   aarch64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-aarch64-linux.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-aarch64-linux.zip
     sha256: da5197335c29c66a627e0305623802e4c2eb3c3c56c1ccf44f40a38339eac8e5
   x86_64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-darwin.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-x86_64-darwin.zip
     sha256: 33ab7bfd8267c8f74ecf1f2a19b9006ff1b36c551aad665e97d811a3230a0cc2
   arm64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-aarch64-darwin.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-aarch64-darwin.zip
     sha256: 770a58b721364daa24ac00d02bb80034f6b29d90fbc70f45766a15743a7e6b0b
   x64-mingw:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-windows.zip
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.2/xgboost-2.1.2-x86_64-windows.zip
     sha256: bc968410de5654a992e70523bcc582c5517c506d92df691f3566fa46e365c6b0
