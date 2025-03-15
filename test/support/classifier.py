@@ -33,7 +33,8 @@ print(model.feature_importances_.tolist())
 
 print()
 print('test_early_stopping')
-model.fit(X_train, ym_train, eval_set=[(X_test, ym_test)], early_stopping_rounds=5, verbose=True)
+model = xgb.XGBClassifier(early_stopping_rounds=5)
+model.fit(X_train, ym_train, eval_set=[(X_test, ym_test)])
 print(model.get_booster().best_iteration)
 
 print()

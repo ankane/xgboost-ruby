@@ -1,19 +1,19 @@
 platforms:
   x86_64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-linux.zip
-    sha256: 38ee0df132257e0017290a2508a84e7bf78e47240ee46e01e9c29e9ed1e8bcf5
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-x86_64-linux.zip
+    sha256: b051e20f4ae42969686bba2f10865eed0ed2f3ed0e2a3fa9cb0aaf052595157a
   x86_64-linux-musl:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-linux-musl.zip
-    sha256: 8a0d6d0593fb3326e36c62ba5657cc0116b91a9532b0fb0976a24fe8e080c967
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-x86_64-linux-musl.zip
+    sha256: 24fa1e505d32355e2f84f236594fac45233185de11c216c88672e2a7e4242c65
   aarch64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-aarch64-linux.zip
-    sha256: da5197335c29c66a627e0305623802e4c2eb3c3c56c1ccf44f40a38339eac8e5
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-aarch64-linux.zip
+    sha256: 9a235503311edb79ce271cb7ae09f2c176b3e0312c1ae447ee6cda75b1cd96c7
   x86_64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-darwin.zip
-    sha256: 33ab7bfd8267c8f74ecf1f2a19b9006ff1b36c551aad665e97d811a3230a0cc2
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-x86_64-darwin.zip
+    sha256: f1ca04e306162edf5e07446cbb950c216d6516ae37aaf8b2644de00e60df0ab6
   arm64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-aarch64-darwin.zip
-    sha256: 770a58b721364daa24ac00d02bb80034f6b29d90fbc70f45766a15743a7e6b0b
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-aarch64-darwin.zip
+    sha256: cc29659f43ca6bbee3db8c93ecc102ead1cb4a039edb6ea398f08de5ae0b5771
   x64-mingw:
-    url: https://github.com/ankane/ml-builds/releases/download/xgboost-2.1.1/xgboost-2.1.1-x86_64-windows.zip
-    sha256: bc968410de5654a992e70523bcc582c5517c506d92df691f3566fa46e365c6b0
+    url: https://github.com/ankane/ml-builds/releases/download/xgboost-3.0.0/xgboost-3.0.0-x86_64-windows.zip
+    sha256: 4d7b87db5972e2770e7a78d2a1285d0f6dfc4ea564b674badff58f810c5a000b

@@ -14,7 +14,7 @@ class ClassifierTest < Minitest::Test
     expected = [4.673004150390625e-05, 0.9999532699584961]
     assert_elements_in_delta expected, y_pred_proba.first
 
-    expected = [0.17202478647232056, 0.26760509610176086, 0.4572588801383972, 0.10311124473810196]
+    expected = [0.13950465619564056, 0.25203850865364075, 0.5016216039657593, 0.1068352460861206]
     assert_elements_in_delta expected, model.feature_importances
 
     model.save_model(tempfile)

@@ -15,7 +15,7 @@ class TrainTest < Minitest::Test
   def test_binary
     model = XGBoost.train(binary_params, binary_train)
     y_pred = model.predict(binary_test)
-    assert_in_delta 0.9866828, y_pred.first
+    assert_in_delta 0.9892826, y_pred.first
     assert_equal 200, y_pred.size
 
     model.save_model(tempfile)
