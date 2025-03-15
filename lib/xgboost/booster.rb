@@ -47,6 +47,11 @@ module XGBoost
       json_string.read_pointer.read_string(length.read_uint64).force_encoding(Encoding::UTF_8)
     end
 
+    def reset
+      check_call FFI.XGBoosterReset(handle)
+      self
+    end
+
     def attr(key)
       ret = ::FFI::MemoryPointer.new(:pointer)
       success = ::FFI::MemoryPointer.new(:int)

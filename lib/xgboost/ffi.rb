@@ -39,6 +39,7 @@ module XGBoost
     attach_function :XGBoosterUpdateOneIter, %i[pointer int pointer], :int
     attach_function :XGBoosterEvalOneIter, %i[pointer int pointer pointer uint64 pointer], :int
     attach_function :XGBoosterFree, %i[pointer], :int
+    attach_function :XGBoosterReset, %i[pointer], :int
     attach_function :XGBoosterBoostedRounds, %i[pointer pointer], :int
     attach_function :XGBoosterSetParam, %i[pointer string string], :int
     attach_function :XGBoosterGetNumFeature, %i[pointer pointer], :int

@@ -91,7 +91,7 @@ module XGBoost
         evals_result.merge!(cb_container.history)
       end
 
-      bst
+      bst.reset
     end
 
     def cv(
