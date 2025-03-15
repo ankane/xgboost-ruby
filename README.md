@@ -126,7 +126,8 @@ model.feature_importances
 Early stopping
 
 ```ruby
-model.fit(x, y, eval_set: [[x_test, y_test]], early_stopping_rounds: 5)
+model = XGBoost::Regressor.new(early_stopping_rounds: 5)
+model.fit(x, y, eval_set: [[x_test, y_test]])
 ```
 
 ## Data
