@@ -23,8 +23,8 @@ class RegressorTest < Minitest::Test
   def test_early_stopping
     x_train, y_train, x_test, y_test = regression_data
 
-    model = XGBoost::Regressor.new
-    model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
+    model = XGBoost::Regressor.new(early_stopping_rounds: 5)
+    model.fit(x_train, y_train, eval_set: [[x_test, y_test]], verbose: false)
     assert_equal 9, model.booster.best_iteration
   end
 

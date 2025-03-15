@@ -2,10 +2,11 @@ module XGBoost
   class Model
     attr_reader :booster
 
-    def initialize(n_estimators: 100, importance_type: "gain", **options)
+    def initialize(n_estimators: 100, importance_type: "gain", early_stopping_rounds: nil, **options)
       @params = options
       @n_estimators = n_estimators
       @importance_type = importance_type
+      @early_stopping_rounds = early_stopping_rounds
     end
 
     def predict(data)

@@ -18,7 +18,7 @@ module XGBoost
 
       @booster = XGBoost.train(params, dtrain,
         num_boost_round: @n_estimators,
-        early_stopping_rounds: early_stopping_rounds,
+        early_stopping_rounds: early_stopping_rounds || @early_stopping_rounds,
         verbose_eval: verbose,
         evals: evals
       )

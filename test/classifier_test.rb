@@ -50,8 +50,8 @@ class ClassifierTest < Minitest::Test
   def test_early_stopping
     x_train, y_train, x_test, y_test = multiclass_data
 
-    model = XGBoost::Classifier.new
-    model.fit(x_train, y_train, early_stopping_rounds: 5, eval_set: [[x_test, y_test]], verbose: false)
+    model = XGBoost::Classifier.new(early_stopping_rounds: 5)
+    model.fit(x_train, y_train, eval_set: [[x_test, y_test]], verbose: false)
     assert_equal 18, model.booster.best_iteration
   end
 
