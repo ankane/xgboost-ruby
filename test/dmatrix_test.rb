@@ -64,7 +64,6 @@ class DMatrixTest < Minitest::Test
   def test_numo
     skip if RUBY_PLATFORM == "java"
 
-    require "numo/narray"
     data = Numo::DFloat.new(3, 5).seq
     label = Numo::DFloat.new(3).seq
     XGBoost::DMatrix.new(data, label: label)
@@ -73,7 +72,6 @@ class DMatrixTest < Minitest::Test
   def test_rover
     skip if RUBY_PLATFORM == "java"
 
-    require "rover"
     data = Rover.read_csv(data_path)
     label = data.delete("y")
     dataset = XGBoost::DMatrix.new(data, label: label)

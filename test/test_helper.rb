@@ -2,10 +2,7 @@ require "bundler/setup"
 Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
-require "csv"
 require "json"
-require "matrix"
-require "daru"
 
 class Minitest::Test
   def assert_elements_in_delta(expected, actual)
