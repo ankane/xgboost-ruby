@@ -25,7 +25,7 @@ module XGBoost
     def from_cstr_to_rbstr(data, length)
       res = []
       length.read_uint64.times do |i|
-        res << data.read_pointer[i * ::FFI::Pointer.size].read_pointer.read_string.force_encoding(Encoding::UTF_8)
+        res << data.read_pointer.get_pointer(i * ::FFI::Pointer.size).read_string.force_encoding(Encoding::UTF_8)
       end
       res
     end
