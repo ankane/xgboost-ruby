@@ -62,7 +62,7 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_numo
-    skip if RUBY_PLATFORM == "java"
+    skip if ["jruby", "truffleruby"].include?(RUBY_ENGINE)
 
     data = Numo::DFloat.new(3, 5).seq
     label = Numo::DFloat.new(3).seq
@@ -70,7 +70,7 @@ class DMatrixTest < Minitest::Test
   end
 
   def test_rover
-    skip if RUBY_PLATFORM == "java"
+    skip if ["jruby", "truffleruby"].include?(RUBY_ENGINE)
 
     data = Rover.read_csv(data_path)
     label = data.delete("y")
