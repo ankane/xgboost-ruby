@@ -5,6 +5,23 @@ require "minitest/pride"
 require "json"
 
 class Minitest::Test
+  def setup
+    if stress?
+      # autoload before GC.stress
+      XGBoost::FFI.ffi_libraries
+      load_data
+      GC.stress = true
+    end
+  end
+
+  def teardown
+    GC.stress = false if stress?
+  end
+
+  def stress?
+    ENV["STRESS"]
+  end
+
   def assert_elements_in_delta(expected, actual)
     assert_equal expected.size, actual.size
     expected.zip(actual) do |exp, act|
@@ -26,7 +43,7 @@ class Minitest::Test
 
   def binary_data
     x, y = load_data
-    y.map! { |v| v > 1 ? 1 : v }
+    y = y.map { |v| v > 1 ? 1 : v }
     split_data(x, y)
   end
 
@@ -59,12 +76,15 @@ class Minitest::Test
   end
 
   def load_data
-    x = []
-    CSV.foreach(data_path, headers: true, converters: :numeric) do |row|
-      x << row.fields
+    @@load_data ||= begin
+      x = []
+      y = []
+      CSV.foreach(data_path, headers: true, converters: :numeric) do |row|
+        x << row.values_at("x0", "x1", "x2", "x3").freeze
+        y << row["y"]
+      end
+      [x.freeze, y.freeze]
     end
-    y = x.map(&:pop)
-    [x, y]
   end
 
   def split_data(x, y)
