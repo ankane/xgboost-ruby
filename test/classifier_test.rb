@@ -58,6 +58,8 @@ class ClassifierTest < Minitest::Test
   def test_missing
     x_train, y_train, x_test, _ = multiclass_data
 
+    x_train = x_train.map(&:dup)
+    x_test = x_test.map(&:dup)
     [x_train, x_test].each do |xt|
       xt.each do |x|
         x.size.times do |i|
