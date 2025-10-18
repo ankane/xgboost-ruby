@@ -31,8 +31,7 @@ class ClassifierTest < Minitest::Test
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
     expected = [1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1]
-    # TODO fix
-    # assert_equal expected, y_pred.first(100)
+    assert_equal expected, y_pred.first(100)
 
     y_pred_proba = model.predict_proba(x_test)
     expected = [0.0020083063282072544, 0.9485360383987427, 0.04945564642548561]
