@@ -1,6 +1,6 @@
 module XGBoost
   class Regressor < Model
-    def initialize(n_estimators: 100, objective: "reg:squarederror", importance_type: "gain", **options)
+    def initialize(objective: "reg:squarederror", **options)
       super
     end
 
