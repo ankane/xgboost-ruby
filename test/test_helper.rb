@@ -15,6 +15,7 @@ class Minitest::Test
 
   def teardown
     GC.stress = false if stress?
+    @tempfile = nil
   end
 
   def stress?
@@ -110,10 +111,6 @@ class Minitest::Test
 
   def multiclass_params
     {objective: "multi:softprob", num_class: 3}
-  end
-
-  def teardown
-    @tempfile = nil
   end
 
   def tempfile
