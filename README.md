@@ -45,13 +45,13 @@ booster.predict(dtest)
 Save the model to a file
 
 ```ruby
-booster.save_model("my.model")
+booster.save_model("model.json")
 ```
 
 Load the model from a file
 
 ```ruby
-booster = XGBoost::Booster.new(model_file: "my.model")
+booster = XGBoost::Booster.new(model_file: "model.json")
 ```
 
 Get the importance of features
@@ -108,13 +108,13 @@ model.predict(x)
 Save the model to a file
 
 ```ruby
-model.save_model("my.model")
+model.save_model("model.json")
 ```
 
 Load the model from a file
 
 ```ruby
-model.load_model("my.model")
+model.load_model("model.json")
 ```
 
 Get the importance of features
