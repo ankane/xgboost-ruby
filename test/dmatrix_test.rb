@@ -84,9 +84,8 @@ class DMatrixTest < Minitest::Test
     dataset = XGBoost::DMatrix.new(data, label: label)
     names = ["x0", "x1", "x2", "x3"]
     assert_equal names, dataset.feature_names
-    # TODO add types
-    # types = ["float", "float", "float", "int"]
-    # assert_equal types, dataset.feature_types
+    types = ["float", "float", "float", "int"]
+    assert_equal types, dataset.feature_types
   end
 
   def test_invalid

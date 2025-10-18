@@ -34,6 +34,17 @@ module XGBoost
       elsif rover?(data)
         nrow, ncol = data.shape
         feature_names = data.keys
+        feature_types =
+          data.types.map do |_, v|
+            v = v.to_s
+            if v.start_with?("int") || v.start_with?("uint")
+              "int"
+            elsif v.start_with?("float")
+              "float"
+            else
+              raise Error, "Unknown feature type: #{v}"
+            end
+          end
         data = data.to_numo
       else
         nrow = data.count
