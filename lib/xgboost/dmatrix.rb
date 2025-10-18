@@ -56,7 +56,7 @@ module XGBoost
       check_call FFI.XGDMatrixCreateFromMat(c_data, nrow, ncol, missing, out)
       @handle = ::FFI::AutoPointer.new(out.read_pointer, FFI.method(:XGDMatrixFree))
 
-      self.feature_names = feature_names || ncol.times.map { |i| "f#{i}" }
+      self.feature_names = feature_names if feature_names
       self.feature_types = feature_types if feature_types
 
       self.label = label if label

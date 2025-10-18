@@ -19,7 +19,7 @@ class DMatrixTest < Minitest::Test
     data = [[1, 2], [3, 4]]
     label = [1, 2]
     dataset = XGBoost::DMatrix.new(data, label: label)
-    assert_equal ["f0", "f1"], dataset.feature_names
+    assert_nil dataset.feature_names
     assert_nil dataset.feature_types
   end
 

@@ -28,7 +28,7 @@ class TrainTest < Minitest::Test
     model = XGBoost.train(multiclass_params, multiclass_train)
 
     y_pred = model.predict(multiclass_test)
-    expected = [0.04140469804406166, 0.8922330141067505, 0.06636224687099457]
+    expected = [0.060599446296691895, 0.8754178881645203, 0.06398269534111023]
     assert_elements_in_delta expected, y_pred.first
     # ensure reshaped
     assert_equal 200, y_pred.size
@@ -57,7 +57,7 @@ class TrainTest < Minitest::Test
 
   def test_feature_names_and_types
     model = XGBoost.train(regression_params, regression_train)
-    assert_equal 4.times.map { |i| "f#{i}" }, model.feature_names
+    assert_nil model.feature_names
     assert_nil model.feature_types
   end
 

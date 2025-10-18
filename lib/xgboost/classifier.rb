@@ -1,6 +1,6 @@
 module XGBoost
   class Classifier < Model
-    def initialize(n_estimators: 100, objective: "binary:logistic", importance_type: "gain", **options)
+    def initialize(objective: "binary:logistic", **options)
       super
     end
 

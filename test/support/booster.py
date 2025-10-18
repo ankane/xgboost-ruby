@@ -14,9 +14,9 @@ y_test = y[300:]
 
 train_data = xgb.DMatrix(X_train, label=y_train)
 bst = xgb.train({}, train_data)
-bst.save_model('test/support/model.bin')
+bst.save_model('test/support/model.json')
 
-bst = xgb.Booster(model_file='test/support/model.bin')
+bst = xgb.Booster(model_file='test/support/model.json')
 print('score', bst.get_score())
 bst.dump_model('/tmp/model.json', dump_format='json')
 

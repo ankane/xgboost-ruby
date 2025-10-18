@@ -24,7 +24,8 @@ module XGBoost
 
     def feature_importances
       score = @booster.score(importance_type: @importance_type)
-      scores = @booster.feature_names.map { |k| score[k] || 0.0 }
+      feature_names = @booster.feature_names || @booster.num_features.times.map { |i| "f#{i}" }
+      scores = feature_names.map { |k| score[k] || 0.0 }
       total = scores.sum.to_f
       scores.map { |s| s / total }
     end

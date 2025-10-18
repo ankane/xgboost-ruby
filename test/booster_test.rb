@@ -2,14 +2,14 @@ require_relative "test_helper"
 
 class BoosterTest < Minitest::Test
   def test_dump_text
-    assert_match(/0:\[f2</, booster.dump.join)
+    assert_match(/0:\[x2</, booster.dump.join)
     assert_match(/0:\[feat2</, booster_with_feature_names.dump.join)
   end
 
   def test_dump_json
     booster_dump = booster.dump(dump_format: "json").first
     assert JSON.parse(booster_dump)
-    assert_equal "f2", JSON.parse(booster_dump).fetch("split")
+    assert_equal "x2", JSON.parse(booster_dump).fetch("split")
 
     feature_booster_dump = booster_with_feature_names.dump(dump_format: "json").first
     assert JSON.parse(feature_booster_dump)
@@ -79,7 +79,7 @@ class BoosterTest < Minitest::Test
   private
 
   def load_booster
-    XGBoost::Booster.new(model_file: "test/support/model.bin")
+    XGBoost::Booster.new(model_file: "test/support/model.json")
   end
 
   def booster
