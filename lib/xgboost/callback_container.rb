@@ -110,7 +110,6 @@ module XGBoost
 
     def aggcv(rlist)
       cvmap = {}
-      idx = rlist[0].split[0]
       rlist.each do |line|
         arr = line.split
         arr[1..].each_with_index do |it, metric_idx|
@@ -118,7 +117,6 @@ module XGBoost
           (cvmap[[metric_idx, k]] ||= []) << v.to_f
         end
       end
-      msg = idx
       results = []
       cvmap.sort { |x| x[0][0] }.each do |(_, name), s|
         mean = mean(s)
