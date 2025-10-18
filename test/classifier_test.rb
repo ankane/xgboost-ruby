@@ -44,8 +44,7 @@ class ClassifierTest < Minitest::Test
 
     model = XGBoost::Classifier.new
     model.load_model(tempfile)
-    # TODO fix
-    # assert_equal y_pred, model.predict(x_test)
+    assert_equal y_pred, model.predict(x_test)
   end
 
   def test_early_stopping

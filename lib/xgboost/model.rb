@@ -19,7 +19,7 @@ module XGBoost
     end
 
     def load_model(fname)
-      @booster = Booster.new(params: @params, model_file: fname)
+      @booster = Booster.new(model_file: fname)
     end
 
     def feature_importances
