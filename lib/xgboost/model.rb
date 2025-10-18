@@ -20,6 +20,8 @@ module XGBoost
 
     def load_model(fname)
       @booster = Booster.new(params: @params, model_file: fname)
+      config = JSON.parse(@booster.save_config)
+      load_model_attributes(config)
     end
 
     def feature_importances
@@ -28,6 +30,12 @@ module XGBoost
       scores = feature_names.map { |k| score[k] || 0.0 }
       total = scores.sum.to_f
       scores.map { |s| s / total }
+    end
+
+    private
+
+    def load_model_attributes(config)
+      @objective = config["learner"]["objective"]["name"]
     end
   end
 end
