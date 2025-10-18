@@ -3,7 +3,7 @@ require "rake/testtask"
 
 Rake::TestTask.new do |t|
   t.pattern = "test/**/*_test.rb"
-  t.warning = false # for csv and daru
+  t.warning = false # for daru
 end
 
 task default: :test

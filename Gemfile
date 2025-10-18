@@ -4,10 +4,10 @@ gemspec
 
 gem "rake"
 gem "minitest"
+gem "csv"
 gem "daru"
 gem "matrix" # for daru
 gem "rover-df", platform: [:mri, :x64_mingw]
-gem "csv"
 
 # TODO remove when numo-narray > 0.9.2.1 is released
 if Gem.win_platform?
