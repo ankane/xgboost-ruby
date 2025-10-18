@@ -76,9 +76,15 @@ module XGBoost
     end
 
     def group=(group)
-      c_data = ::FFI::MemoryPointer.new(:int, group.size)
-      c_data.write_array_of_int(group)
-      check_call FFI.XGDMatrixSetUIntInfo(handle, "group", c_data, group.size)
+      c_data = ::FFI::MemoryPointer.new(:uint, group.size)
+      c_data.write_array_of_uint(group)
+      interface = {
+        shape: [group.length],
+        typestr: "|u4",
+        data: [c_data.address, false],
+        version: 3
+      }
+      check_call FFI.XGDMatrixSetInfoFromInterface(handle, "group", JSON.generate(interface))
     end
 
     def label
@@ -87,6 +93,10 @@ module XGBoost
 
     def weight
       float_info("weight")
+    end
+
+    def group
+      uint_info("group_ptr")
     end
 
     def num_row
@@ -234,7 +244,15 @@ module XGBoost
       out_len = ::FFI::MemoryPointer.new(:uint64)
       out_dptr = ::FFI::MemoryPointer.new(:float, num_row)
       check_call FFI.XGDMatrixGetFloatInfo(handle, field, out_len, out_dptr)
-      out_dptr.read_pointer.read_array_of_float(num_row)
+      out_dptr.read_pointer.null? ? nil : out_dptr.read_pointer.read_array_of_float(num_row)
+    end
+
+    def uint_info(field)
+      num_row ||= num_row()
+      out_len = ::FFI::MemoryPointer.new(:uint64)
+      out_dptr = ::FFI::MemoryPointer.new(:uint, num_row)
+      check_call FFI.XGDMatrixGetUIntInfo(handle, field, out_len, out_dptr)
+      out_dptr.read_pointer.null? ? nil : out_dptr.read_pointer.read_array_of_uint(num_row)
     end
 
     def validate_feature_info(feature_info, n_features, is_column_split, name)

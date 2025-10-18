@@ -21,7 +21,7 @@ module XGBoost
 
     # dmatrix
     attach_function :XGDMatrixCreateFromMat, %i[pointer uint64 uint64 float pointer], :int
-    attach_function :XGDMatrixSetUIntInfo, %i[pointer string pointer uint64], :int
+    attach_function :XGDMatrixSetInfoFromInterface, %i[pointer string string], :int
     attach_function :XGDMatrixSetStrFeatureInfo, %i[pointer string pointer uint64], :int
     attach_function :XGDMatrixGetStrFeatureInfo, %i[pointer string pointer pointer], :int
     attach_function :XGDMatrixNumRow, %i[pointer pointer], :int
@@ -33,6 +33,7 @@ module XGBoost
     attach_function :XGDMatrixSaveBinary, %i[pointer string int], :int
     attach_function :XGDMatrixSetFloatInfo, %i[pointer string pointer uint64], :int
     attach_function :XGDMatrixGetFloatInfo, %i[pointer string pointer pointer], :int
+    attach_function :XGDMatrixGetUIntInfo, %i[pointer string pointer pointer], :int
 
     # booster
     attach_function :XGBoosterCreate, %i[pointer int pointer], :int

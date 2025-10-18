@@ -5,14 +5,21 @@ class DMatrixTest < Minitest::Test
     data = [[1, 2], [3, 4]]
     label = [1, 2]
     dataset = XGBoost::DMatrix.new(data, label: label)
-    assert label, dataset.label
+    assert_equal label, dataset.label
   end
 
   def test_weight
     data = [[1, 2], [3, 4]]
     weight = [1, 2]
     dataset = XGBoost::DMatrix.new(data, weight: weight)
-    assert weight, dataset.weight
+    assert_equal weight, dataset.weight
+  end
+
+  def test_group
+    data = [[1, 2], [3, 4]]
+    dataset = XGBoost::DMatrix.new(data)
+    dataset.group = [1, 2]
+    assert_equal [0, 1], dataset.group
   end
 
   def test_feature_names_and_types
