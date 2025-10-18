@@ -6,7 +6,7 @@ gem "rake"
 gem "minitest"
 gem "csv"
 gem "daru"
-gem "matrix" # for daru
+gem "matrix"
 gem "rover-df", platform: [:mri, :x64_mingw]
 
 # TODO remove when numo-narray > 0.9.2.1 is released
