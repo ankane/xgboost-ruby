@@ -6,6 +6,12 @@ gem "rake"
 gem "minitest"
 gem "daru"
 gem "matrix" # for daru
-gem "numo-narray", platform: [:mri, :x64_mingw]
 gem "rover-df", platform: [:mri, :x64_mingw]
 gem "csv"
+
+# TODO remove when numo-narray > 0.9.2.1 is released
+if Gem.win_platform?
+  gem "numo-narray", github: "ruby-numo/numo-narray", ref: "421feddb46cac5145d69067fc1ac3ba3c434f668"
+else
+  gem "numo-narray", platform: [:mri, :x64_mingw]
+end
