@@ -8,6 +8,7 @@ gem "csv"
 gem "daru"
 gem "matrix"
 gem "rover-df", platform: [:mri, :windows]
+gem "ruby_memcheck"
 
 # TODO remove when numo-narray > 0.9.2.1 is released
 if Gem.win_platform?
