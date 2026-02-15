@@ -28,7 +28,7 @@ class TrainTest < Minitest::Test
     model = XGBoost.train(multiclass_params, multiclass_train)
 
     y_pred = model.predict(multiclass_test)
-    expected = [0.060599446296691895, 0.8754178881645203, 0.06398269534111023]
+    expected = [0.04011255130171776, 0.846713125705719, 0.11317432671785355]
     assert_elements_in_delta expected, y_pred.first
     # ensure reshaped
     assert_equal 200, y_pred.size
