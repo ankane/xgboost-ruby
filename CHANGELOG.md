@@ -1,5 +1,6 @@
 ## 0.12.0 (unreleased)
 
+- Dropped support for Daru
 - Dropped support for Ruby < 3.3
 
 ## 0.11.1 (2026-02-14)

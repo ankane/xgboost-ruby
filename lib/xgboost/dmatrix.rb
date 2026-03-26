@@ -14,21 +14,6 @@ module XGBoost
         nrow = data.row_count
         ncol = data.column_count
         flat_data = data.to_a.flatten
-      elsif daru?(data)
-        nrow, ncol = data.shape
-        flat_data = data.map_rows(&:to_a).flatten
-        feature_names = data.each_vector.map(&:name)
-        feature_types =
-          data.each_vector.map(&:db_type).map do |v|
-            case v
-            when "INTEGER"
-              "int"
-            when "DOUBLE"
-              "float"
-            else
-              raise Error, "Unknown feature type: #{v}"
-            end
-          end
       elsif numo?(data)
         nrow, ncol = data.shape
       elsif rover?(data)
@@ -282,10 +267,6 @@ module XGBoost
 
     def matrix?(data)
       defined?(Matrix) && data.is_a?(Matrix)
-    end
-
-    def daru?(data)
-      defined?(Daru::DataFrame) && data.is_a?(Daru::DataFrame)
     end
 
     def numo?(data)

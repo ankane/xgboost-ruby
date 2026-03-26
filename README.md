@@ -150,12 +150,6 @@ Or a Rover data frame
 Rover.read_csv("houses.csv")
 ```
 
-Or a Daru data frame
-
-```ruby
-Daru::DataFrame.from_csv("houses.csv")
-```
-
 ## Helpful Resources
 
 - [Parameters](https://xgboost.readthedocs.io/en/latest/parameter.html)

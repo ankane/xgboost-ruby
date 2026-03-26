@@ -5,7 +5,6 @@ gemspec
 gem "rake"
 gem "minitest"
 gem "csv"
-gem "daru"
 gem "matrix"
 gem "rover-df", platform: [:mri, :windows]
 gem "ruby_memcheck"

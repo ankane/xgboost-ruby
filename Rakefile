@@ -4,7 +4,6 @@ require "ruby_memcheck"
 
 test_config = lambda do |t|
   t.pattern = "test/**/*_test.rb"
-  t.warning = false # for daru
 end
 Rake::TestTask.new(&test_config)
 

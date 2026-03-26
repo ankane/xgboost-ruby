@@ -57,17 +57,6 @@ class DMatrixTest < Minitest::Test
     XGBoost::DMatrix.new(data, label: label)
   end
 
-  def test_daru
-    data = Daru::DataFrame.from_csv(data_path)
-    label = data["y"]
-    data = data.delete_vector("y")
-    dataset = XGBoost::DMatrix.new(data, label: label)
-    names = ["x0", "x1", "x2", "x3"]
-    assert_equal names, dataset.feature_names
-    types = ["float", "float", "float", "int"]
-    assert_equal types, dataset.feature_types
-  end
-
   def test_numo
     skip if ["jruby", "truffleruby"].include?(RUBY_ENGINE)
 
