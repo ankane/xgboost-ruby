@@ -1,3 +1,7 @@
+## 0.12.0 (unreleased)
+
+- Dropped support for Ruby < 3.3
+
 ## 0.11.1 (2026-02-14)
 
 - Updated XGBoost to 3.2.0
