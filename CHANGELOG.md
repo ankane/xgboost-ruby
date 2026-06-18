@@ -1,5 +1,6 @@
 ## 0.12.0 (unreleased)
 
+- Updated XGBoost to 3.3.0
 - Dropped support for Daru
 - Dropped support for Ruby < 3.3
 
