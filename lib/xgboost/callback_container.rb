@@ -87,9 +87,9 @@ module XGBoost
         else
           x = s
         end
-        splited_names = name.split("-")
-        data_name = splited_names[0]
-        metric_name = splited_names[1..].join("-")
+        split_names = name.split("-")
+        data_name = split_names[0]
+        metric_name = split_names[1..].join("-")
         @history[data_name] ||= {}
         data_history = @history[data_name]
         data_history[metric_name] ||= []
@@ -100,9 +100,8 @@ module XGBoost
 
     # TODO move
     def parse_eval_str(result)
-      splited = result.split[1..]
       # split up `test-error:0.1234`
-      metric_score_str = splited.map { |s| s.split(":") }
+      metric_score_str = result.split[1..].map { |s| s.split(":") }
       # convert to float
       metric_score = metric_score_str.map { |n, s| [n, s.to_f] }
       metric_score
