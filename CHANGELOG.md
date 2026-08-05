@@ -1,4 +1,4 @@
-## 0.12.1 (unreleased)
+## 0.12.1 (2026-08-05)
 
 - Updated XGBoost to 3.4.0
 
