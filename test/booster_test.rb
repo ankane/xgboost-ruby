@@ -24,7 +24,7 @@ class BoosterTest < Minitest::Test
   def test_dump_model_json
     booster.dump_model(tempfile, dump_format: "json")
     assert File.exist?(tempfile)
-    assert JSON.parse(File.read(tempfile))
+    assert JSON.load_file(tempfile)
   end
 
   def test_save_config
